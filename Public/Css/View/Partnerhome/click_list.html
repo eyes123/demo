@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>推广产品</title>
+<import type="css" file="Css.partner.common" />
+<import type="css" file="Css.partner.style" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.cat" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<script>
+var module = "__MODULE__";
+</script>  
+</head>
+<body>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+    	<input name="app_id"  type="hidden" value="{$app_id}"/>
+        <input name="title" type="text" value="{$titleWhere}" placeholder="&nbsp;关键字："/>          
+        <input class=button type="submit" name="submit" value="&nbsp;" />
+    </form>
+</div>
+<form action="">
+    <div class="data-list" >
+    	 <div class="acc">
+   	     <p>姓名：{$appRow.user_name}</p>
+   	     <p>手机号：{$appRow.phone}</p>
+   	     <p>邮箱：{$appRow.email}</p>
+	</div> 
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+            	<tr>
+            		<th>产品名称</th>
+            		<th>浏览次数</th>
+            		<th>价格</th>
+            		<th>购买量</th>
+            		<th>推广费</th>
+            		<th>收入</th>
+            	</tr>
+            	<empty name="rows">		    
+			    <tr>
+                    <td class="no-records" colspan="6" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	             <else />
+	              <foreach name="rows" item="row" key="k">
+	              	 <tr class="tr{$k%2}">
+					      <td>{$row.short_title}</td>
+					      <td>{$row.view_count}</td>
+					      <td>{$row.product_price}</td>
+					      <td>{$row.click_count}</td>
+					      <td>{$row.click_price}</td>
+					      <td>{$row.total_fee}</td>
+					   </tr>
+			   </foreach>
+			   		<tr>
+			   			<td colspan="6">{$page}</td>
+			   		</tr>
+			   </empty>
+            </tbody>
+         </table>
+         <div class="acc">
+   	     <p>推广总收入（元）：{$total}</p>
+	</div> 
+</div>
+</form>
+
+</body>
+</html>

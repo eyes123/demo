@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加活动产品信息</title>
+<import type="js" file="Js.Jquery" />
+<import type="js"  file="js.commonAd"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/artDialog/skins/blue.css" />
+<import type="css" file="Css.tab" />
+<import type="css" file="Css.addAdvertisement" />
+<import type="css" file="Css.common" />
+<script type="text/javascript">
+    var APP = "__APP__";
+    var MODULE = "__MODULE__";
+    var CONTROLLER = "__CONTROLLER__";
+    var ACTION = "__ACTION__";
+  //返回json数组
+    function getArrayByJson(json)
+  {
+    	var obj = new Function("return " + json)();
+    	return obj;
+    }
+    function show2()
+    { 
+    	if (document.getElementById("radio").checked)
+    	{ 
+    		document.getElementById("click_price").style.display = "block"; 
+    	} 
+    	else
+    	{ 
+    		document.getElementById("click_price").style.display = "none"; 
+    	} 
+    } 
+     function  load()
+    {
+    	var data='{$catJson}';
+    	var json=eval('('+data+')');
+        if(typeof(json.parentCat)!='undefined')
+        {
+        	  var parent=json.parentCat;
+        } 
+       	var catId=json.cat;
+        var mrId=json.mrId;
+        var adId=json.adId;
+        //alert(parent);  alert(catId);  alert(mrId);  alert(adId); 
+        $.post(MODULE+'/activity/catReady',{adId:adId,catId:catId,mrId:mrId,parent:parent},function(data)
+        {
+        	if(data)
+        	{   
+        		var mydata = getArrayByJson(data);
+        		var cats =mydata.data.data;
+        		if(cats.cats)
+        		{
+        		
+        			$("#cat_id").append(cats.cats);
+        		}
+        		if(cats.advert)
+        		{
+        			alert(cats.advert);
+        			$("#ad_div").find("select[name='advert']").html(cats.advert);
+        		}
+        		
+        	}
+        });
+    	
+    	
+    }
+  
+    function changeLcatery(s)
+    {
+    	var catId = $(s).val();
+    	$(document).ready(function()
+	    {
+	    	 var merchant=$("select[name='merchant_id']").val();
+	    	//alert(merchant);
+	    	//alert(catId);
+	    	 $(s).nextAll(".cat_select").remove();
+		      $.post(MODULE+'/activity/getCategory',{action:"getSubcat",catId:catId,merchant:merchant},function(data)
+		 		{  
+		    	    	if(data)
+		    	    	{
+		    	    		    var mydata = getArrayByJson(data);
+				    	       // alert(data);
+				    	    	var cats =mydata.data.data;
+				 				if(cats.cats)
+								{
+				 					$(s).parent(".cat").append(cats.cats);
+								}
+				 				if(cats.advert)
+				 				{
+				 					$("#ad_div").find("select[name='advert']").html(cats.advert);
+				 				}
+		    	    	}
+		 	   }); 
+ 	   });
+       
+    }
+    function advertChange(s)
+    {
+    	  var  merchant = $(s).val();
+    	  //var catId='';
+    	  $(document).ready(function()
+    		{
+    		  var catId2=$("select[name='parent_cat2']").val();
+    		  if(typeof(catId2)!='undefined' &&catId2!='-1')
+  			 {
+    			  var catId=catId2;
+  			 }
+    		 else
+    		{
+    			  var catId=$("select[name='parent_cat']").val();
+    		}
+    		 //alert(catId);
+    		 // alert(merchant);
+			  $.post(MODULE+'/activity/getCategory',{action:"getSubcat",catId:catId,merchant:merchant},function(data)
+		 		{  
+		    	    	if(data)
+		    	    	{
+		    	    		    var mydata = getArrayByJson(data);
+				    	      //  alert(data);
+				    	    	var cats =mydata.data.data;
+				 				if(cats.cats)
+								{
+				 					$(s).parent(".cat").append(cats.cats);
+								}
+				 				if(cats.advert)
+				 				{
+				 					$("select[name='advert']").find("option").remove();
+				 					$("#ad_div").find("select[name='advert']").html(cats.advert);
+				 				}
+		    	    	}
+	 	  		});  
+
+    		});
+    }
+ </script>
+</head>
+<body  onload="load()">
+<!-- 顶部页面导航 -->
+<form  enctype="multipart/form-data" method="post" action="" name="form1">
+
+<div class="line" id="merchant_id" >
+     <div class="input_left">商家名称：</div>
+     <div  class="input_right"  id="mertchant_div">
+         <select name="merchant_id"  onchange="advertChange(this)">
+             <option value="-1">请选择...</option>
+		        <foreach  name="merchants"  item="user">         
+		            <option value="{$user.id}" {$user['id']==$partner['id'] ?'selected="selected"':''} >{$user.company_name}</option>        
+		        </foreach>  
+         </select>
+     </div>
+</div>
+<div class="line" id="category_id">
+     <div class="input_left">商品分类：</div>
+     <div class="input_right  cat"  id="cat_id">         
+          <select name="parent_cat" onchange="changeLcatery(this)" class="cat_select">
+          <option value="-1">请选择...</option>
+	             <foreach name="cats" item="cat" key="k">
+	                <option value="{$cat.id}" {$cat['id']==$categoryId ?'selected="selected"':''} > {$cat.cat_name}</option>
+	          	</foreach>								    
+          </select>	
+	</div>        
+</div>
+
+<include file="./Application/Home/View/Advertisement/option.html" /> 
+<!-- 
+<div class="line">
+     <div class="input_left">产品名称：</div>
+    <div class="input_right" id=ad_div>
+     <select name="advert">
+    	 <option value="-1">请选择...</option>
+	     <foreach name="ads" item="ad" key="k">
+	     	<option value="{$ad.id}" {$ad['id'] == $advert['id'] ?'selected="selected"':''}> {$ad.short_title}</option>
+	     </foreach>
+     </select>
+     </div>
+</div> -->
+<div class="line">
+     <div class="input_left">产品名称：</div>
+    <div class="input_right" id=ad_div>
+     <select  name="advert">
+       <option value="-1">请选择...</option>
+    <!-- 	 <option  selected="selected">{$ads.short_title}</option> -->
+     </select>
+     </div>
+</div> 
+ <!-- <input style="margin-left:35px;" class="button" type="submit"   name="shousuo" value="搜索" /> -->
+ <div class="line">
+     <div class="input_left">活动名称：</div>
+     <div class="input_right cat">         
+          <select name="activity" >
+          <option value="-1">请选择...</option>
+	             <foreach name="activitys" item="activity" key="k">
+	                <option value="{$activity.id}"  {$activity['id'] == $actiy['id'] ?'selected="selected"':''} > {$activity.title}  </option>
+	          	</foreach>								    
+          </select>	
+	</div>        
+</div>
+ <div class="line"  id="ad_fee">
+    <div class="input_left">降&nbsp;&nbsp;&nbsp;&nbsp;价：</div>
+    <div class="input_right">    
+       <input type="text" name="drop_price" value="{$acty.drop_price}" maxlength="10"/>
+    </div>
+</div>
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" name="submit"  />
+        <input type="hidden"  value=""  name="btn_action"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+	if($(':radio[name="radio"]').val()=="Y")
+	{
+		$("#click_price").attr("display","block");
+   }else{
+	   
+	   $("#click_price").attr("display","none");
+   }
+		
+}); 
+function submit1(form,val)
+{    
+	form.btn_action.value=val;
+}
+</script>
+</body>
+</html>

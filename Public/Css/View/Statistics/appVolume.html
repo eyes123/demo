@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统计查询</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="用户推广收入" url="__MODULE__/advertisement/add" url_name="添加产品"/>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochuappVolume" name="form_daochu">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>统计类型</th>     
+		      <th>数量</th>
+		    <tr>
+		    <empty name="appVolume">		    
+			    <tr>
+                 <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+            <foreach name="appVolume" item="app" key="k">
+		    <tr class="tr{$k%2}">
+			  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+			  
+			  <if condition="$app.data_type eq anzhuang"> 
+			  <td>安装</td>    
+			  <elseif condition="$app.data_type eq liulan"/>
+			  <td>浏览</td>    
+			  <else />
+			  <td>下载</td>    
+			  </if>
+			  <td>{$app.number}</td>
+		    </tr>
+		    </foreach>
+		    <tr>
+		        <td colspan="3">{$page}</td>
+		    </tr>
+             </empty>
+         </tbody>
+     </table>
+ </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>书画系统后台管理</title>
+    <import type="css" file="Css.common" />
+    <import type="css" file="Css.yz" />
+    <import type="css" file="Js.diashow.skins.css.diashow" />
+    <import type="js" file="Js.jquery-1#8#2#min" />
+    <import type="js" file="Js.diashow.diashow" />
+    <import type="js" file="Js.DatePicker.WdatePicker" />
+    <script type="text/javascript">
+        var module = "__MODULE__";
+
+    </script>
+</head>
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="课程列表"/>
+<!-- 搜索模块 -->
+<!--<div>-->
+    <!--<form method="post" action="__MODULE__/Coupon/daochuindex" name="form_daochu">-->
+        <!--<input type='hidden' name="start_time" value="{$startWhere}">-->
+        <!--<input type='hidden' name="end_time" value="{$endWhere}">-->
+        <!--<input type='hidden' name="phone" value="{$phoneWhere}">-->
+        <!--<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>-->
+    <!--</form>-->
+<!--</div>-->
+<!-- 列表样式 -->
+<form action="" method="get">
+    <div class="data-list" >
+
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+            <tr>
+                <th>序号</th>
+                <th>课程id</th>
+                <th>名称</th>
+                <th>内容</th>
+                <th>上线时间</th>
+                <th>原始成单</th>
+                <th>新增用户数</th>
+                <th>总订单数</th>
+            </tr>
+            <empty name="lists">
+                <tr>
+                    <td class="no-records" colspan="7" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr>
+                <else />
+                <foreach name="lists" item="list" key="k">
+                    <div id="theme-popover-mask_{$list.id}" class="theme-popover-mask"></div>
+                    <tr class="tr{$k%2}">
+                        <td>{$pageCount*($currentPage-1)+$k+1}</td>
+                        <td>{$list.id}</td>
+                        <td>{$list.project_name}</td>
+                        <td>{$list.content}</td>
+                        <td >{$list.uptime}</td>
+                        <td><a href="__APP__/Home/Project/yqds&project_id={$list.id}">{$list.w_number}</a></td>
+                        <td>{$list.app_number}</td>
+                        <td>{$list.order_number}</td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="7">{$page}</td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</htm

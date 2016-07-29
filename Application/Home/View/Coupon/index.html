@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>书画系统后台管理</title>
+    <import type="css" file="Css.common" />
+    <import type="css" file="Css.yz" />
+    <import type="js" file="Js.jquery-1#8#2#min" />
+    <import type="css" file="Js.diashow.skins.css.diashow" />
+    <import type="js" file="Js.diashow.diashow" />
+    <import type="js" file="Js.DatePicker.WdatePicker" />
+    <script type="text/javascript">
+        var module = "__MODULE__";
+        $(document).ready(function() {
+
+            $('.theme-poptit .close').click(function(){
+                $('.theme-popover-mask').fadeOut(100);
+                $('.theme-popover').slideUp(200);
+            })
+
+        })
+        function show_box(id)
+        {
+
+            $('#theme-popover-mask_'+id).fadeIn(100);
+            $('#theme-popover_'+id).slideDown(200);
+        }
+        function yz(id)
+        {
+            var qm = $("#quanma_"+id).val();
+            var mi = $("#mima_"+id).val();
+
+            if(id)
+            {
+                $.post("__MODULE__/Coupon/yzCoupon",{id:id,qm:qm,mi:mi},
+
+                    function(data)
+                    {
+                      var obj = JSON.parse(data);
+
+                        if(obj[0]==0)
+                        {
+                             $('#yz_'+id).html(obj[1]+"验证");
+
+                            $('#theme-popover-mask_'+id).fadeOut(100);
+                            $('#theme-popover_'+id).slideUp(200);
+                        }
+                      else
+                        {
+                          showMessage(obj[0]);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="券码列表"/>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+        手机号：
+        <input type="text" name="phone" value="{$phoneWhere}" />
+        日期：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" id="yz" value="搜索" />
+    </form>
+</div>
+<div>
+    <form method="post" action="__MODULE__/Coupon/daochuindex" name="form_daochu">
+        <input type='hidden' name="start_time" value="{$startWhere}">
+        <input type='hidden' name="end_time" value="{$endWhere}">
+        <input type='hidden' name="phone" value="{$phoneWhere}">
+        <input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+    </form>
+</div>
+<!-- 列表样式 -->
+<form action="" method="get">
+    <div class="data-list" >
+      <foreach name="coupon" item="list" key="k">
+      <div class="theme-popover" id="theme-popover_{$list.id}">
+        <div class="theme-poptit">
+          <a href="javascript:;" title="关闭" class="close">×</a>
+        </div>
+        <div class="theme-popbod dform">
+          <ol>
+            <li><strong>券码：</strong><input class="ipt" id="quanma_{$list.id}" type="text" name="quanma" value="" size="20" /></li>
+            <li><strong>密码：</strong><input class="ipt" id="mima_{$list.id}" type="password" name="password"  value="" size="20" /></li>
+            <li><input class="btn btn-primary" type="button" name="submit" onclick="yz('{$list.id}')" value="验证" /></li>
+          </ol>
+        </div>
+      </div>
+        </foreach>
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+            <tr>
+                <th>券码类型</th>
+                <th>券码面值</th>
+                <th>用户名</th>
+                <th>手机号</th>
+                <th>领取时间</th>
+                <th>验证时间</th>
+                <th>券码来源</th>
+                <th>验证状态</th>
+            </tr>
+            <empty name="coupon">
+                <tr>
+                    <td class="no-records" colspan="8" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr>
+                <else />
+                <foreach name="coupon" item="list" key="k">
+                    <div id="theme-popover-mask_{$list.id}" class="theme-popover-mask"></div>
+                    <tr class="tr{$k%2}">
+                        <td><if condition="$list['coupon_type'] eq '1'">课程码<else/>红包码</if></td>
+                        <td>{$list.coupon_price}</td>
+                        <td>{$list.nickname}</td>
+                        <td >{$list.phone}</td>
+                        <td>{$list.receive_time}</td>
+                        <td><if condition="$list['veri_time'] eq null">未消费<else/>{$list.veri_time}</if></td>
+                        <td>{$list.project_name}</td>
+                          <td id="yz_{$list.id}">
+                            <if condition="$list['veri_id'] eq 0">
+                                <span class="yanzheng" onclick="show_box('{$list.id}')">验证</span>
+                              <else/>
+                              {$list['name']}验证
+                            </if>
+                          </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="8">{$page}</td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</htm

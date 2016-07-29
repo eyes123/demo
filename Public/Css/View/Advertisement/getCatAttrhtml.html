@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<foreach name="attrs" item="attr">
+<div class="line">
+    <div class="input_left">{$attr.attr_name}：</div>
+    <div class="input_right"><input type="text" name="attr_{$attr.id}" /><span class="require-field">*</span></div>
+</div>
+</foreach>
+</body>
+</html>

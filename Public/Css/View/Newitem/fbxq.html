@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>{$product['short_title']}</title>
+<import type="css" file="Css.mobile.index2?20141201" />
+
+<import type="css" file="Css.mobile.common" />
+<import type="css" file="Css.mobile.idangerous#swiper" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.idangerous#swiper-2#1#min" />
+<import type="js" file="Js.mobile.index" />
+<import type="js" file="Js.mobile.imgSlide" />
+<import type="js" file="Js.artDialog.artDialog"/>
+
+<import type="css" file="Js.artDialog.skins.blue" />
+<import type="css" file="Js.mobile.promptumenu.promptumenu" />
+<import type="js" file="Js.mobile.promptumenu.jquery#promptu-menu" />
+
+
+<script type="text/javascript">
+	var module = "__MODULE__";
+	document.createElement('header');
+	document.createElement('footer');
+	var scrollTop = 0;
+	var isHeight = 0;
+</script>
+<style type="text/css">
+#bom {
+	z-index:999;
+    position:fixed;
+    left:0px;
+    bottom:0;
+	background:url(../../images/mobile/bottom_ad_bg.png) no-repeat;
+	width:100%;	
+    _position:absolute;
+    _top:expression(document.documentElement.clientHeight + document.documentElement.scrollTop - this.offsetHeight);
+}</style>
+</head>
+<body>
+<form name="myForm" method="post" action="" >
+<div id="touchBox" class="fbxq">
+	<div class="xinshouji" id="xinshouji">
+	    <!--====== 产品滚动图片 Start ======-->
+	    <!-- 产品图片 只有CPS、CPC类型的有图片-->
+	    <?php 
+	    
+            $pics = explode(',', $fb['shouji_url']);
+            $count = count($pics);
+            
+			?>
+	            <div id="product_picture">
+	            <?php 
+	                //只有一个图片时不滚动
+                	if($count <= 1)
+                	{   ?>
+		                    <img alt="产品图片" src="<?php echo $picPrefix.$pics[0];?>" width="100%"/><?php 
+		            }
+                	else 
+                	{    ?>
+					<div class="swiper-container">
+		                <div class="swiper-wrapper">
+		                       <?php
+		                        $i=0;
+                        foreach ($pics as $key=>$pic) 
+                        {
+                        ?>
+	                       	<div class="swiper-slide<?php if($i>0){ echo " no";}?>">
+	                           	<img width="100%" {$i==0?"onload='promptu()'":""} alt="产品图片" src="<?php echo $picPrefix.$pic;?>" />
+	                        </div>
+	                            <?php
+	                            $i++;
+                        }?>
+						</div>
+					</div>
+						<div class="mcon_fenye no"><span class="swiper-pagination-switch swiper-visible-switch swiper-active-switch">1/{$i}</span></div>
+					<?php 
+	               	}?>
+				</div> 
+	        </div>
+	        
+	    <!--====== 产品描述以及价格、数量、购买等 Start ======-->
+	
+	    <div class="product_info" id="detail">
+	    	<div class="bd">
+		    	<div id="top"></div>
+		    		  <ul class="s">
+		            <li class="my_price">{$fb['short_title']} </li>
+		            <li class="my_kucun">&yen;{$fb['product_price']}</li>
+		        </ul>
+		        <if condition="$fb['product_desc']!=null OR $fb['product_desc']!=''">
+		        <div class="info">
+			    	<h3>商品信息</h3>
+			    	<div>
+			    		<?php echo htmlspecialchars_decode($fb['product_desc']);?>
+			    	</div>
+			    </div>
+			    </if>
+		    </div>
+	    </div>
+
+	</div>
+	
+	<!-- 网页底部 -->
+	<div class="index_footer_fbxq">
+		<include file="./Application/Mobile/View/Index/footer.html"/>
+    </div>
+    <!-- ======底部广告推广======-->
+    <include file="./Application/Mobile/View/Index/tuiguang.html"/>
+    <!-- ======底部广告推广 End======-->
+</form>
+</body>
+</html>    

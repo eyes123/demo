@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>九橙平台登录</title>
+    
+ 
+    <import type='js' file="Js.Jquery"/>
+    <import type="js" file="Js.artDialog.artDialog"/>
+    <import type="css" file="Css.login" />
+    <import type="css" file="Js.artDialog.skins.blue" />
+    <import type="js" file="Js.common"/>
+    <import type="js" file="Js.Login"/>
+   
+</head>
+<body style="text-align: center;margin:auto;">
+<div id="header">
+    <h1 >九橙后台管理系统</h1>
+</div>
+
+<div class="login_form">
+<form style="margin-top:10px;" action="" method="post" name="login">
+     <input type="hidden" name="act" value="login" />
+
+    <p>
+        <span class="input_name">用户名：</span>
+        <span class="input"><input type="text" name="username"/></span>
+    </p>
+    <p>
+       <span class="input_name">密&nbsp;&nbsp;码：</span>
+       <span class="input"><input type="password" name="password"/></span>
+    </p>
+    <div class="submit"><input type="submit" name="submit" value="" /></div>
+
+</form>
+</div>
+<!-- 网页底部 -->
+<div class="s-foot">
+    <include file="./Application/Mobile/View/Index/footer_html.html"/>
+</div>
+</body>
+</html>

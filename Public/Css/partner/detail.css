@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+body {
+	font-size:14px;
+	color:#666;
+	font-family:Microsoft Yahei;
+	margin:0 0;
+}
+
+h1{font-size: 16px;
+margin-left:20px;}
+.account_info {
+	overflow: hidden;
+	border: 1px solid #bebebe;
+    width:100%;
+	margin-bottom:10px;
+	margin-left:20px;
+}
+
+.title_bar {
+	background-color: #edf6fa;
+	border-bottom: 1px #bebebe solid;
+	
+    line-height: 30px;
+    white-space: nowrap;
+	color:#192E32;
+	padding-left:5px;
+}
+
+.account_info_detail {
+	padding-left:10px;
+}
+.account_info_detail0 {
+	padding-left:10px;
+	width:auto;
+	float:left;
+}
+.info_lable {
+	display:block;
+	float:left;
+	text-align:left;
+	width:90px;
+	margin-left:20px;
+}
+
+.item {
+	padding-left:10px;
+	
+}
+.zhengshu {
+	font-size: 24px;
+    font-weight: 400;
+    color: #666;
+}
+
+.xiaoshu {
+	font-size:18px;
+}
+ .button {
+	color:#fff;
+	font-size:16px;
+	dispaly:block;
+	margin-left:10px;
+	padding:3px 10px;
+	border: 1px solid #fb8318;
+    background-color: #fb8318;
+}
+#supplier_btn {
+	color:#fff;
+	font-size:14px;
+	dispaly:block;
+	margin-left:198px;
+	padding:4px 10px;
+	border:none;
+    background-color: #50A0D9;
+    line-height:14px;
+}
+.notice {
+	margin-left:10px;
+	color:#B2B2B2;
+}
+.order_kuaidi,.fahuo { width:300px;}
+.order_kuaidi input { width:155px; }
+.fahuo input { margin-left:92px;}

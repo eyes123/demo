@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>审核申请信息表</title>
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.addUser" />
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+</head>
+<body>
+<div class="form_div">
+<form action="" method="post">
+<input type="hidden" value="{$exp.id}" name="exp_id"/>
+	<table>
+		   <tr>审核申请信息</tr>
+			<tr>
+				<td class="labels">姓名：{$exp.name}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">联系方式：{$exp.phone}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">收货地址：{$exp.address}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">专业：{$exp.major}</td>
+		        
+		    </tr>
+		    <tr>
+		        <td class="labels">工龄：{$exp.standing}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">特长：{$exp.info}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">期望体验的产品类型：{$exp.experience}</td> 
+		    </tr>
+		    <tr>
+		    <td class="labels">申请人：{$username.user_name}</td> 
+		    </tr>
+		    <if condition="$exp['flow_state'] eq '0'"> 
+		   	<tr> 
+		   		<td class="labels">审批意见：<textarea id="product_intro1" name="introduction" cols="60" rows="10">{$flow.node_idea}</textarea></td> 
+   			</tr>
+			<else/> 
+				<tr>
+			    	<td class="labels">审批意见：{$flow.node_idea}</td> 
+			    </tr>
+			    <tr>
+			    	<td class="labels">审批结果：<?php if($flow['node_result']==0) {echo "不通过";} else {echo "通过";}?></td> 
+			    </tr>
+			</if>
+	</table>
+		    <if condition="$exp['flow_state'] eq '0'"> 
+		   <input type="submit" value="同意" name="tongyi"/>  
+		    <input type="submit" value="不同意" name="butongyi"/>  
+		   </if>
+</form>
+
+</div>     
+</body>
+</html>

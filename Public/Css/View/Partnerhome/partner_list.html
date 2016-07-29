@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户列表</title>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Css.partner.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<import type="js" file="Js.diashow.diashow"/>
+
+<script type="text/javascript">
+         
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+	}
+	//反选
+	function otherSelect() {
+		alert("hhha");
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">用户管理</a></li>
+    <li><a href="#">用户列表</a></li>
+    </ul>
+    </div>
+    <!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/partnerhome/partner_list">
+    <input name="title" type="text" value="{$titleWhere}" placeholder="&nbsp;关键字：" />          
+      
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$startWhere}" type="text" size="15" name="start_time" placeholder="&nbsp;创建时间："/>
+                     ~&nbsp;&nbsp;&nbsp;&nbsp;
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$endWhere}" type="text" size="15" name="end_time" />
+ 
+        <input class=button type="submit" name="submit" value="&nbsp;"/>
+    </form>
+</div>
+
+<form action="__MODULE__/partnerhome/delete">
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th class="number"><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" />&nbsp;&nbsp;编号</th>
+		      <th>用户</th>  
+		      <th class="lei">类别</th>    
+		      <th class="time">创建时间
+		      <a class="sort" href="__MODULE__/partnerhome/partner_list?sort=create_time desc&where={$where}">降序</a> 
+              <a class="sort" href="__MODULE__/partnerhome/partner_list?sort=create_time asc&where={$where}">升序</a>
+		      </th>
+			  <th class="edit">操作</th>	  
+		    <tr>
+		    <empty name="partners">
+		    <tr>
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+             </tr> 
+             <else />
+            <foreach name="partners" item="partner" key="k">
+		    <tr class="tr{$k%2}">
+		      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$partner.id}" /></td>
+		      <td> <a href="__MODULE__/partnerhome/partner_xiangQing?id={$partner.id}">{$partner.login_name}</a></td>   
+		      <td><if condition="$partner['user_type'] eq 'merchant' ">企业</if>
+		    
+		      <if condition="$partner['user_type'] eq 'promotion' ">团队</if>
+		      <!-- <if condition="$partner['user_type'] eq 'administrator' ">管理员</if> -->
+		      </td>  
+		      <td>{$partner.create_time}</td>
+			  <td>
+			      <a onclick="delConfirm('__MODULE__/partnerhome/delete?id={$partner.id}')">
+			      <img src="__PUBLIC__/images/icon_del.gif" />
+			      </a>
+			      <a href="__MODULE__/partnerhome/partner_opt?id={$partner.id}"><img src="__PUBLIC__/images/partner/bj.png" class="bj"/></a>
+			      <if condition="$partner['use_state'] eq 'N' ">
+			      <a href="__MODULE__/partnerhome/shenhe?id={$partner['id']}&user_type={$partner['user_type']}">启用</a>
+			      <else/>
+			      <a href="__MODULE__/partnerhome/shenhe1?id={$partner.id}">不启用</a>
+			      </if>
+			  </td>
+		    </tr>
+		    </foreach>
+		    <tr>
+		    <td><input class="button" name="submit" type="submit" value="删除" onclick="return deleteData('checkname[]',this)"/></td>
+		    <td colspan="5">{$page}</td>
+		    </tr>
+            </empty> 
+         </tbody>
+     </table>
+ </div>
+</form> 
+</body>
+</html>

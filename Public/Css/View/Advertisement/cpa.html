@@ -1,0 +1,32 @@
+<form action="__MODULE__/advertisement/add" enctype="multipart/form-data" method="post">
+<input type="hidden" name="ad_type" value="CPA"> 
+<!-- cps字段3 --> 
+<div class="line">
+    <div class="input_left">广告标题：</div>
+    <div class="input_right"><input type="text" name="title" value="{$ad.title}" /><span class="require-field">*</span></div>
+</div>
+  <div class="line">
+    <div class="input_left">短标题：</div>
+    <div class="input_right"><input type="text" name="short_title" value="{$ad.short_title}" /><span class="require-field">*</span></div>
+</div>
+
+ 
+<div id="pic" style="display:none;" class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+        <input type="file"  name="ad_picture[]" />
+        &nbsp;<span class="add_file_field">[+]</span>                     
+    </div>       
+</div>
+   
+<div class="line">
+     <div class="input_left">产品介绍：</div>
+     <div class="input_right">
+         <textarea id="product_intro4" name="introduction" cols="90" rows="20">{$ad.introduction}</textarea>
+     </div>
+</div>  
+<div class="line">       
+    <input type="submit"  value="提交" class="button"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+</form>

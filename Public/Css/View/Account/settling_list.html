@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>结算申请列表</title>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Css.partner.common" />
+<import type="js"  file="Js.Jquery" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js"  file="Js.DatePicker.WdatePicker" />
+<import type="js"  file="Js.diashow.diashow"/>
+<script type="text/javascript">
+	//全选，全不选
+	var allSelect = function () 
+	{			
+	    $("input[name='checkname[]']").each(function()
+		{
+			if($(this).attr("checked") != "checked")
+			{
+	            $(this).attr("checked", "checked");
+			}
+			else
+			{
+	            $(this).removeAttr("checked");
+			}
+		});
+	}
+	
+	function delConfirm(url)
+	{		
+		var msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+	
+	function jiesuan(url)
+	{		
+		var msg = "确定要通过此结算申请？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+	
+</script>
+</head>
+<body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">结算管理</a></li>
+    <li><a href="#">结算申请列表</a></li>
+    </ul>
+    </div>
+     <!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+         <input name="title" type="text" value="{$titleWhere}"placeholder="&nbsp;结算用户："/>          
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$startWhere}" type="text" size="15" name="start_time" placeholder="&nbsp;申请时间："/>
+                     ~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$endWhere}" type="text" size="15" name="end_time" />
+        
+        <select name="state" onChange="onChange(this.options[this.options.selectedIndex].value)">
+        <option value="-1" >&nbsp;筛选排序：</option>
+        <option value="null" {$order=='null'?'selected="selected"':''}>为审核</option>
+        <option value="N" {$order=='N'?'selected="selected"':''}>未通过</option>
+        <option value="Y" {$order=='Y'?'selected="selected"':''}>已通过</option>
+        </select>
+        
+        <input class=button  type="submit" name="submit" value="&nbsp;" />
+    </form>
+</div>
+
+<form action="__MODULE__/account/deleteById">
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+         	<tr>
+         		<th><input type="checkbox" name="checkbox"  id="checkall"  onClick="allSelect()"/>  编号</th>
+	         	<th>申请用户</th>
+	         	<th>用户类别</th>
+	         	<th>结算金额（元）</th>
+	         	<th>手续费（元）</th>
+	         	<th>申请时间</th>
+	         	<th>申请状态</th>
+	         	<th>操作</th>
+         	</tr>		
+         	<tr>
+         		<empty name="rows">
+         			  <tr>
+                 			<td class="no-records" colspan="7" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                      </tr> 
+                      	<else/>
+                      	<foreach name="rows" item="row" key="k">
+                      		<tr class="tr{$k%2}">
+                      			<td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$row.id}" /></td>
+                      			<td><if condition="$row.settle_type  eq 'promotion'">
+                      			        <a href="__MODULE__/account/listacc3_detail?app_id={$row.id}&user_type={$row.settle_type}">{$row.login_name}</a>
+                      						<else/>
+                      					<a href="__MODULE__/account/order_app?app_id={$row.id}&user_type={$row.settle_type}">{$row.login_name}</a>
+                      					</if>	
+                      					</td>
+                      			<td><if condition="$row['settle_type']  eq merchant">商家<elseif condition="$row['settle_type']  eq 'factory'"/>厂家<else/>推广员</if></td>
+                      			<td>{$row.money}</td>
+                      			<td>{$row.fees}</td>
+                      			
+                      			<td>{$row.create_time}</td>
+                      			<td><if condition="$row['settle_state']  eq 'null'">未审核</if><if condition="$row['settle_state']  eq 'Y'">已通过</if><if condition="$row['settle_state']  eq 'N'">未通过</if></td>
+                      			<td>
+			      					<a onclick="jiesuan('__MODULE__/account/success1?id={$row.id}')">通过</a>
+			      				  <a href="__MODULE__/account/boHui?id={$row.id}">驳回</a>
+                      			</td>
+                      		</tr>
+                      	</foreach>
+                      	<tr>
+						    <td><input class="button" name="submit" type="submit" value="删除" onclick="return deleteData('checkname[]',this)"/></td>
+						    <td colspan="5">{$page}</td>
+					   </tr>
+         		</empty>
+         	</tr>														
+         </tbody>
+     </table>    
+</div>
+</form>
+<script  language="javascript">
+function onChange(s)
+{ 
+	var title=$("input[name='title']").attr("value");
+    var start_time= $("input[name='start_time']").attr("value");
+    var end_time = $("input[name='end_time']").attr("value");
+	//var state =$("select[name='state']").attr("value");
+	//var merchant_id=$("select[name='merchant_id']").attr("value");
+	location.href="__MODULE__/account/settling_list?state="+s+"&title="+title+"&start_time="+start_time+"&end_time="+end_time+"";
+	
+}
+</script>
+</body>
+</html>

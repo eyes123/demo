@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加结算规则</title>
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<script type="text/javascript">
+$(document).ready(function()
+	    {
+			var message = '{$message}';
+			if(message!='')
+			{
+				showMessage('{$message}','{$url}','{$time}');
+			}
+	    });
+</script>
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="添加结算规则" />
+
+
+<div class="form_div">
+<form action="" method="post" >
+<table>  
+
+    <tr>
+        <td class="label">标题：</td>
+        <td class="value" >
+        <input name="title" type="text" value="{$notice.title}">
+        </td>
+    </tr>
+    
+    <tr>
+        <td class="label">类型：</td>
+        <td class="value" >
+       <select name="notice_type">
+        <option selected="selected">请选择</option>
+       <option value="settlement" {$notice['notice_type']=='settlement'?'selected="selected"':''}>结算规则</option>
+       <option value="notice" {$notice['notice_type']=='notice'?'selected="selected"':''}>公告</option>
+       </select>
+        </td>
+    </tr>
+      
+    <tr>
+        <td class="label">内容：</td>
+        <td class="value" >
+        <textarea name="content" cols="50" rows="10">{$notice.content}</textarea>
+        </td>
+    </tr>
+    
+    <tr>
+        <td></td>
+        <td style="text-align:left;">
+            <input class="button" type="submit" name="submit" value="提交">
+            <input class="button" type="reset" value="重置"/>
+        </td>
+    </tr>
+</table>
+</form>
+</div>
+
+</body>
+</html>

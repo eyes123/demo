@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理</title>
+
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<script>
+var module = "__MODULE__";
+</script>  
+<script type="text/javascript">
+  
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+
+	//反选
+	function otherSelect() {
+	
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="帮助信息" url="__MODULE__/advertisement/add" url_name="添加产品"/>
+
+<!-- 列表样式 -->
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>           
+                <tr>
+                    <th>用户编号</th>
+                    <th>用户名</th>
+                    <th>手机号</th>
+                    <th>邀请链接</th>
+                    <th>邀请二维码</th>
+                </tr>
+                <tr>
+			      <td>{$yqh.id}</td>
+			      <td>{$yqh.user_name}</td>
+			      <td>{$yqh.phone}</td>
+			      <td>www.baidu.com&user_id=2</td>
+                    <td>二维码</td>
+				  <td>
+				  </td>
+			    </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

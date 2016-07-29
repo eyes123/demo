@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>结算订单详情</title>
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Css.partner.common" />
+<script type="text/javascript">
+
+		$(document).ready(function()
+		{
+			var message = '{$message}';	
+			if(message!='')
+			{
+				alert(message);
+				//document.location.reload();
+			//	location.href=__MODULE__."/partner/account/listacc";
+			}
+		});
+</script>
+</head>
+
+
+<body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+		<li><a href="#">首页</a></li>
+		<li><a href="#">结算</a></li>
+		<li><a href="#">结算列表</a></li>
+    </ul>
+    </div>
+    <!-- <div class="search_div">
+    <form action=""><input name="id" type="text" value="{$idWhere}" placeholder="&nbsp;订单号：" />          
+       <input name="title" type="text" value="{$titleWhere}" placeholder="&nbsp;产品关键字：" />  
+        <input class=button type="submit" name="submit" value="&nbsp;"/>
+    </form> 
+</div> -->
+<div class="data-list">
+ 	<table cellspacing="1" cellpadding="3">
+        <thead>
+             <tr>
+                 <th>订单号</th>
+                 <th>产品名称</th>
+                 <th>供货单价（元）</th>
+                 <th>数量（件）</th>
+             </tr> 
+             </thead>
+     <empty name="rows">
+	  <td class="no-records"  colspan="6" >没有找到任何记录</td>
+	  <else />
+		 <foreach name="rows" item="st" key="k">
+			<tr class="tr{$k%2}">
+				<td>{$st.id}</td>
+				<td>{$st.title}</td>
+				<td>{$st.supply_price}</if></td>
+				<td>{$st.quantity}</td>
+			</tr>
+		 </foreach> 
+     </empty>
+     </table>
+	</div>
+</body>
+</html>

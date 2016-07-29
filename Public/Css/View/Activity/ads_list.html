@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>广告系统后台管理</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.cat" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<import type="js" file="js.diashow.diashow"/>
+<script type="text/javascript">
+  
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+	//反选
+	function otherSelect() {
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/activity/ads_list">
+            标题关键字：
+        <input type="text" name="title" value="{$titleWhere}" />
+        
+                   上线时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+         <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<!-- 列表模块 -->
+<form action="__MODULE__/activity/deleteAds" method="post">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+           		<tr>
+           			<th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th>
+	            	<th>广告标题</th>
+	            	<th>连接地址</th>
+	            	<th>点击量</th>
+	            	<th>广告描述</th>
+	            	<th>是否启用</th>
+	            	<th>产品类型</th>
+	            	<th>创建时间</th>
+	            	<th>开始时间</th>
+	            	<th>结束时间</th> 	
+	            	<th>操作</th>
+           		</tr>
+           		<empty name="rows">
+           			<tr>
+           				<td class="no-records" colspan="7" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+           			</tr>
+           		<else/>
+           		<foreach name="rows" item="row" key="k">
+           			<tr  class="tr{$k%2}">
+           				<td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$row.id}" />{$pageCount*($currentPage-1)+$k+1}</td>
+           				<td>{$row.title}</td>
+           				<td>{$row.link_url}</td>
+           				<td>{$row.click_count}</td>
+           				<td>{$row.ads_desc}</td>
+           				<td><if condition="$row['is_active']  eq '0'">否</if><if condition="$row['is_active']  eq '1'">是</if></td>
+           				<td><if condition="$row['is_all']  eq '0'">特定一类标识产品</if>
+           				        <if condition="$row['is_all']  eq '1'">商城所有产品</if>
+           						<if condition="$row['is_all']  eq '2'">跨境购表</if>
+           						<if condition="$row['is_all']  eq '3'">品牌表</if>
+           						<if condition="$row['is_all']  eq '4'">其他产品</if>
+           				</td>
+           				<td>{$row.create_time}</td>	
+           				<td>{$row.start_time}</td>
+           				<td>{$row.end_time}</td>
+           				<td>
+           					<a onclick="delConfirm('__MODULE__/activity/deleteAds?ac_id={$row.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>		
+					  		<a href="__MODULE__/activity/edit?ac_id={$row.id}"><img src="__PUBLIC__/images/icon_edit.gif" /></a>
+           				</td>
+           			</tr>	
+           		</foreach>
+	           		<tr>
+		                <td><input class="button" type="submit" value="删除"  onclick="return deleteData('checkname[]',this)" /></td>
+		                <td colspan="7">{$page}</td>
+	                </tr>	
+           		</empty>
+            </tbody>
+		</table>
+	</div>
+</form>
+
+
+</body>
+</html>

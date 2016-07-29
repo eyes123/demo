@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>书画后台管理</title>
+
+    <import type="css" file="Css.common" />
+    <import type="js" file="Js.Jquery" />
+    <script>
+        var module = "__MODULE__";
+    </script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html"  title="邀请单数详情" />
+
+<!-- 列表样式 -->
+<div class="data-list" >
+    <table cellspacing="1" cellpadding="3">
+        <tbody>
+        <tr>
+            <th>序号</th>
+            <th>订单号</th>
+            <th>用户名</th>
+            <th>订单金额</th>
+            <th>成单时间</th>
+        </tr>
+        <empty name="rows">
+            <tr>
+                <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+            </tr>
+            <else />
+            <foreach name="rows" item="list" key="k">
+                <tr class="tr{$k%2}">
+                    <td>{$pageCount*($currentPage-1)+$k+1}</td>
+                    <td>{$list.order_code}</td>
+                    <td>{$list.nickname}</td>
+                    <td>{$list.order_price}</td>
+                    <td>{$list.pay_time}</td>
+                </tr>
+            </foreach>
+            <tr>
+                <td colspan="5">{$page}</td>
+            </tr>
+        </empty>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

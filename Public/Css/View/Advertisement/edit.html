@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>编辑广告信息</title>
+
+<import type="js" file="Js.Jquery" />
+<import type="js" charset="utf-8" file="Js.editor.kindeditor" />
+<import type="js" charset="utf-8" file="Js.editor.lang.zh_CN" />
+<import type="js" charset="utf-8" file="Js.editAdvertisement" />
+<import type="js" charset="utf-8" file="Js.commonAd?20141230" />
+<import type="js" charset="utf-8" file="Js.common" />
+<import type="js" file="Js.utils" />
+<import type="js" file="Js.artDialog.artDialog"/>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/artDialog/skins/blue.css" />
+<import type="css" file="Css.tab" />
+<import type="css" file="Css.addAdvertisement" />
+<import type="css" file="Css.common" />
+<script type="text/javascript">
+    var APP = "__APP__";
+    var MODULE = "__MODULE__";
+    var CONTROLLER = "__CONTROLLER__";
+    var ACTION = "__ACTION__";
+    var adId = "{$ad.id}";
+    function show2()
+    { 
+    	if (document.getElementById("radio").checked)
+    	{ 
+    		document.getElementById("click_price").style.display = "block"; 
+    	} 
+    	else
+    	{ 
+    		document.getElementById("click_price").style.display = "none"; 
+    	} 
+    } 
+    function show5()
+    {  
+ 	   	if (document.getElementById("sup").checked)
+ 	   	{ 
+ 	   		document.getElementById("barcode").style.display = "block"; 
+ 	   	} 
+ 	   	else
+ 	   	{ 
+ 	   		document.getElementById("barcode").style.display = "none"; 
+ 	   	} 
+    } 
+    function show3()
+    { 
+    	if (document.getElementById("checkbox").checked)
+    	{ 
+    		document.getElementById("is_buy").style.display = "block"; 
+    	} 
+    	else
+    	{ 
+    		document.getElementById("is_buy").style.display = "none"; 
+    	} 
+    } 
+ </script>
+<style type="text/css">
+	#large{position:absolute;display:none;z-index:999;}
+</style>
+
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="编辑广告信息" url="__MODULE__/advertisement/index" url_name="产品列表"/>
+
+<!-- 选项卡面板 -->
+<div class="tab-div">
+	<input type="hidden" id="ad_id" value="{$ad.id}" />
+    <div id="tabbar-div">
+        <p>
+            <span id="cps-tab" class="tab-back">商品</span>
+            <span id="cpc-tab" class="tab-back">点击计费广告</span>
+            <span id="cpm-tab" class="tab-back">浏览计费广告</span>
+            <span id="cpa-tab" class="tab-back">公益广告</span>
+        </p>
+    </div>
+    <div id="tabbody_div">
+    
+		<!-- CPS选项卡 Start -->
+		<div id="cps-table" class="tab_item" style="display:none;"> 
+		    <include file="./Application/Home/View/Advertisement/cps.html" /> 
+		</div>
+		
+		<!-- CPC选项卡 Start -->
+		<div id="cpc-table" class="tab_item" style="display:none;">
+		    <include file="./Application/Home/View/Advertisement/cpc.html" /> 
+		</div>
+		
+		<!-- CPM选项卡 Start -->        
+		<div id="cpm-table" class="tab_item" style="display:none;">
+		    <include file="./Application/Home/View/Advertisement/cpm.html" /> 
+		</div>
+		
+		<!-- CPA选项卡 Start -->
+		<div id="cpa-table" class="tab_item" style="display:none;">
+		    <include file="./Application/Home/View/Advertisement/cpa.html" /> 
+		</div>
+		<div class="clear"></div>	  
+  </div>
+</div>
+<import type="js" file="Js.tab" />
+
+<script type="text/javascript">
+
+    var adType = "{$ad.ad_type}";
+    adType = adType.toLowerCase();
+    document.getElementById(adType+"-tab").className = "tab-front";
+    document.getElementById(adType+"-table").style.display = (Browser.isIE) ? "block" : "table";
+    function newDeleteImg(pre,id)
+    {
+    	form1.target  = "uploadframe";
+    	form1.action = "__ROOT__/Home/Advertisement/newDeleteImg?id="+id+"&pre="+pre;
+    	form1.submit();
+    }
+
+    function newImgUpload(form,btn)
+    {
+    	//alert(111);
+    	form.target  = "uploadframe";
+    	form.action = "__ROOT__/Home/Advertisement/newUploadImgAjax?one=n&pre="+btn.id;
+    	//alert(form.action);return false;
+    	form.submit();
+    }
+
+    function newImgUploadShouji(form,btn)
+    {
+    	//alert(111);
+    	form.target  = "uploadframe";
+    	form.action = "__ROOT__/Home/Advertisement/newUploadImgAjax?one=y&pre="+btn.id;
+    	//alert(form.action);return false;
+    	
+    	form.submit();
+    } 
+  /*    function startUpload(form)
+	{        
+		form.target  = "uploadframe";
+		form.action = "__MODULE__/Advertisement/uploadImgAjax";		
+		form.submit();
+	} */ 
+    
+    function submitForm(form)
+    {
+    	form.target  = "main";
+    	form.action = "__MODULE__/Advertisement/editProduct?id={$ad.id}";
+    	form.submit();
+    }
+ /*     function shoujiUpload(form)
+    {        
+    	form.target  = "uploadframe";
+    	form.action = "__MODULE__/Advertisement/uploadImgAjax2";
+    	form.submit();
+    } */
+    $(document).ready(function(){
+    	//var  data =$(':radio[name="radio"]:checked').val();
+    	//alert(data);
+    	if($(':radio[name="radio"]:checked').val()=="Y")
+    	{
+    		//alert(11);exit;
+    		$("#click_price").removeAttr("style");
+    		$("#click_price").attr("display","block");
+    		$("#click_price_vip").removeAttr("style");
+    		$("#click_price_vip").attr("display","block");
+       }else{
+    	   
+    	   $("#click_price").attr("display","none");
+    	   $("#click_price_vip").attr("display","none");
+       }  		
+    }); 
+    $(document).ready(function(){
+    	if($(':radio[name="supermarket"]:checked').val()=="Y")
+    	{
+    		$("#barcode").removeAttr("style");
+    		$("#barcode").attr("display","block");
+    	}
+    	else
+    	{
+    		$("#barcode").attr("display","none");
+    	}
+    	
+    });
+    $(document).ready(function(){
+    	if($(':checkbox[name="checkbox"]').attr("checked")=="checked")
+    	{
+    		$("#is_buy").removeAttr("style");
+    		$("#is_buy").attr("display","block");
+       }else{
+    	   
+    	   $("#is_buy").attr("display","none");
+       }  		
+    }); 
+</script>
+
+</body>
+</html>

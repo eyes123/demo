@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>添加商家发布产品信息</title>
+
+<import type="js" file="Js.Jquery" />
+<import type="js" charset="utf-8" file="Js.addAdvertisement" />
+<import type="js" charset="utf-8" file="Js.commonAd" />
+<import type="js" charset="utf-8" file="Js.common" />
+<import type="js" file="Js.utils" />
+<import type="js" file="Js.artDialog.artDialog"/>
+<import type="css" file="Js.diashow.skins.css.red" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+
+<script type="text/javascript">
+    var APP = "__APP__";
+    var MODULE = "__MODULE__";
+    var CONTROLLER = "__CONTROLLER__";
+    var ACTION = "__ACTION__";
+    $(document).ready(function()
+    {
+		var message = '{$message}';
+		if(message!='')
+		{
+			showMessage('{$message}','{$url}','{$time}');
+		}
+    });
+	
+ </script>
+<style type="text/css">
+	#large{position:absolute;display:none;z-index:999;}
+</style>
+
+</head>
+<form name="Form1" enctype="multipart/form-data" method="post" action="" >
+ 
+<!-- cps字段3 --> 
+<div class="line">
+    <div class="input_left">短标题：</div>
+    <div class="input_right">
+        <input type="text" name="short_title" value="{$one.short_title}" maxlength="10"/>      
+    </div>
+</div>
+
+<div class="line"  id="ad_fee">
+    <div class="input_left">商品原价：</div>
+    <div class="input_right">    
+       <input type="text" name="product_price" value="{$one.product_price}" maxlength="10" />
+    </div>
+</div>
+
+<div class="line">
+    <div class="input_left">简单描述：</div>
+    <div class="input_right">
+    	<textarea class="long_text" style="text-align:left;" name="product_desc"/>{$one.product_desc}</textarea>
+    </div>
+</div>
+
+<div class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+        <div class="fileInputContainer">    
+		    <input class="fileInput" type="file" name="file" onchange="startUpload(this.form)"/>           
+		</div>
+		<div class="displayphoto">
+			<notempty name="pics">
+				<foreach name="pics" item="pic" key="k">
+				    <div id="uploadImg{$k+1}" style="position:relative" class="upload_img_item" >
+				    <img width="100px" height="100px" src="{$pic_dir}/{$pic}"  alt="上传图片" />
+				    <a class="delete_btn" target="uploadframe" style="position:absolute;top:0px;right:0px;display:none;" href="__MODULE__/Advertisement/deleteImg?id={$k+1}" title="删除">
+				    <img src="__PUBLIC__/images/icon_del.gif" alt="删除"/>
+				    </a>
+				    </div>
+				</foreach>
+			</notempty>
+		</div>                     
+    </div>       
+</div>
+
+<script>
+
+	$(document).ready(function()
+	{			
+		$('.upload_img_item').mouseover(function()
+		{	
+			
+			$(this).find('.delete_btn').css('display','block');
+		});	
+	
+		$('.upload_img_item').mouseout(function()
+		{
+			$(this).find('.delete_btn').css('display','none');
+		});	
+	});
+	
+    //非空验证
+    function CheckForm(form)
+    {
+    	if(form.short_title.value=="")
+    	{
+    		alert('短标题不能为空');
+    		form.short_title.focus();
+    		return false;
+    	}
+    	if(form.product_price.value=="")
+    	{
+    		alert('价格不能为空');
+    		form.product_price.focus();
+    		return false;
+    	}
+    	if(form.product_desc.value=="")
+    	{
+    		alert('描述不能为空');
+    		form.product_desc.focus();
+    		return false;
+    	}
+    	if(form.file.value=="")
+    	{
+    		alert('手机图片不能为空');
+    		form.file.focus();
+    		return false;
+    	}
+    	return true;
+    }
+    
+    //图品上传
+    function startUpload(form)
+	{        
+		form.target  = "uploadframe";
+		form.action = "__MODULE__/Advertisement/uploadImgAjax";
+		form.submit();
+	}
+    
+    //手机传完图片后,action返回Newitem/productfb.
+    function submit2(form)
+    {
+    	var result = CheckForm(form);
+    	
+    	if(result===true)
+    	{
+    		form.target  = "";
+        	form.action = "";
+        	form.submit();
+    	}
+    	return result;
+    }
+    
+
+</script>
+
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" onclick="return submit2(this.form)"/>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>
+</html>

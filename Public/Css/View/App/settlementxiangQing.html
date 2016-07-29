@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>订单列表</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="订单详情" />
+
+
+<div class="order_xiangqing" >
+  <foreach name="settlements" item="settlement" key="k">
+		   
+<p>用户名：{$settlement.user_name}</p>
+<p>结算费用：{$settlement.money}</p>
+<p>结算日期：{$settlement.create_time}</p>
+</foreach>
+ </div>
+</body>
+</html>

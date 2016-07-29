@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统计查询</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<style type="text/css">
+#product_pics {
+	text-align:center;
+	margin:5px auto;
+}
+#product_intro {
+	width:1000px;
+	margin:5px auto;
+}
+</style>
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="用户推广-推广详情" />
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/Statistics/userDetail">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+        <input type="hidden" name="app_id" value="{$appId}"/>                     
+              收款时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>广告标题</th> 
+		      <th>价格</th>
+		      <th>数量</th>
+		      <th>推广收入</th>
+		      <th>金额</th>
+		      <th>IP</th>    
+		      <th>收款时间</th>	  
+		    <tr>
+		    <empty name="userClicks">
+             <tr>
+                 <td class="no-records" colspan="8" style="background-color: rgb(244, 250, 251);">该用户推广的广告从未被浏览过！</td>
+             </tr>  
+		    <else/>
+            <foreach name="userClicks" item="click" key="i">
+		    <tr class="tr{$i%2}"> 
+			   <td>{$pageCount*($currentPage-1)+$i+1}</td>
+			   <assign name="adId" value="$click.ad_id" />
+			   <td style="text-align: left;"><a href="__APP__/Mobile/index/index?ad_id={$click.ad_id}">{$click.short_title}</a></td> 
+			   <td>{$click.product_price}</td>  
+			   <td>{$click.number}</td>  
+			   <td>{$click.click_price}</td>  
+			   <td><?php echo $click['number']*$click['click_price']?></td>  
+		       <td>{$click.ip}</td>    
+		       <td>{$click.create_time}</td>	  
+		    </tr>
+		    </foreach>    
+		    <tr><td colspan="8">{$page}</td></tr>
+            </empty> 
+         </tbody>
+     </table>
+ </div>
+ 
+</body>
+</html>

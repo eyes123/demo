@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>结算历史列表</title>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Css.partner.common" />
+<import type="js"  file="Js.Jquery" />
+<import type="js"  file="Js.jquery-1#8#2#min"/>
+<import type="js"  file="Js.DatePicker.WdatePicker" />
+<script type="text/javascript">
+//全选，全不选
+var allSelect = function () 
+{			
+   $("input[name='checkname[]']").each(function()
+	{
+		if($(this).attr("checked") != "checked")
+		{
+            $(this).attr("checked", "checked");
+		}
+		else
+		{
+            $(this).removeAttr("checked");
+		}
+	});
+}
+
+function delConfirm(url)
+{		
+	msg = "确定要删除？"
+	if(confirm(msg))
+	{
+		location.href=url;
+	}
+}
+</script>
+</head>
+<body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">结算管理</a></li>
+    <li><a href="#">结算历史列表</a></li>
+    </ul>
+    </div>
+    
+     <!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+         <input name="title" type="text" value="{$titleWhere}" placeholder="&nbsp;结算用户："/>          
+         
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$startWhere}" type="text" size="15" name="start_time" placeholder="&nbsp;申请时间："/>
+
+                     ~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$endWhere}" type="text" size="15" name="end_time" />
+ 
+        <input class=button  type="submit" name="submit" value="&nbsp;" />
+    </form>
+</div>
+  <div class="data-list">
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <td>用户名</td>
+                    <td>用户类别</td>
+                    <td >结算金额</td>
+                    <td >结算时间</td>
+                </tr>
+                <tr>
+                    <empty name="rows">
+                            <tr>
+                                <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                           </tr> 
+                     <else />
+                     <foreach name="rows" item="st" key="k">
+                        <tr class="tr{$k%2}">
+                        <!-- 	<td>
+                                <empty name="$st.login_name">{$st.user_name}
+                                <else/>
+                                {$st.login_name}
+                                </empty>
+                            </td> -->
+                            <td><if condition="$st.login_name  eq ''">{$st.user_name}<else/>{$st.login_name}</if></td>
+                            <td><if condition="$st.remark  eq  'merchant'">企业</if><if condition="$st.remark   eq  'factory'">企业</if><if condition="$st.remark   eq  'promotion'">团队</if><if condition="$st.remark eq 'app'">橙推广</if></td>
+                            <td>{$st.money}</td>
+                            <td>{$st.create_time}</td>
+                        </tr>
+                     </foreach> 
+                     <tr>
+                     <td colspan="5">{$page}</td>
+                     </tr>
+                    </empty>
+            </tr>
+       </tbody>     													
+    </table>    
+</div>
+</body>
+</html>

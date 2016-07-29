@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>商家列表页</title>
+<include file="./Application/Home/View/include/head.html" />
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+
+<script type="text/javascript">
+         
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+	}
+	//反选
+	function otherSelect() {
+		alert("hhha");
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="商家列表" />
+<form action="__MODULE__/partner/delete">
+<input name="delIds" type="hidden"/>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" />编号</th>
+		      <th>商家</th>      
+		      <th>创建时间</th>
+			  <th>操作</th>	  
+		    <tr>
+		    <empty name="partnets">
+		    <tr>
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+             </tr> 
+             <else />
+            <foreach name="partnets" item="partnet" key="k">
+		    <tr class="tr{$k%2}">
+		      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$partnet.id}" /></td>
+		      <td>{$partnet.company_name}</td>    
+		      <td>{$partnet.create_time}</td>
+			  <td>
+			      <a onclick="delConfirm('__MODULE__/partner/delete?id={$partnet.id}')">
+			      <img src="__PUBLIC__/images/icon_del.gif" />
+			      </a>
+			      <a href="__MODULE__/partner/partner_opt?id={$partnet.id}"><img src="__PUBLIC__/images/icon_edit.gif" /></a>
+			  </td>
+		    </tr>
+		    </foreach>
+		    <tr><td><input class="button" name="submit" type="submit" value="删除" onclick="return deleteData('checkname[]',this)"/></td><td colspan="3">{$page}</td></tr>
+            </empty> 
+         </tbody>
+     </table>
+ </div>
+</form> 
+</body>
+</html>

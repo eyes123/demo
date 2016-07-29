@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>品牌信息维护</title>
+<include file="./Application/Home/View/include/head.html" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.common" />
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<script type="text/javascript">
+    $(document).ready(function()
+	{
+		var message = '{$message}';
+		if(message!='')
+		{
+			showMessage('{$message}','{$url}','{$time}');
+		}
+	});
+</script>
+</head>
+<body>
+<div class="form_div">
+	<form action=""  enctype="multipart/form-data" method="post">
+		<table>
+			<tr>
+			 <td class="label">广告标题：</td>
+	         <td class="value" id="cat">
+	        	<input type="text" name="title" value="{$row.title}"/>
+	         </td>
+	    </tr>
+	    <tr>
+			 <td class="label">广告编号：</td>
+	         <td class="value" id="cat">
+	        	<input type="text" name="activity_code" value="{$row.activity_code}"/>
+	         </td>
+	    </tr>
+	    
+	     <tr>
+	    	<td class="label">连接地址：</td>
+	        <td class="value" id="cat">
+	        	<input type="text" name="link_url" value="{$row.link_url}"/>
+	        </td>
+	    </tr>
+	      <tr>
+	    	<td class="label">开始时间：</td>
+	        <td class="value" id="cat">
+	        	<input type="text" size="15" name="start_time" value="{$row.start_time}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+	        </td>
+	         <tr>
+	    	<td class="label">结束时间：</td>
+	        <td class="value" id="cat">
+	        	  <input type="text" size="15" name="end_time" value="{$row.end_time}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+	        </td>
+	     </tr>
+	     <tr>
+	    	<td class="label">产品类型：</td>
+	        <td class="input_left" >
+	        	  <select  name="is_all">
+	        	  	<option value="-1">————请选择————</option>
+	        	  	<option value="0" {$row['is_all']==0?'selected="selected"':''}>特定一类标识产品</option>
+	        	  	<option value="1" {$row['is_all']==1?'selected="selected"':''}>商城所有产品</option>
+	        	  	<option value="2" {$row['is_all']==2?'selected="selected"':''}>跨境购表</option>
+	        	  	<option value="3" {$row['is_all']==3?'selected="selected"':''}>品牌表</option>
+	        	  	<option value="4" {$row['is_all']==4?'selected="selected"':''}>其他产品</option>
+	        	  </select>
+	        </td>
+	     </tr>
+	     <tr>
+	    	<td class="label">是否启用：</td>
+	        <td class="input_left" >
+	        	  <input type="radio" size="15" id="radio"  name="radio" value="1" {$row['is_active']=='1'?'checked="checked"':''} />是
+	        	  <input type="radio" size="15" id="radio"  name="radio" value="0" {$row['is_active']=='0'?'checked="checked"':''} {$row['is_active']==''?'checked="checked"':''}/>否
+	        </td>
+	     </tr>
+	     
+	       <tr>
+	    	<td class="label">排序：</td>
+	        <td class="value" id="cat">
+	        	<input type="text" name="order_no" value="{$row.order_no}"/>
+	        </td>
+	    </tr>
+	    <tr>
+	     	<td class="label">图片：</td>
+	    	<td>
+			<div class="input_right file_field">
+	      	<div class="fileInputContainer">    
+		   		<input class="fileInput" type="file" name="picture_url_file" id="picture_url" onchange="newImgUpload(this.form,this)"/>
+		   		<input type="hidden" name="picture_url" value="{$row.picture_url}"/>    
+			</div>
+	    	<div class="picture_url_displayphoto">
+			    <notempty name="picture_url">
+						<div id="picture_url_Img1" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$picture_url}"  alt="图片" />
+						</div>
+			    </notempty>
+	     	</div>   
+	    	</div>  
+			</td>
+	   </tr>
+	   
+	   <tr>
+	     	<td class="label">背景图片：</td>
+	    	<td>
+			<div class="input_right file_field">
+	      	<div class="fileInputContainer">    
+		   		<input class="fileInput" type="file" name="bgimg_url_file" id="bgimg_url" onchange="newImgUpload(this.form,this)"/>
+		   		<input type="hidden" name="bgimg_url" value="{$row.bgimg_url}"/>    
+			</div>
+	    	<div class="bgimg_url_displayphoto">
+			    <notempty name="bgimg_url">
+						<div id="picture_url_Img1" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$bgimg_url}"  alt="图片" />
+						</div>
+			    </notempty>
+	     	</div>   
+	    	</div>  
+	   </tr>
+	   
+	    <tr>
+	     	<td class="label">广告详情图片：</td>
+	    	<td>
+			<div class="input_right file_field">
+	      	<div class="fileInputContainer">    
+		   		<input class="fileInput" type="file" name="detail_url_file" id="detail_url" onchange="newImgUpload(this.form,this)"/>
+		   		<input type="hidden" name="detail_url" value="{$row.detail_url}"/>    
+			</div>
+	    	<div class="detail_url_displayphoto">
+			    <notempty name="detail_url">
+						<div id="detail_urlImg1" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$detail_url}"  alt="活动详情图片" />
+						</div>
+			    </notempty>
+	     	</div>   
+	    	</div>  
+			</td>
+	   </tr> 
+	   
+	   <tr>
+	     	<td class="label">背景详情图片：</td>
+	    	<td>
+				<div class="input_right file_field">
+		      	<div class="fileInputContainer">    
+			   		<input class="fileInput" type="file" name="bgimg_detail_file" id="bgimg_detail" onchange="newImgUpload(this.form,this)"/>
+			   		<input type="hidden" name="bgimg_detail" value="{$row.bgimg_detail}"/>    
+				</div>
+		    	<div class="bgimg_detail_displayphoto">
+				    <notempty name="bgimg_detail">
+							<div id="detail_url_Img1" style="position:relative" class="upload_img_item" >
+								<img width="100px" height="100px" src="{$pic_dir}{$bgimg_detail}"  alt="活动详情图片" />
+							</div>
+				    </notempty>
+		     	</div>   
+		    	</div>  
+			</td>
+	   </tr> 
+	   
+	   <tr>
+	   	<td class="label" >广告描述:</td>
+	   	<td class="value" id="cat">
+	   		<textarea  class="long_text" style="text-align:left;" name="ads_desc" rows="6" cols="20" >{$row.ads_desc}</textarea>
+	   	</td>
+	   </tr>
+	  
+	     <tr>
+	        <td></td>
+	        <td style="text-align:left;">
+	            <input class="button" type="button" value="保存" onclick="myonclick(this.form)"/>
+	            <input class="button" type="reset" value="重置"/>
+	        </td>
+	    </tr>
+		</table>
+	</form>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;" ></iframe>
+<script type="text/javascript">
+
+	function newImgUpload(form,btn)
+	{
+		
+		form.target  = "uploadframe";
+		form.action = "__ROOT__/Home/Advertisement/newUploadImgAjax?one=y&pre="+btn.id;
+		//alert(form.action);return false;	
+		form.submit();
+	}
+	function myonclick(form)
+	{        
+		form.target  = "";
+		form.action = "";
+		form.submit();
+	}
+</script>
+</body>
+</html>

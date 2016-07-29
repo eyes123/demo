@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理</title>
+
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.cat" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<script>
+var module = "__MODULE__";
+</script>  
+<script type="text/javascript">
+  
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+
+	//反选
+	function otherSelect() {
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="橙推广商品列表" url="__MODULE__/advertisement/add" url_name="添加产品"/>
+
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/advertisement/indexctg">
+    
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+              商家：
+        <select name="merchant_id">
+            <option value="0">请选择...</option>
+            <foreach name="merchants" item="merchant">
+            <option value="{$merchant.id}" {$merchant['id']==$merchantWhere?'selected="selected"':''}>{$merchant.company_name}</option>
+            </foreach>
+        </select>      
+                     
+                    标题关键字：
+        <input type="text" name="title" value="{$titleWhere}" />
+        
+                   上线时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+         上架状态:
+        <select name="issell">
+        <option value="-1">全部</option>
+        <option value="0" {$issell=='0'?'selected="selected"':''}>否</option>
+        <option value="1" {$issell=='1'?'selected="selected"':''}>是</option>
+        </select>
+        <div id="cat">
+                   分类：
+        <empty name="parentCats">
+        <select class="cat_select" name="parent_cat[]" onchange="changeListener(this)">
+            <option value="0">全部...</option>
+            <foreach name="cats" item="cat">                
+                <option value="{$cat.id}">{$cat.cat_name}</option>
+            </foreach>
+        </select>
+        <else />
+        <foreach name="parentCats" item="parentCat" key="k">
+            <select class="cat_select" name="parent_cat[]" onchange="changeListener(this)">
+            <option value="0">选择...</option>
+            <foreach name="parentCat" item="cat">
+                <option value="{$cat.id}" {$k==$cat['id']?'selected="selected"':''}>{$cat.cat_name}</option>
+            </foreach>
+            </select>
+        </foreach>
+        </empty>
+        </div>
+       
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+
+<!-- 列表样式 -->
+<form action="__MODULE__/advertisement/deletectg0" method="get">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th>
+                    <th>广告标题</th>
+                    <th>价格</th>
+	                <th>                          浏览量
+	                <a class="sort" href="__MODULE__/advertisement/indexctg?sort=clickcount desc&where={$where}">降序</a> 
+	                <a class="sort" href="__MODULE__/advertisement/indexctg?sort=clickcount asc&where={$where}">升序</a>
+	                </th>
+                    <th>                            发布时间
+                    <a class="sort" href="__MODULE__/advertisement/indexctg?sort=create_time desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/advertisement/indexctg?sort=create_time asc&where={$where}">升序</a>
+                    </th>
+                    <th>是否上架</th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="ads">		    
+			    <tr>
+                    <td class="no-records" colspan="7" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	             <else />
+                <foreach name="ads" item="ad" key="k">
+                <tr class="tr{$k%2}">
+				      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$ad.id}" />{$pageCount*($currentPage-1)+$k+1}</td>
+				      <td style="text-align: left;"><a href="__APP__/Mobile/index/index?ad_id={$ad.id}&from=trash">{$ad.short_title}</a></td>   
+				      <td>{$ad.product_price}</td> 
+				      <td>{$ad.clickcount}</td>
+				      <td>{$ad.create_time}</td>
+				      <td><if condition="$ad['is_sell'] eq '0'">否<else/>是</if></td>
+					  <td><a onclick="delConfirm('__MODULE__/advertisement/deletectg0?ad_id={$ad.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>
+					      <if condition="$ad['is_sell'] eq '0'"> 
+					      <else/> 
+					      <a id="b" href="__MODULE__/advertisement/jiangjia1?ad_id={$ad.id}">降价</a>
+					      <a id="b" href="__MODULE__/advertisement/tiyan1?ad_id={$ad.id}">体验</a>
+					      <a id="b" href="__MODULE__/advertisement/news1?ad_id={$ad.id}">新品</a>
+					      <a id="b" href="__MODULE__/advertisement/ctg1?ad_id={$ad.id}">橙推广推荐</a>
+					      </if>
+					      <a href="__MODULE__/advertisement/edit?ad_id={$ad.id}" ><img src="__PUBLIC__/images/icon_edit.gif" /></a>
+					  </td>
+			    </tr>     
+                </foreach>
+                 <tr>
+	                <td><input class="button" type="submit" value="删除" /></td>
+	                <td colspan="7">{$page}</td>
+                </tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

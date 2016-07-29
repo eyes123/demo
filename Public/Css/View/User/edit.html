@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加用户信息</title>
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.addUser" />
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+
+</head>
+<body>
+   
+<include file="./Application/Home/View/topNav.html" title="用户列表" url="__MODULE__/advertisement/index" url_name="添加用户"/>
+
+<div class="form_div">
+<form action="__MODULE__/user/edit">
+<input type="hidden" value="editSubmit" name="act" />
+<input type="hidden" value="{$user.id}" name="user_id"/>
+<table>
+	<tr>
+		<td class="label">用户类型：</td>
+        <td class="value">
+        <select name="user_type">               
+                <option value="administrator">管理员</option>
+                <option value="merchant" {$user['user_type']=='merchant'?'selected="selected"':''}>商家</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">用户权限：</td>
+        <td class="value">
+        <select name="pow_id">               
+                <foreach name="pow" item="pw">
+                 <option value="{$pw.id}" {$pw['id']==$actionId?'selected="selected"':''}>{$pw.pow_name}</option>
+            	</foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">用户名：</td>
+        <td class="value" id="cat">
+        <input type="text" name="user_name" value="{$user.name}"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">密码：</td>
+        <td class="value"><input type="password" name="user_pwd" /></td>
+    </tr>
+    <tr>
+        <td class="label">银行卡号：</td>
+        <td class="value">
+        <input type="text" name="card_num" value="{$user.card_num}"/>
+        <span class="input_remark">商家用户必须填写</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">开户名：</td>
+        <td class="value">
+        <input type="text" name="card_owner" value="{$user.card_owner}"/>
+        <span class="input_remark">商家用户必须填写</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">银行：</td>
+        <td class="value">
+        <select name="bank_name">
+	        <option value="-1" >请选择开户行</option>
+	        <option value="" {$user['bank_name']== "" ?'selected="selected"':''}>中国建设银行</option>
+	        <option value="102100099996" {$user['bank_name'] == "102100099996" ?'selected="selected"':''}>中国工商银行</option>
+	        <option value="103100000026" {$user['bank_name'] == "103100000026" ?'selected="selected"':''}>中国农业银行</option>
+	        <option value="104100000004" {$user['bank_name'] == "104100000004" ?'selected="selected"':''}>中国银行</option>
+	        <option value="301290000007" {$user['bank_name'] == "301290000007" ?'selected="selected"':''}>交通银行</option>
+	        <option value="308584000013" {$user['bank_name'] == "308584000013" ?'selected="selected"':''}>招商银行</option>
+	        <option value="403100000004" {$user['bank_name'] == "403100000004" ?'selected="selected"':''}>中国邮政储蓄银行</option>
+	        </select>
+        <span class="input_remark">商家用户必须填写</span>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="text-align:left;">
+            <input class="button" type="submit" name="submit" value="添加">
+            <input class="button" type="reset" value="重置"/>
+        </td>
+    </tr>
+</table>
+</form>
+</div>    
+    
+</body>
+</html>

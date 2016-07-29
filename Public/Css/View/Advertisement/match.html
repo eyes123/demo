@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理</title>
+
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="css" file="Css.addAdvertisement" />
+<import type="js" file="Js.cat" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<import type="js" file="Js.diashow.diashow" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<script>
+var module = "__MODULE__";
+</script>  
+<script type="text/javascript">
+
+	var APP = "__APP__";
+	var MODULE = "__MODULE__";
+	var CONTROLLER = "__CONTROLLER__";
+	var ACTION = "__ACTION__";
+	
+	$(document).ready(function() {
+		var message = '{$message}';
+		if (message != '') {
+			showMessage('{$message}', '{$url}', '{$time}');
+		}
+	});
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+	
+
+</script>
+</head>
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="搭配产品列表"/>
+
+<!-- 列表样式 -->
+<form action="__MODULE__/advertisement/deleteMatch?ad_id={$ad_id}"  method="post" >
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th>
+                    <th>广告标题</th>
+                    <th>价格</th>
+                    <th>                          发布时间
+                    <a class="sort" href="__MODULE__/advertisement/match?sort=create_time desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/advertisement/match?sort=create_time asc&where={$where}">升序</a>
+                    </th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="macths">		    
+			    <tr>
+                    <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	             <else />
+                <foreach name="macths" item="ne" key="k">
+                <tr class="tr{$k%2}">
+			      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$ne.id}" />{$pageCount*($currentPage-1)+$k+1}</td>
+			      <td>{$ne.title}</td>
+			      <td>{$ne.price}</td>
+			      <td>{$ne.create_time}</td>
+			      <input type="hidden" name="hidden_id" value="{$ne.id}" />
+				  <td>
+				     <a onclick="delConfirm('__MODULE__/advertisement/deleteMatch?id={$ne.id}&ad_id={$ne.ad_id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>		
+				     <a href="__MODULE__/advertisement/match?id={$ne.id}&ad_id={$ne.ad_id}">编辑</a>
+				  </td>
+			    </tr>     
+                </foreach>
+                <tr>
+	                <td><input class="button" type="submit" value="删除" /></td>
+	                <td colspan="5">{$page}</td>
+                </tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</form>
+
+
+<form  enctype="multipart/form-data" method="post" action="" name="form2">
+<input type="hidden" name="id" value="{$nes.id}">
+
+<div class="line"  id="price">
+    <div class="input_left">商家：</div>
+    <div class="input_right">    
+       <select name="merchant_id">
+            <option value="0">请选择...</option>
+            <foreach name="merchants" item="merchant">
+            <option value="{$merchant.id}" {$merchant['id']==$merchantWhere?'selected="selected"':''}>{$merchant.company_name}</option>
+            </foreach>
+        </select> 
+    </div>
+    <input style="margin-left:35px;" class="button" type="submit" name="submit3" value="搜索" />
+</div>
+
+<div class="line"  id="title">
+    <div class="input_left">产品名称：</div>
+    <div class="input_right">    
+      <select name="ad_title">
+            <option value="0">请选择...</option>
+            <foreach name="rows" item="ad_title">
+            <option value="{$ad_title.id}" {$ad_title['id']==$ad_titleWhere?'selected="selected"':''}>{$ad_title.short_title}</option>
+            </foreach>
+        </select> 
+    </div>
+</div>
+       
+<div class="line"  id="title">
+    <div class="input_left">名称：</div>
+    <div class="input_right">    
+       <input type="text" name="title" value="{$nes.title}" maxlength="10"/>
+    </div>
+</div>
+
+<div class="line"  id="price">
+    <div class="input_left">价格：</div>
+    <div class="input_right">    
+       <input type="text" name="price" value="{$nes.price}" maxlength="10"/>
+    </div>
+</div>
+<div class="line"  id="price">
+    <div class="input_left">商品净重(千克/件)：</div>
+    <div class="input_right">    
+       <input type="text" name="each_weight" value="{$nes.each_weight}" maxlength="10"/>
+    </div>
+</div>
+
+<div class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+	      	<div class="fileInputContainer">    
+		   		<input class="fileInput" type="file" name="picture_url_file" id="picture_url" onchange="newImgUpload(this.form,this)"/>
+		   		<input type="hidden" name="picture_url" value="{$nes.picture_url}"/>    
+			</div>
+	    	<div class="picture_url_displayphoto">
+			    <notempty name="picture_url_pics">
+				    <foreach name="picture_url_pics" item="pic" key="k">
+						<div id="picture_urlImg{$k+1}" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="营业执照图片" />
+						</div>
+				     </foreach>
+			    </notempty>
+	     	</div>                     
+	    	</div>             
+    </div>       
+</div>
+
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" name="" onclick="return submit2(this.form)"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+		<script>
+				$(document).ready(function() {
+					$('.upload_img_item').mouseover(function() {
+
+						$(this).find('.delete_btn').css('display', 'block');
+					});
+
+					$('.upload_img_item').mouseout(function() {
+						$(this).find('.delete_btn').css('display', 'none');
+					});
+				});
+
+				function submit2(form) {
+					form2.target = "";
+					form2.action = "";
+					form2.submit();
+				}
+				function newImgUpload(form,btn)
+				{
+					//alert(111);
+					form2.target  = "uploadframe";
+					form2.action = "__ROOT__/index.php/Home/Advertisement/newUploadImgAjax?one=n&pre="+btn.id;
+					//alert(form.action);return false;
+					
+					form2.submit();
+				}
+			</script>
+
+			<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>
+</body>
+</html>

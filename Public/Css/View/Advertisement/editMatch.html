@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>编辑搭配产品</title>
+		
+		<import type="js" file="Js.jquery-1#8#2#min" />
+		<import type="js" file="Js.diashow.diashow" />
+		<import type="js" charset="utf-8" file="Js.editor.kindeditor" />
+        <import type="js" charset="utf-8" file="Js.editor.lang.zh_CN" />
+		<import type="js" charset="utf-8" file="Js.common" />
+		<script type="text/javascript">
+			var APP = "__APP__";
+			var MODULE = "__MODULE__";
+			var CONTROLLER = "__CONTROLLER__";
+			var ACTION = "__ACTION__";
+
+			$(document).ready(function() {
+				var message = '{$message}';
+				if (message != '') {
+					showMessage('{$message}', '{$url}', '{$time}');
+				}
+			});
+		</script>
+	</head>
+
+	<body>
+<form  enctype="multipart/form-data" method="post" action="">
+<input type="hidden" name="ad_type" value="CPS">
+
+<!-- cps字段3 --> 
+<div class="line"  id="price">
+    <div class="input_left">价格：</div>
+    <div class="input_right">    
+       <input type="text" name="price" value="{$ne.price}" maxlength="10"/>
+    </div>
+</div>
+<div class="line"  id="title">
+    <div class="input_left">名称：</div>
+    <div class="input_right">    
+       <input type="text" name="title" value="{$ne.title}" maxlength="10"/>
+    </div>
+</div>
+<div class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+        <div class="fileInputContainer">    
+		    <input class="fileInput" type="file" name="file" onchange="startUpload(this.form)"/>           
+		</div>
+		<div class="displayphoto">
+			<notempty name="pics">
+				<foreach name="pics" item="pic" key="k">
+				    <div id="uploadImg{$k+1}" style="position:relative" class="upload_img_item" >
+				    <img width="100px" height="100px" src="{$pic_dir}/{$pic}"  alt="上传图片" />
+				    <a class="delete_btn" target="uploadframe" style="position:absolute;top:0px;right:0px;display:none;" href="__MODULE__/Advertisement/deleteImg?id={$k+1}" title="删除">
+				    <img src="__PUBLIC__/images/icon_del.gif" alt="删除"/>
+				    </a>
+				    </div>
+				</foreach>
+			</notempty>
+		</div>                     
+    </div>       
+</div>
+
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" name="submit"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+		<script>
+				$(document).ready(function() {
+					$('.upload_img_item').mouseover(function() {
+
+						$(this).find('.delete_btn').css('display', 'block');
+					});
+
+					$('.upload_img_item').mouseout(function() {
+						$(this).find('.delete_btn').css('display', 'none');
+					});
+				});
+
+
+
+				 //图片上传
+				function startUpload(form) {
+						form.target = "uploadframe";
+						form.action = "__ROOT__/Home/Advertisement/uploadImgAjax";
+						form.submit();
+					}
+			
+
+				function submit2(form) {
+					form.target = "";
+					form.action = "";
+					form.submit();
+				}
+
+				function newImgUpload(form, btn) {
+
+					form.target = "uploadframe";
+					form.action = "__ROOT__/Home/Advertisement/newUploadImgAjax?one=y&pre=" + btn.id;
+					//alert(form.action);return false;
+
+					form.submit();
+				}
+			</script>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>
+</body>
+</html>

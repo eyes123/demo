@@ -1,0 +1,389 @@
+<script type="text/javascript">
+	function newImgUpload(form,btn)
+	{
+		form.target  = "uploadframe";
+		form.action = "__ROOT__/index.php/Home/Advertisement/newUploadImgAjax?one=y&pre="+btn.id;
+		form.submit();
+	}
+	function show_match()
+	{
+		if($("#chb_match").attr("checked")=='checked')
+		{
+			$("#div_match").removeClass("no");
+		}
+		else
+		{
+			$("#div_match").addClass("no");
+		}
+	}
+	function delConfirm(id,btn) {
+		if(id)
+		{
+			var msg = "确定要删除？"
+			if (confirm(msg)) {
+				var adId = $("#ad_id").val();
+				location.href = "__MODULE__/Advertisement/delete_match?id="+id+"&ad_id="+adId;
+			}
+		}
+		else
+		{
+			if(btn)
+			{
+			
+				$("#match"+btn).remove();
+				var index,num = $(".picture_contain").length;
+				for(var i=0;i<num;i++)
+				{
+					var div = $(".picture_contain")[i];
+					index = i+1;
+					if($('.sp_num',div).html()!=index)
+					{
+						$('.sp_num',div).html(index);
+						$('.sp_num',div).attr('id',"sp_"+index);
+						$('.fileInput',div).attr('name','picture_url'+index+'_file');
+						$('.fileInput',div).attr('id','picture_url'+index);
+						
+						$('input[name="match_picture_url[]"]',div).attr('id','hf_picture_url'+index);
+						$('input[name="link_ad_id[]"]',div).attr('id','link_ad_id'+index);
+						$('.displayphoto',div).attr('class','picture_url'+index+'_displayphoto displayphoto');
+						$('input[value="删除"]',div).attr('onclick',"delConfirm(0,"+index+")");
+					}
+				}
+			}
+		}
+	}
+	function add_match()
+	{
+		var num = $(".picture_contain").length+1;
+		//alert(num);
+		var div = '<div class="picture_contain" id="match'+num+'">'
+				+'		<input type="hidden" name="match_id[]" value=""/>  '
+		    	+'		<div class="match_title">'
+		    	+'			<span id="sp_'+num+'" class="sp_num">'+num+'</span>.加<input type="text" name="match_price[]" value="" class="myprice"/>元赠送<input value="" type="text" name="match_title[]" value=""/>'
+		    	+'		图片:</div>'
+		    	+'		<div class="fileInputContainer">'  
+				+'   			<input class="fileInput" type="file" name="picture_url'+num+'_file" id="picture_url'+num+'" onchange="newImgUpload(this.form,this)"/>'
+				+'   			<input type="hidden" name="match_picture_url[]" value="" id="hf_picture_url'+num+'"/>'
+				+'   			<input type="hidden" name="link_ad_id[]" value="" id="link_ad_id'+num+'"/>  '
+				+'   			<div class="picture_url'+num+'_displayphoto displayphoto"></div>'
+				+'	     	</div>'
+				+'		<div class="action"><input value="删除" type="button" onclick="delConfirm(0,'+num+')"></div>'
+				+'		<div class="clear"></div>'
+			    +' 	</div>';
+		$("#match_bd").append(div);
+		$("#chb_match").attr('checked','checked');
+	}
+</script>
+<form  enctype="multipart/form-data" method="post" action="" name="form1">
+<input type="hidden" name="ad_type" value="CPS">
+<empty name="ad['merchant_id']">
+<div class="line" id="merchant_id" >
+    <div class="input_left">商家名称：</div>
+    <div class="input_right">
+        <select name="merchant_id">
+	        <option value="-1">请选择...</option>
+	        <foreach name="merchants" item="user">            
+	            <option value="{$user.id}">{$user.company_name}</option>            
+	        </foreach>      
+        </select>
+        <a class="special" href="__MODULE__/partner/partner_opt">添加商家</a>
+    </div>        
+</div>
+<else/>
+<div class="line" id="merchant_id" >
+     <div class="input_left">商家名称：</div>
+     <div class="input_right">
+         <select name="merchant_id">
+         <option value="-1">请选择...</option>
+         <foreach name="merchants" item="user"> 
+             <assign name="merchant_id" value="$ad.merchant_id" />
+             <assign name="user_id" value="$user.id" />             
+             <option value="{$user.id}" {$user_id==$merchant_id ?'selected="selected"':''} >{$user.company_name}</option>        
+         </foreach>  
+         </select>
+     </div>
+</div>
+</empty>
+
+<div class="line" id="merchant_id" >
+     <div class="input_left">品牌名称：</div>
+     <div class="input_right">
+         <select name="brand_id">
+         <option value="-1">请选择...</option>
+         <foreach name="rows"  item="row" key="k"> 
+           <option value="{$row.id}"  {$row['id']==$brandrow['id']?'selected="selected"':''}  >{$row.brand_name}</option>        
+         </foreach>  
+         </select>
+     </div>
+</div>
+<!-- 分类Start --> 
+<if condition="$ad['cat_id'] eq null OR $ad['cat_id'] eq '0'">
+	<div class="line" id="category_id">
+	     <div class="input_left">商品分类：</div>
+	     <div class="input_right cat">
+			<select name="parent_cat[]" onchange="changeListener(this)">
+				<option value="0">请选择...</option>
+				<foreach name="cats" item="cat">                
+					<option value="{$cat.id}">{$cat.cat_name}</option>
+				</foreach>      
+			</select>
+			<a class="special" href="__MODULE__/advertisement/addCat">添加商品类别</a>
+		</div>        
+	</div>
+<else/>
+<div class="line" id="category_id">
+     <div class="input_left">商品分类：</div>
+     <div class="input_right cat">         
+		<foreach name="directCats" item="directCat" key="k">
+          <select name="parent_cat[]" onchange="changeListener(this)" class="cat_select">
+              <foreach name="directCat" item="item">
+                  <option value="{$item.id}" {$k == $item['id'] ?'selected="selected"':''}>
+                  {$item.cat_name}
+                  </option>
+              </foreach>
+          </select>
+		</foreach>
+	<a class="special" href="__MODULE__/advertisement/addCat">添加商品类别</a>
+	</div>        
+</div>
+</if>
+<include file="./Application/Home/View/Advertisement/option.html" /> 
+
+<!-- 分类End --> 
+<foreach name="attrs" item="attr">
+	<div class="line category_attr" >
+	    <div class="input_left">{$attr.attr_name}：</div>
+	    <div class="input_right"><input type="text" name="attr[{$attr.id}]" value="{$attr.attr_value}"/><span class="require-field">*</span></div>
+	</div>
+</foreach>
+
+<div class="line">
+    <div class="input_left">搭配产品：</div>
+    <div class="input_right">
+    	<input type="checkbox" id="chb_match" name="is_match" value="Y"  onclick="show_match()" {$ad['chb_match']=='Y'?'checked="checked"':''} />是　
+    	<div id="div_match" class="{$ad['chb_match']=='Y'?'':'no'}">
+        	<div id="match_bd">
+    		<empty name="matchs">
+
+    		<else/>
+				<foreach name="matchs" item="match" key="k">
+					<div class="picture_contain">
+						<input type="hidden" name="match_id[]" value="{$match.id}"/>  
+		    			<div class="match_title">
+		    				<span id="sp_{$k+1}" class="sp_num">{$k+1}</span>
+                            .加
+                            <input type="text" name="match_price[]" value="{$match.price}" class="myprice"/>
+                            元赠送
+                            <input value="{$match.title}" type="text" name="match_title[]" value=""/>
+		    			图片:
+		    			</div>
+		    			<div class="fileInputContainer">    
+				   			<input class="fileInput" type="file" name="picture_url{$k+1}_file" id="picture_url{$k+1}" onchange="newImgUpload(this.form,this)"/>
+				   			<input type="hidden" name="match_picture_url[]" value="{$match.picture_url}" id="hf_picture_url{$k+1}"/>
+				   			<input type="hidden" name="link_ad_id[]" value="{$match.link_ad_id}" id="link_ad_id{$k+1}"/>  
+				   			<div class="picture_url{$k+1}_displayphoto displayphoto">
+				   				 <foreach name="match['match_pics']" item="pic" key="j">
+									<div id="picture_url{$k+1}_Img{$j+1}" style="position:relative" class="upload_img_item" >
+										<img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="产品图片" />
+									</div>
+							     </foreach>
+					     	</div>   
+						</div>
+						<div class="action">
+                            <input value="删除" type="button" onclick="delConfirm('{$match.id}')">
+                        </div>
+						<div class="clear"></div>
+			     	</div>
+	    		</foreach>
+    		</empty>
+            </div>
+    		<div class="clear">
+				<input value="添加搭配产品" type="button" onclick="add_match()">
+			</div>
+		</div>
+    </div>
+</div>
+
+<div class="line">
+    <div class="input_left">加入橙推广：</div>
+    <div class="input_right">
+   		 <input type="radio" id="radio"  name="radio"  value="Y"  onclick="show2()" {$ad['is_spread']=='Y'?'checked="checked"':''} />是　
+   		 <input type="radio"  id="radio"  name="radio"  value="N" onclick="show2()" {$ad['is_spread']=='N'?'checked="checked"':''} {$ad['is_spread']==''?'checked="checked"':''} />否
+    </div>
+</div>
+<div class="line">
+	<div class="input_left">超市产品：</div>
+	<div class="input_right">
+		<input type="radio" id="sup"  name="supermarket"  value="Y"  onclick="show5()" {$ad['is_supermarket']=='Y'?'checked="checked"':''} />是　
+   		<input type="radio" id="sup" name="supermarket"  value="N"  onclick="show5()" {$ad['is_supermarket']=='N'?'checked="checked"':''} {$ad['is_supermarket']==''?'checked="checked"':''} />否
+	</div>
+</div>
+<div class="line"   id="barcode" style="display: none;">
+	<div class="input_left">条形码：</div>
+	<div class="input_right">
+        <input type="text" name="barcode" value="{$ad.barcode}" maxlength="13"/>
+    </div>
+
+</div>
+<div class="line">
+   <div class="input_left">跨境购：</div>
+    <div class="input_right">
+   		 <input type="checkbox" id="checkbox"  name="checkbox" value="Y"  onclick="show3()" {$ad['is_cbuy']=='Y'?'checked="checked"':''} />是　
+    </div>
+</div>
+<div id="is_buy" style="display:none">
+	<div class="line">
+	    <div class="input_left">货号：</div>
+	    <div class="input_right">
+	        <input type="text" name="product_id" value="{$cbuy.product_id}" maxlength="20"/>      
+	    </div>
+    </div>
+    <div class="line">
+	    <div class="input_left">排序：</div>
+	    <div class="input_right">
+	        <input type="text" name="order_no" value="{$cbuy.order_no}" maxlength="10"/>      
+	    </div>
+    </div>
+    <div class="line">
+	    <div class="input_left">计量单位：</div>
+	    <div class="input_right">
+	        <input type="text" name="unit" value="{$cbuy.unit}" maxlength="10"/>      
+	    </div>
+    </div>
+    <div class="line">
+	    <div class="input_left">单价：</div>
+	    <div class="input_right">
+	        <input type="text" name="cbuyprice" value="{$cbuy.price}" maxlength="10"/>      
+	    </div>
+    </div>
+    <div class="line">
+	    <div class="input_left">每份产品数量：</div>
+	    <div class="input_right">
+	        <input type="text" name="per_num" value="{$cbuy.per_num}" maxlength="10"/>      
+	    </div>
+    </div>
+    <div class="line">
+	    <div class="input_left">运单物流企业：</div>
+	    <div class="input_right">
+	        <!--<input type="text" name="logistics_name"  value="{$cbuy.logistics_name}"  maxlength="10"/>-->      
+	        <select name="logistics_name">
+	        	<option value="邮政速递">邮政速递</option>
+	    	</select>
+	    </div>
+    </div>
+</div>
+<!-- cps字段3 --> 
+<div class="line">
+    <div class="input_left">广告标题：</div>
+    <div class="input_right">
+    	<input type="text" name="title" value="{$ad.title}" class="long_text" maxlength="100"/>
+    </div>
+</div>
+<div class="line">
+    <div class="input_left">短标题：</div>
+    <div class="input_right">
+        <input type="text" name="short_title" value="{$ad.short_title}" maxlength="10"/>      
+    </div>
+</div>
+ 
+<div class="line">
+    <div class="input_left">简单描述：</div>
+    <div class="input_right">
+    	<textarea class="long_text" type="text" style="text-align:left;" name="product_desc">{$ad.product_desc}</textarea>
+    </div>
+</div>
+ 
+ <div class="line" id="ad_fee">
+    <div class="input_left">商品原价：</div>
+    <div class="input_right">    
+       <input type="text" name="market_price" value="{$ad.market_price}" maxlength="10"/>
+    </div>
+</div>
+ <div class="line" id="each_weight">
+    <div class="input_left">商品净重(千克/件)：</div>
+    <div class="input_right">    
+       <input type="text" name="each_weight" value="{$ad.each_weight}" maxlength="10"/>
+    </div>
+</div>
+
+ <div class="line" id="postage">
+    <div class="input_left">是否包邮：</div>
+    <div class="input_right">    
+         <input type="radio" id="radio"  name="tage" value="0"  onclick="show2()" {$ad['postage']!='1'?'checked="checked"':''} />是　
+   		 <input type="radio"  id="radio"  name="tage" value="1" onclick="show2()" {$ad['postage']=='1'?'checked="checked"':''} {$ad['postage']==''?'checked="checked"':''} />否
+    </div>
+</div> 
+  
+<div class="line" id="click_price" style="display: none;">
+    <div class="input_left">提成：</div>
+    <div class="input_right">
+        <input type="text" name="click_price" value="{$ad.click_price}" maxlength="10"/>
+    </div>
+</div>
+<div class="line" id="click_price_vip" style="display: none;">
+    <div class="input_left">VIP提成：</div>
+    <div class="input_right">
+        <input type="text" name="click_price_vip" value="{$ad.click_price_vip}" maxlength="10"/>
+    </div>
+</div>
+
+<div class="line">
+   <div class="input_left">手机图片：</div>
+	   <div class="input_right file_field">
+	       <div class="fileInputContainer">    
+		    <input class="fileInput" type="file" name="shouji_url_file" id="shouji_url" onchange="newImgUploadShouji(this.form,this)"/>
+			  <input type="hidden" name="shouji_url" value="{$ad.shouji_url}"/> 						         
+		</div>
+	    <div class="shouji_url_displayphoto">
+		   <notempty name="shouji_url_pics">
+				<foreach name="shouji_url_pics" item="pic" key="k">
+					<div id="shouji_url_Img{$k+1}" style="position:relative" class="upload_img_item" >
+						<img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="缩略图片" />
+					</div>
+				</foreach>
+			</notempty>
+	     </div>                     
+    </div>       
+</div>
+
+<div class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+        <div class="fileInputContainer">    
+		    <input class="fileInput" type="file" name="picture_url_file" id="picture_url" onchange="newImgUpload(this.form,this)"/> 
+		    <input type="hidden" name="picture_url" value="{$ad.picture_url}"/>            
+		</div>
+		<div class="picture_url_displayphoto">
+			<notempty name="picture_url_pics">
+					<foreach name="picture_url_pics" item="pic" key="k">
+						<div id="picture_url_Img{$k+1}" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="图片" />
+								<a class="delete_btn" title="删除" onclick="newDeleteImg('picture_url','{$k+1}')" style="position: absolute; top: 0px; right: 0px; display: none;" target="uploadframe">
+									<img alt="删除" src="__PUBLIC__/images/icon_del.gif">
+								</a>
+						</div>
+				    </foreach>
+		   </notempty>
+		</div>                     
+    </div>       
+</div>
+</script>
+<div class="line">
+.
+     <div class="input_left">商品信息：</div>
+     <div class="input_right">
+          <textarea id="product_intro2" name="info" cols="90" rows="20">{$ad.info}</textarea>
+     </div>
+</div>  
+<div class="line">
+     <div class="input_left">体验师推荐：</div>
+     <div class="input_right">
+          <textarea id="product_intro1" name="introduction" cols="90" rows="20">{$ad.introduction}</textarea>
+     </div>
+</div>  
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" onclick="return submit2(this.form)"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>

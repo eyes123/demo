@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>书画系统后台管理</title>
+    <import type="css" file="Css.common" />
+    <import type="js" file="Js.Jquery" />
+    <import type="js" file="Js.cat" />
+    <import type="js" file="Js.DatePicker.WdatePicker" />
+    <script>
+        var module = "__MODULE__";
+        function delConfirm(url)
+        {
+            msg = "确定要删除？"
+            if(confirm(msg))
+            {
+                location.href=url;
+            }
+        }
+    </script>
+</head>
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="管理员列表" url="__MODULE__/user/add" url_name="添加用户"/>
+
+<!-- 列表样式 -->
+<form action="__MODULE__/user/delete" method="get">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+            <tr>
+                <th>用户编号</th>
+                <th>登录名</th>
+                <th>创建时间</th>
+                <th>操作</th>
+
+            </tr>
+            <empty name="users">
+                <tr>
+                    <td class="no-records" colspan="3" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr>
+                <else />
+                <foreach name="users" item="user" key="k">
+                    <tr class="tr{$k%2}">
+                        <td>{$pageCount*($currentPage-1)+$k+1}</td>
+                        <td><a href="__APP__/Home/User/edit&user_id={$user.id}">{$user.name}</a></td>
+                        <td>{$user.create_time}</td>
+                        <td>
+                            <a onclick="delConfirm('__MODULE__/User/delete&user_id={$user.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>
+                        </td>
+                    </tr>
+                </foreach>
+
+                <tr>
+                    <td colspan="4">{$page}</td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

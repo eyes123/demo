@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>注册详情页</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="注册详情页" />
+<div class="data-list" >
+
+<table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+		      <th>用户名</th>      
+		      <th>企业名</th>
+		      <th>联系方式</th>
+		      <th>员工数</th>
+		      <th>产品数</th>
+		      <th>员工分享量</th>
+		      <th>员工销量</th>
+		      <th>推广浏览量</th>
+		     </tr>
+		     <empty name="rows">
+		    <tr> 
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+             </tr> 
+             <else />
+		    <foreach name="rows" item="row" key="k">
+		    <tr class="tr{$k%2}">
+		      <td>{$row.login_name}</td> 
+		      <td>{$row.company_name}</td> 
+		      <td>{$row.phone}</td> 
+		      <td>{$row.app_count}(+{$row.app_count2})</td> 
+		      <td>{$row.ad_count}(+{$row.ad_count2})</td> 
+		      <td>{$row.share_count}(+{$row.share_count2})</td> 
+		      <td>{$row.click_count}(+{$row.click_count2})</td> 
+		      <td>{$row.view_count}(+{$row.view_count2})</td>
+		    </tr>
+		    </foreach>  
+		    <tr>
+		    <td colspan="3">{$page}</td> 
+		    </tr>
+             </empty> 
+           
+         </tbody>
+     </table>
+</div>
+</body>
+</html>

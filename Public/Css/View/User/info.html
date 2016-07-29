@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的信息</title>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<import type="js" file="Js.jquery#zclip#min"/>
+
+<script type="text/javascript">
+     var ROOT = "__ROOT__";
+    var APP = "__APP__";
+    var MODULE = "__MODULE__";
+    var CONTROLLER = "__CONTROLLER__";
+    var ACTION = "__ACTION__";
+    $(document).ready(function()
+    {
+    	
+		var message = '{$message}';
+		if(message!='')
+		{
+			showMessage('{$message}','{$url}','{$time}');
+		}
+		$("#divId1").mouseover(function()
+		{
+			$(this).next().removeClass("no");	
+		});
+		$("#divId1").mouseout(function()
+		{
+			$(this).next().addClass("no");	
+		});
+		$(".fenxiang1").mouseover(function()
+		{
+			$(this).removeClass("no");	
+		});
+		$(".fenxiang1").mouseout(function()
+		{
+			$(this).addClass("no");	
+		});
+		
+		 $('#btn_submit').zclip({ 
+			path: ROOT+'/Public/Js/ZeroClipboard.swf', 
+ 	        copy: function(){
+ 	        	//复制内容 
+ 	        	return $('#text').val(); }, 
+ 	        afterCopy: function(){
+ 	        	//复制成功 
+ 	        	alert('复制成功');
+ 	        }
+ 	    }); 
+		 
+			$("#divId2").mouseover(function()
+			{
+				$(this).next().removeClass("no");	
+			});
+			$("#divId2").mouseout(function()
+			{
+				$(this).next().addClass("no");	
+			});
+			$(".fenxiang1").mouseover(function()
+			{
+				$(this).removeClass("no");	
+			});
+			$(".fenxiang1").mouseout(function()
+			{
+				$(this).addClass("no");	
+			});
+		$('#btn_submit1').zclip({ 
+				path: ROOT+'/Public/Js/ZeroClipboard.swf', 
+	 	        copy: function(){
+	 	        	//复制内容 
+	 	        	return $('#text1').val(); }, 
+	 	        afterCopy: function(){
+	 	        	//复制成功 
+	 	        	alert('复制成功');
+	 	        }
+	 	    }); 
+		
+   
+    
+	
+ });
+ 
+	function myedit(url)
+	{	
+		//alert(url);
+		location.href = url;
+	}
+
+ </script>
+<import type="js" file="Js.partner.ZeroClipboard"/>
+</head>
+<body>
+
+<form action="" method="post">
+	
+    <div class="infobox">
+
+  <script type="text/javascript">
+var oPopup = window.createPopup(); 
+function ButtonClick() 
+{ 
+	//alert(1);
+    var div = document.getElementById('myshare'); 
+	div.contentEditable = 'true'; 
+
+	var controlRange; 
+		
+	if (document.body.createControlRange) 
+	{ 
+		controlRange = document.body.createControlRange(); 
+		controlRange.addElement(div); 
+		controlRange.execCommand('Copy'); 
+		alert('复制二维码图片成功!');
+	} 
+	div.contentEditable = 'false'; 
+} 
+</script>
+
+        <div class="code">
+        	 <p class="yuangong">橙推广二维码</p> 
+        	<div class="fenxiang0">
+        		 <div id="divId1"> 
+        		
+             		<img class="myshare" id="myshare" width="250px" alt="" src="__MODULE__/user/getQrcode?i={$user.id}&t=user" /><br/>
+               		 <div class="fuzhi"><input type="button" name="btn_copy" value="复制二维码"  onclick="return ButtonClick()" /><br/>IE之外的浏览器，请右击二维码，选择复制图片</div> 
+        		 </div>
+        	<p class="fenxiang1 no">
+        	<span class="bshare-textspan">分享到</span>
+	      	  
+	        	<a href="{$tencent1}" target="_blank" title="分享到腾讯微博"><img src="__PUBLIC__/images/partner/tengxun.png" /></a> 
+	     
+	        	<a href="{$sina1}" target="_blank" title="分享到新浪微博"><img src="__PUBLIC__/images/partner/xinlang.png" /></a> 
+	        	<a href="{$kaixin1}" target="_blank" title="分享到开心网"><img src="__PUBLIC__/images/partner/kaixin.png" /></a> 
+	        	<a href="{$renren1}" target="_blank" title="分享到人人网"><img src="__PUBLIC__/images/partner/renren.png" /></a> 
+	        
+        	</p>
+        	
+        	</div>
+        	
+        	<p class="fenxiang"><a>分享下载链接到:</a>
+        	<a href="{$qq}" target="_blank" title="分享到qq好友和群组"><img src="__PUBLIC__/images/partner/qq.png" /></a> 
+        	<a href="{$tencent}" target="_blank" title="分享到腾讯微博"><img src="__PUBLIC__/images/partner/tengxun.png" /></a> 
+        	<a href="{$qqkongjian}" target="_blank" title="分享到qq空间"><img src="__PUBLIC__/images/partner/kongjian.png" /></a> 
+        	<a href="{$sina}" target="_blank" title="分享到新浪微博"><img src="__PUBLIC__/images/partner/xinlang.png" /></a> 
+        	<a href="{$kaixin}" target="_blank" title="分享到开心网"><img src="__PUBLIC__/images/partner/kaixin.png" /></a> 
+        	<a href="{$renren}" target="_blank" title="分享到人人网"><img src="__PUBLIC__/images/partner/renren.png" /></a> 
+        	<a href="{$douban}" target="_blank" title="分享到豆瓣网"><img src="__PUBLIC__/images/partner/douban.png" /></a> 
+        	</p>
+        	
+        	<br/><div class="link">
+       
+     <input type="button" name="btn_copy" value="复制下载链接" id="btn_submit" /> 		
+	 <input type="text" name="text" value="{$url}" id="text"/></div>
+    <br/><br/>
+    </div>
+	
+</div>
+
+
+</form>
+
+<form action="" method="post">
+	
+    <div class="infobox">
+
+  <script type="text/javascript">
+var oPopup = window.createPopup(); 
+function ButtonClick() 
+{ 
+	//alert(1);
+    var div = document.getElementById('myshare1'); 
+	div.contentEditable = 'true'; 
+
+	var controlRange; 
+		
+	if (document.body.createControlRange) 
+	{ 
+		controlRange = document.body.createControlRange(); 
+		controlRange.addElement(div); 
+		controlRange.execCommand('Copy'); 
+		alert('复制二维码图片成功!');
+	} 
+	div.contentEditable = 'false'; 
+} 
+</script>
+
+        <div class="code">
+        	 <p class="yuangong">9橙通二维码</p> 
+        	<div class="fenxiang0">
+        		 <div id="divId2"> 
+        		
+             		<img class="myshare" id="myshare1" width="250px" alt="" src="__MODULE__/user/getQrcode1?i={$user.id}&t=user" /><br/>
+               		 <div class="fuzhi"><input type="button" name="btn_copy" value="复制二维码"  onclick="return ButtonClick()" /><br/>IE之外的浏览器，请右击二维码，选择复制图片</div> 
+        		 </div>
+        	<p class="fenxiang1 no">
+        	<span class="bshare-textspan">分享到</span>
+	      	  
+	        	<a href="{$tencent3}" target="_blank" title="分享到腾讯微博"><img src="__PUBLIC__/images/partner/tengxun.png" /></a> 
+	     
+	        	<a href="{$sina3}" target="_blank" title="分享到新浪微博"><img src="__PUBLIC__/images/partner/xinlang.png" /></a> 
+	        	<a href="{$kaixin3}" target="_blank" title="分享到开心网"><img src="__PUBLIC__/images/partner/kaixin.png" /></a> 
+	        	<a href="{$renren3}" target="_blank" title="分享到人人网"><img src="__PUBLIC__/images/partner/renren.png" /></a> 
+	        
+        	</p>
+        	
+        	</div>
+        	
+        	<p class="fenxiang"><a>分享推广链接到:</a>
+        	<a href="{$qq2}" target="_blank" title="分享到qq好友和群组"><img src="__PUBLIC__/images/partner/qq.png" /></a> 
+        	<a href="{$tencent2}" target="_blank" title="分享到腾讯微博"><img src="__PUBLIC__/images/partner/tengxun.png" /></a> 
+        	<a href="{$qqkongjian2}" target="_blank" title="分享到qq空间"><img src="__PUBLIC__/images/partner/kongjian.png" /></a> 
+        	<a href="{$sina2}" target="_blank" title="分享到新浪微博"><img src="__PUBLIC__/images/partner/xinlang.png" /></a> 
+        	<a href="{$kaixin2}" target="_blank" title="分享到开心网"><img src="__PUBLIC__/images/partner/kaixin.png" /></a> 
+        	<a href="{$renren2}" target="_blank" title="分享到人人网"><img src="__PUBLIC__/images/partner/renren.png" /></a> 
+        	<a href="{$douban2}" target="_blank" title="分享到豆瓣网"><img src="__PUBLIC__/images/partner/douban.png" /></a> 
+        	</p>
+        	
+        	<br/><div class="link">
+       
+     <input type="button" name="btn_copy" value="复制推广链接" id="btn_submit1" /> 		
+	 <input type="text" name="text" value="{$url1}" id="text1"/></div>
+    <br/><br/>
+    </div>
+	
+</div>
+
+
+</form>
+</body>
+</html>

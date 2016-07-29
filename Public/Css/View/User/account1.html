@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理</title>
+<include file="./Application/Home/View/include/head.html" />
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+
+<script type="text/javascript">
+         
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+
+	//反选
+	function otherSelect() {
+		alert("hhha");
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="9橙通统计" />
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/user/account1">
+                   推广时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+
+       
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			 
+		      <th>浏览量</th>      
+		      <th>注册量</th>
+		    </tr>
+		    <tr class="tr{$k%2}">
+		     
+		      <td><a href="__MODULE__/user/account_xq?id={$id}">{$liulan}</a></td> 
+		      <td><a href="__MODULE__/user/account_xq?id={$id}">{$zhuce}</a></td>    
+		    </tr>
+		    <tr>
+		    <td colspan="5">{$page}</td> 
+		    </tr>
+           
+         </tbody>
+     </table>
+ </div>
+
+</body>
+</html>

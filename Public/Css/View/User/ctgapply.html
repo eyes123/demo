@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>推广员申请表</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<script>
+var module = "__MODULE__";
+</script>  
+<script type="text/javascript">
+  
+	//全选，全不选
+	var allSelect = function () 
+	{			
+        $("input[name='checkname[]']").each(function()
+		{
+			
+			if($(this).attr("checked") != "checked")
+			{
+                $(this).attr("checked", "checked");
+			}
+			else
+			{
+                $(this).removeAttr("checked");
+			}
+		});
+
+	}
+
+	//反选
+	function otherSelect() {
+	
+		$(":checkbox").each(function () {
+			if ($(this).attr("checked") == "checked") {
+				$(this).removeAttr("checked");
+			}
+			else {
+				$(this).attr("checked", "checked");
+			}
+		});
+	}
+	
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+</script>
+</head>
+<body>
+
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/user/ctgapply">
+                    标题关键字：
+        <input type="text" name="name" value="{$nameWhere}" />
+                   申请时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<form action="__MODULE__/user/deletectgapply">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <!-- <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th> -->
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>联系方式</th>
+                    <th>申请时间</th>
+                    <th>审批人</th>
+                    <th>审批结果</th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="exp">		    
+				    <tr>
+	                    <td class="no-records" colspan="6" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+	                </tr> 
+	            <else />
+	                <foreach name="exp" item="ep" key="k">
+	                <tr class="tr{$k%2}">
+				     <!--  <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$ep.id}" />{$pageCount*($currentPage-1)+$k+1}</td> -->
+				      <td>{$pageCount*($currentPage-1)+$k+1}</td> 
+				      <td><a href="__MODULE__/user/editctgapply?id={$ep.id}" >{$ep.name}</a></td>    
+				      <td>{$ep.phone}</td>
+				      <td>{$ep.create_time}</td>
+				      <td>{$ep.user_name}</td>
+				      <td><?php if($ep['flow_state']==0) {echo "申请中";} else if($ep['flow_state']==1) {echo "通过";} else{echo "未通过";}?></td>
+					  <td>
+						  <a class="no" onclick="delConfirm('__MODULE__/user/deletectgapply?id={$ep.id}&app_id={$ep.app_id}')">
+						  	<img src="__PUBLIC__/images/icon_del.gif" />
+						  </a>
+					  	<if condition="$ep['flow_state'] eq '0' ">
+						  	<a href="__MODULE__/user/tongguo?id={$ep.id}&app_id={$ep.app_id}" >通过</a>
+						  	<a href="__MODULE__/user/bohui?id={$ep.id}&app_id={$ep.app_id}" >驳回</a>
+					  	</if>
+					  </td>
+				    </tr>     
+	                </foreach>
+                <tr><td><input class="button" type="submit" value="删除" /></td><td colspan="6">{$page}</td></tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

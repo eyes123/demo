@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统计查询</title>
+<import type="css" file="Css.common" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="用户列表" url="__MODULE__/advertisement/index" url_name="商品列表"/>
+
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/App/index/p/1.html">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+                    用户名     
+        <input type="text" size="15" name="user_name" value="{$usernameWhere}"/>
+                    卡号
+        <input type="text" size="15" name="card_num" value="{$cardWhere}"/>
+                    手机号
+        <input type="text" size="15" name="phone" value="{$phoneWhere}"/>
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+                 <th>编号</th>
+                 <th>注册名</th>
+                 <th>银行卡号</th>
+                 <th>手机号</th>
+                 <th>最后登录时间
+	               <a class="sort" href="__MODULE__/App/index?sort=last_login desc&where={$where}">降序</a> 
+		           <a class="sort" href="__MODULE__/App/index?sort=last_login asc&where={$where}">升序</a>
+                 </th>
+                 <th>最后结算时间</th>
+             </tr> 
+             <empty name="apps">
+             <tr>
+                 <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+             </tr> 
+             <else />
+             <foreach name="apps" item="app" key="i">
+             <tr class="tr{$i%2}">
+                 <td>{$pageCount*($currentPage-1)+$i+1}</td>
+                 <td><a href="__MODULE__/App/userInfo?id={$app.id}">{$app.user_name}</a></td>
+	             <td>
+	             <empty name="app.card_number">无</empty>
+	             {$app.card_number}
+	             </td>
+	             <td>
+	             <empty name="app.phone">无</empty>
+	             {$app.phone}
+	             </td>
+	             <td>
+	             	{$app.last_login}
+	             </td>
+	             <td>
+	             <empty name="app.settlement_time">该用户尚未结算过！</empty>
+	             {$app.settlement_time}
+	             </td>
+             </tr>
+             </foreach> 
+             <tr><td colspan="5">{$page}</td></tr>
+              
+             </empty>
+         </tbody>
+     </table>
+ </div>
+   
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>推广收入统计</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/Statistics/promotionIncome">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />  
+              用户名：
+        <input type="text" name="Name2" value="{$nameWhere2}" />                                   
+                   时间：
+        <input type="text" size="15" name="start_time2" value="{$startWhere2}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time2" value="{$endWhere2}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochupromotionIncome" name="form_daochu">
+	<input type='hidden' name="Name2" value="{$nameWhere2}">
+	<input type='hidden' name="start_time2" value="{$startWhere2}">
+	<input type='hidden' name="end_time2" value="{$endWhere2}">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>商品名称</th>   
+		      <th>推广人</th>     
+		      <th>推广费(元)
+		          <a class="sort" href="__MODULE__/statistics/promotionIncome?sort=money desc">降序</a> 
+		          <a class="sort" href="__MODULE__/statistics/promotionIncome?sort=money asc">升序</a> 
+		      </th>
+		      <th>推广时间
+		      <a class="sort" href="__MODULE__/statistics/promotionIncome?sort=create_time desc">降序</a> 
+		      <a class="sort" href="__MODULE__/statistics/promotionIncome?sort=create_time asc">升序</a>        
+		      </th>		     
+		    <tr>
+		    <empty name="rows">		    
+			    <tr>
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+             <foreach name="rows" item="row" key="k">
+		    <tr class="tr{$k%2}">
+			  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+		      <td>{$row.short_title}</td>    
+		      <td>{$row.user_name}</td>
+		      <td>{$row.click_price}</td>
+		      <td>{$row.create_time}</td>
+		    </tr>
+		    </foreach>
+		      <tr>
+		        <td></td><td></td><td>合计:</td><td>{$number}</td>
+		    </tr>
+		      <tr>
+		        <td></td><td></td><td>总金额:</td><td>{$number1}</td>
+		    </tr>
+		    <tr>
+		        <td colspan="5">{$page}</td>
+		    </tr>
+             </empty>
+         </tbody>
+     </table>
+ </div>
+</body>
+</html>

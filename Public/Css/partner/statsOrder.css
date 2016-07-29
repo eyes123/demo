@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+body {
+	color: #192E32;
+	
+}
+
+.list-div table {
+    width: 100%;
+}
+.list-div table a {
+	color: #192E32;
+	text-decoration: underline;
+}
+.list-div td {
+    background: none repeat scroll 0 0 #FFFFFF;
+    line-height: 24px;
+	padding-left:10px;
+}
+.list-div {
+    background: none repeat scroll 0 0 #EEF8F9;
+    border: 1px solid #BBDDE5;
+    width: 100%;
+	
+}
+
+th.group-title {
+    text-align: left;
+}
+.list-div th {
+    background: url("../images/th_bg.gif") repeat-x scroll 0 0 #BBDDE5;
+    line-height: 24px;
+    white-space: nowrap;
+}
+em, cite, th {
+    font-style: normal;
+    font-weight: normal;
+}

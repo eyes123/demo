@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户详细信息</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="用户详细信息" />
+
+<div class="order_xiangqing" >
+	   
+<p>用户名：{$app.user_name}</p>
+<p>极光推送id：{$app.push_id}</p>
+<p>卡号：{$app.card_number}</p>
+<p>开户行：{$app.card_type}</p>
+<p>手机：{$app.phone}</p>
+
+<p>余额：{$app.balance}</p>
+
+ <!-- <p>奖金：{$app.reward}</p> -->
+<p>最近30天收入：{$app.total}</p>
+
+<p>是否vip：{$app.is_vip}</p>
+<p>结算状态：{$app["pay_state"]==1?"结算中":"等待结算"}</p>
+
+ </div>
+ <if condition="$app['pay_state'] eq '1'">
+ <form method="post" action="">
+ 	<input type="submit" value="还原结算状态" name="return"/>
+ </form>
+ </if>
+ <!-- 
+ <form method="post" action="__MODULE__/App/userInfo?id={$app.id}">
+ 	<input type="submit" value="结算" name="settle"/>
+ </form> -->
+</body>
+</html>

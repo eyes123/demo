@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no" />
+        <title>{$site_name}</title>
+        <link rel="stylesheet" type="text/css" href="/Public/Css/style.css" />
+    </head>
+    <body>
+		 <div id="myloading"></div>
+		 <div id="container">
+		 
+			<div class="orderForm">
+				<div>
+					<div class="orditem">
+						<div class="ordlabel"><span class="imgIcon"><img class="" src="/Public/images/label_1.png" /></span></div>
+						<div class="ordcont">{$order_code}</div>
+					</div>
+					
+					<div class="orditem">
+						<div class="ordlabel"><span class="imgIcon"><img class="" src="/Public/images/label_2.png" /></span></div>
+						<div class="ordcont">{$project_name}</div>
+					</div>
+					
+					<div class="orditem">
+						<div class="ordlabel"><span class="imgIcon"><img class="" src="/Public/images/label_3.png" /></span></div>
+						<div class="ordcont">{$nickname}</div>
+					</div>
+					<div class="orditem">
+						<div class="ordlabel"><span class="imgIcon"><img class="" src="/Public/images/label_4.png" /></span></div>
+						<div class="ordcont">{$phone}</div>
+					</div>
+					<div class="orditem">
+						<div class="ordlabel"><span class="imgIcon"><img class="" src="/Public/images/label_6.png" /></span></div>
+						<div class="ordwxtxt"><img class="" src="/Public/images/label_5.png" /></div>
+						<div class="orderwxSucc"><img class="" src="/Public/images/label_7.png" /></div>
+					</div>
+				</div>
+			</div>
+			<div class="payFooterBox">
+				<img class=" bgImg" src="/Public/images/indxBottomBg.png" />
+			</div>
+			<div class="payBoxFixedHeight"></div>
+			<div class="payBoxFixed">
+				<div>
+					<div class="payMoneyBox"><img class=" bgImg" src="/Public/images/payMoney.png" />
+						<span id="moneyNumber">￥{$order_price}</span>
+					</div>
+					<div class="establishedPay" onclick="callpay()" ><img class=" bgImg" src="/Public/images/establishedPay.png" /></div>
+				</div>
+			</div>
+		 </div>
+		 <script src="/Public/Js/layer.js"></script>
+		 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		 <script data-main="/Public/Js/global" src="/Public/Js/require-2.1.22.min.js?v=new Date().getTime()"></script>
+		 <script>
+		 wx.config({
+			debug: false,
+			appId: '{$appId}',
+			timestamp: {$timestamp},
+			nonceStr: '{$nonceStr}',
+			signature: '{$signature}',
+			jsApiList: [
+			  // 所有要调用的 API 都要加到这个列表中
+				'onMenuShareTimeline',
+				'onMenuShareQQ',
+				'onMenuShareAppMessage'
+			]
+		  });
+		  wx.ready(function () {
+			 wx.onMenuShareTimeline({
+				title: '{$share_title}', // 分享标题
+				link: '{$share_link}', // 分享链接
+				imgUrl: '{$share_image}', // 分享图标
+				success: function () {
+					sendRedpacket();
+				},
+				cancel: function () {
+					// 用户取消分享后执行的回调函数
+				}
+			});
+
+
+			wx.onMenuShareQQ({
+					title: '{$share_title}', // 分享标题
+					desc: '{$share_title}', // 分享描述
+					link: '{$share_link}', // 分享链接
+					imgUrl: '{$share_image}', // 分享图标
+					success: function () {
+						sendRedpacket();
+					},
+					cancel: function () { 
+					   // 用户取消分享后执行的回调函数
+					}
+				});
+				wx.onMenuShareAppMessage({
+					title: '{$share_title}', // 分享标题
+					desc: '{$share_title}', // 分享描述
+					link: '{$share_link}', // 分享链接
+					imgUrl: '{$share_image}', // 分享图标
+					type: 'link', // 分享类型,music、video或link，不填默认为link
+					dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+					success: function () {
+						sendRedpacket();
+					},
+					cancel: function () { 
+						// 用户取消分享后执行的回调函数
+					}
+				});
+		  });
+		//调用微信JS api 支付
+		function jsApiCall()
+		{
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				{$jsApiParameters},
+				function(res){
+					 if (res.err_msg == "get_brand_wcpay_request:ok") {
+							layer.open({content: '微信支付成功',style: 'background-color:rgba(0,0,0,0.5); color:#fff; border:none;', time: 1});
+							window.location.href = 'http://'+ document.domain +'/index.php/Mobile/wx/pay_success';
+					  }else if (res.err_msg == "get_brand_wcpay_request:cancel") {  
+							layer.open({content: '已取消微信支付',style: 'background-color:rgba(0,0,0,0.5); color:#fff; border:none;', time: 1});
+					   } 
+				}
+			);
+		}
+
+		function callpay()
+		{
+			if (typeof WeixinJSBridge == "undefined"){
+				if( document.addEventListener ){
+					document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+				}else if (document.attachEvent){
+					document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+					document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+				}
+			}else{
+				jsApiCall();
+			}
+		}
+	 </script>
+	</body>
+</html>

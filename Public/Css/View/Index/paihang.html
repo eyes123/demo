@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<import type="css" file="Css.index" />
+<import type="css" file="Css.paihang" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.mobile.jquery#endless-scroll-1#3" />
+
+<title>排行榜</title>
+<script type="text/javascript">
+$(document).ready(function () {
+    //$(document).endlessScroll({
+    //    bottomPixels: 450,
+    //    fireDelay: 10,
+     //   callback: function (p) {            
+	//		$.post("getClickcountAjax",{page:p},function(data)
+	//		{
+	//			if(data)
+	//			{
+	//				$(".paihang_tr:last").after(data);
+	//			}
+	//		});
+    //    }
+    //});
+});
+</script>
+</head>
+<body class="bodys">
+	<div class="paihang_top">
+        <img  src="__PUBLIC__/images/top.png" width="100%"/>
+        <div class="paihang_list">
+        	<table>
+	        	<thead>
+					<tr>
+	                	<th class="mingci">名次</th>
+	                    <th class="xingming">姓名</th>
+	                    <th>盈利</th>
+					</tr>
+				</thead>
+			</table>
+        </div>
+	</div>
+	<table  class="paihang_list1" align="center">
+		<tbody>
+            	                <tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      <img src="/Public/images/1.png" />  
+	                      
+	                     	                     	                     </td>
+	                     <td>李(079512)</td>	             	        
+	                     <td>201</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      <img src="/Public/images/2.png"/>  
+	                     	                     	                     </td>
+	                     <td>于(902064)</td>	             	        
+	                     <td>176</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                      <img src="/Public/images/3.png"/> 	                     	                     </td>
+	                     <td>宋(952935)</td>	             	        
+	                     <td>169</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     4	                     </td>
+	                     <td>王(370465)</td>	             	        
+	                     <td>167</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     5	                     </td>
+	                     <td>闫(954549)</td>	             	        
+	                     <td>165</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     6	                     </td>
+	                     <td>孙(694642)</td>	             	        
+	                     <td>164</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     7	                     </td>
+	                     <td>郝(584191)</td>	             	        
+	                     <td>162</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     8	                     </td>
+	                     <td>张(891419)</td>	             	        
+	                     <td>160</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     9	                     </td>
+	                     <td>张(370457)</td>	             	        
+	                     <td>152</td>
+	                 </tr><tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                      
+	                      
+	                     	                     10	                     </td>
+	                     <td>李(195860)</td>	             	        
+	                     <td>152</td>
+	                 </tr> 
+    	</tbody>
+	</table>
+	<!--<table  class="paihang_list1" align="center">
+		<tbody>
+            <empty name="list">
+                <tr>
+                    <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+                <else />
+	                <foreach name="list" item="paihang" key="i">
+	                 <tr class="paihang_tr">
+	                     <td class="shuzi1">
+	                     <?php if ($i+1==1) { ?> <img src="__PUBLIC__/images/1.png" /> <?php } ?> 
+	                     <?php if ($i+1==2) { ?> <img src="__PUBLIC__/images/2.png"/> <?php } ?> 
+	                     <?php if ($i+1==3) { ?> <img src="__PUBLIC__/images/3.png"/> <?php } ?>
+	                     <?php if ($i+1>3) { echo $pageCount*($currentPage-1)+$i+1; }?>
+	                     </td>
+	                     <td>{$paihang.user_name}({$paihang.card_number})</td>	             	        
+	                     <td>{$paihang.total}</td>
+	                 </tr>
+	                </foreach> 
+
+            </empty> 
+    	</tbody>
+	</table>-->
+</body>
+</html>

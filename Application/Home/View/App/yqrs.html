@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>书画后台管理</title>
+
+    <import type="css" file="Css.common" />
+    <import type="js" file="Js.Jquery" />
+    <script>
+        var module = "__MODULE__";
+    </script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html"  title="邀请人数详情" />
+
+<!-- 列表样式 -->
+<div class="data-list" >
+    <table cellspacing="1" cellpadding="3">
+        <tbody>
+        <tr>
+            <th>用户编号</th>
+            <th>用户名</th>
+            <th>手机号</th>
+            <th>邀请函页</th>
+            <th>邀请人数</th>
+            <th>邀请单数</th>
+            <th>邀请人</th>
+            <th>生成时间</th>
+            <th>用户来源</th>
+        </tr>
+        <empty name="yqrs">
+            <tr>
+                <td class="no-records" colspan="9" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+            </tr>
+            <else />
+        <foreach name="yqrs" item="list" key="k">
+            <tr class="tr{$k%2}">
+            <td>{$pageCount*($currentPage-1)+$k+1}</td>
+            <td>{$list.nickname}</td>
+            <td>{$list.phone}</td>
+                <td><if condition="$list['invitatiom'] eq '0'">未生成<else/>已生成</if></td>
+                <td>{$list.number}</td>
+                <td>{$list.orders_no}</td>
+                <td>{$list.referees}</td>
+                <td>{$list.create_time}</td>
+                <td>{$list.project_name}</td>
+            <td>
+            </td>
+        </tr>
+            </foreach>
+        <tr>
+            <td colspan="9">{$page}</td>
+        </tr>
+        </empty>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

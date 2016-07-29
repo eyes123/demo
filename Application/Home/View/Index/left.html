@@ -1,0 +1,82 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>左侧菜单</title>
+<import type="css" file="Css.index" />
+<import type="js" file="Js.Jquery" />
+</head>
+<body>
+
+<script type="text/javascript">
+function navList()
+{	
+	var nav = $("#nav");
+	nav.find(".item").click(function()
+	{
+		var subItem = $(this).siblings(".subitem");
+		
+		if($(this).parent().hasClass("selected"))
+		{
+			subItem.slideDown(600);
+			$(this).parent().removeClass("selected");
+		}
+		else
+		{
+			subItem.slideUp(600);
+			$(this).parent().addClass("selected");
+		}
+	});
+	
+	var nav = $("#nav");
+	nav.find("p").click(function()
+	{
+	    nav.find("p").removeClass("bold");
+	    $(this).addClass("bold");
+	});
+}
+
+</script>
+<div>
+	<ul id="nav">
+        <!--<li>-->
+        <!--<a class="item" target="main" >用户管理</a>-->
+        <!--<div class="subitem" >-->
+            <!--<p><a href="__ROOT__/Home/App/index"  target="main" >用户列表</a></p>-->
+        <!--</div>-->
+    <!--</li>-->
+        <!--<li>-->
+            <!--<a class="item" target="main" >订单管理</a>-->
+            <!--<div class="subitem" >-->
+                <!--<p><a href="__ROOT__/Home/Order/index"  target="main" >订单列表</a></p>-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a class="item" target="main" >券码管理</a>-->
+            <!--<div class="subitem" >-->
+                <!--<p><a href="__ROOT__/Home/Coupon/index"  target="main" >券码列表</a></p>-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--<li>-
+            <!--<a class="item" target="main" >券码管理</a>-->
+            <!--<div class="subitem" >-->
+                <!--<p><a href="__ROOT__/Home/Action/index"  target="main" >券码列表</a></p>-->
+            <!--</div>-->
+        <!--</li>-->
+        <foreach name="menuList" item="one">
+            <li>
+                <a class="item" target="main" >{$one.name}</a>
+                <div class="subitem" >
+                    <foreach name="one.child_node" item="function">
+                        <p><a href="__ROOT__/{$function.path}"  target="main" >{$function.name}</a></p>
+                    </foreach>
+                </div>
+            </li>
+        </foreach>
+	</ul>
+</div>
+
+<script>navList();</script>
+</body>
+</html>

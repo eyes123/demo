@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<import type="js" file="Js.Jquery" />
+<import type="js" charset="utf-8" file="Js.commonAd" />
+<import type="js" charset="utf-8" file="Js.common" />
+<import type="js" file="Js.cat" />
+
+
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+<import type="css" file="Css.addAdvertisement" />
+<script>
+    var module = "__MODULE__";
+</script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="添加商品类型" url="__MODULE__/advertisement/categoryList" url_name="商品类型列表"/>
+<div class="form_div">
+
+<form action="__MODULE__/advertisement/addCat"  enctype="multipart/form-data" method="post" >
+<table>
+    <tr>
+        <td class="label">商品类型名称</td>
+        <td class="value"><input type="text" name="cat_name"/></td>
+    </tr>
+       <tr>
+        <td class="label">商品序号</td>
+        <td class="value"><input type="text" name="sequence_number"/></td>
+    </tr>
+    <tr>
+        <td class="label">上级分类</td>
+        <td class="value" id="cat">
+        <select class="cat_select" name="parent_cat[]" onchange="changeListener(this)">
+            <option value="0">顶级分类</option>
+            <foreach name="cats" item="cat">                
+                <option value="{$cat.id}">{$cat.cat_name}</option>
+            </foreach>
+        </select>
+        </td>
+    </tr>
+   
+    <tr>
+     <td class="label">分类图片</td>
+    <td><div class="line">
+
+   <div class="input_right file_field">
+       <div class="fileInputContainer">    
+	    <input class="fileInput" type="file" name="shoujiFile"  onchange="shoujiUpload(this.form)"/>           
+	</div>
+    <div class="shouji_displayphoto">
+	    <notempty name="shouji_pics">
+		    <foreach name="shouji_pics" item="pic" key="k">
+				<div id="shoujiImg{$k+1}" style="position:relative" class="upload_img_item" >
+				<img width="100px" height="100px" src="{$pic_dir}/{$pic}"  alt="手机图片" />
+				
+				</div>
+		     </foreach>
+	     </notempty>
+     </div>                     
+    </div>       
+</div>
+</td>
+   </tr>
+    <tr>
+        <td class="label">描述</td>
+        <td class="value"><textarea name="cat_desc" cols="40" rows="5"></textarea></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td >
+            <input class="button" name="submit1" type="submit" value="确定" onclick="myonclick(this.form)"/>
+            <input class="button" type="reset" value="重置"/>
+        </td>
+    </tr>
+</table>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;"></iframe>
+</form>
+
+</div>
+</body>
+<script type="text/javascript">
+	function shoujiUpload(form)
+	{        
+		form.target  = "uploadframe";
+		form.action = "__MODULE__/Advertisement/uploadImgAjax2";
+		form.submit();
+	}
+	function myonclick(form)
+	{        
+		form.target  = "";
+		form.action = "__MODULE__/advertisement/addCat";
+		form.submit();
+	}
+</script>
+</html>

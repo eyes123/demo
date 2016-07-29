@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>折线图</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.jquery-1#8#2#min" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<style type="text/css">
+.search_div {
+
+}
+</style>
+<script type="text/javascript">
+		function select(){
+			var value=document.getElementById("name").value;
+			//alert(value);
+			if(value =="hour"){
+				document.getElementById("clas").style.display="none";
+				document.getElementById("divhide").style.display="block";
+				document.getElementById("divhide").style.display="inline";
+				
+			}else	{
+				document.getElementById("clas").style.display="block";
+				document.getElementById("divhide").style.display="none";
+				document.getElementById("clas").style.display="inline";
+				}
+		}
+var module = "__MODULE__";
+$(function() {
+	var jsonTitle,title = document.getElementById("Type").value;
+	if(title==""||title==null){
+		
+		jsonTitle="软件浏览量";
+	}
+	if(title =="ruanjian_liulan")
+	{
+		jsonTitle="软件浏览量";
+	}else if(title =="ruanjian_anzhuang")
+	{
+		jsonTitle ="软件安装量";
+	}else if(title=="chanpin_liulan")
+	{
+		jsonTitle ="产品浏览量";
+		
+	}else if(title=="chanpin_goumai"){
+		jsonTitle ="产品购买量";
+		
+	}else if(title=="user"){
+		jsonTitle ="用户增长量";
+	} 
+	if(jsonTitle==""||jsonTitle==null){
+		
+		jsonTitle="软件浏览量";
+	}
+	var data = '{$data}';	
+	var jsonArray=eval("(" + data + ")");  
+	var nums = jsonArray.num;
+    $('#container').highcharts({
+            chart: {
+                type: 'line',
+                plotBackgroundColor:'yellow',//图表的背景色
+                shadow:true
+            },
+            title: {
+                text: jsonTitle,
+                x:300
+            },
+            subtitle: {
+                text: '9橙',
+                x:300
+            },
+            xAxis: {
+                categories:jsonArray.time,
+               
+            },
+            yAxis: {
+                title: {
+                    text: '数目'
+                },
+                //minTickInterval:1,
+                min:0
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                    enabled: true
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series:[{
+            	name:jsonTitle,
+            	data: nums
+            }]
+           
+        });
+    });
+/*  function titlevalue(){
+	// alert(1);
+	var title = document.getElementById("Type").value;
+	if( title =="" || title==null){
+		var jsonTitle="软件浏览量";
+	}
+	if(title =="ruanjian_liulan")
+	{
+		var jsonTitle="软件浏览量";
+	}else if(title =="ruanjian_anzhuang")
+	{
+		var jsonTitle ="软件安装量";
+	}else if(title=="chanpin_liulan")
+	{
+		var jsonTitle ="产品浏览量";
+		
+	}else if(title=="chanpin_lgoumai"){
+		var jsonTitle ="产品购买量";
+		
+	}else if(title=="user"){
+		var jsonTitle ="用户增长量";
+		
+	}
+	//return jsonTile;
+
+}  */
+    </script>
+</head>
+<body onload="select()">
+	<include file="./Application/Home/View/topNav.html" title="广告单击统计" />
+	<div class="search_div">
+		<form action="__MODULE__/Image/index">
+			<div id="clas" style="display: inline">
+				查询时间段: <input type="text" size="15" name="start_time"
+					value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+				<bold vertical-align="middle">~</bold>
+				<input type="text" size="15" name="end_time" value="{$endWhere}"
+					onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+			</div>
+			<div id="divhide" style="display: none">
+				查询时间: <input type="text" ,size="15" name="text" value="{$timeText}"
+					onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+			</div>
+			&nbsp;&nbsp; 查询类型： <select id="name" name="whereTime"onchange="select()">
+				<option value=0>- 请选择 -</option>
+				<option value="year" {$whereTime== "year"?"selected='selected'":''}>-
+					- 年 - -</option>
+				<option value="month" {$whereTime== "month"?"selected='selected'":''}>-
+					- 月 - -</option>
+				<option value="day" {$whereTime== 'day'?'selected="selected"':''}>-
+					- 日 - -</option>
+				<option value="hour" {$whereTime== 'hour'?'selected="selected"':''} >-
+					- 时 - -</option>
+			</select> &nbsp;&nbsp;
+			<lable>查询类别：</lable>
+			<select name="whereType" id="Type">
+				<option value=0>- 请选择 -</option>
+				<option value="ruanjian_liulan" {$whereType==
+					'ruanjian_liulan'?'selected="selected"':''}>软件浏览量</option>
+				<option value="ruanjian_anzhuang" {$whereType==
+					'ruanjian_anzhuang'?'selected="selected"':''}>软件安装量</option>
+				<option value="chanpin_liulan" {$whereType==
+					'chanpin_liulan'?'selected="selected"':''}>产品浏览量</option>
+				<option value="chanpin_goumai" {$whereType==
+					'chanpin_goumai'?'selected="selected"':''}>产品购买量</option>
+				<option value="user" {$whereType== 'user'?'selected="selected"':''}>用户增长量</option>
+			</select> <input style="margin-left: 35px;" class="button" type="submit"
+				name="submit" value="查询" />
+		</form>
+	</div>
+	<import type="js" file="Js.Highcharts-4#0#3.js.highcharts" />
+	<import type="js" file="Js.Highcharts-4#0#3.js.modules.exporting" />
+	<div id="container"
+		style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</body>
+</html>

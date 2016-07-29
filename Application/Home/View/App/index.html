@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>书画系统后台管理</title>
+    <import type="css" file="Css.common" />
+    <import type="js" file="Js.Jquery" />
+    <import type="js" file="Js.cat" />
+    <import type="js" file="Js.DatePicker.WdatePicker" />
+    <script>
+        var module = "__MODULE__";
+    </script>
+</head>
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="用户列表" url="__MODULE__/user/add" url_name="添加用户"/>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+        手机号：
+        <input type="text" name="phone" value="{$phoneWhere}" />
+         日期：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div>
+    <form method="post" action="__MODULE__/App/daochuindex" name="form_daochu">
+        <input type='hidden' name="start_time" value="{$startWhere}">
+        <input type='hidden' name="end_time" value="{$endWhere}">
+        <input type='hidden' name="phone" value="{$phoneWhere}">
+        <input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+    </form>
+</div>
+<!-- 列表样式 -->
+<form action="__MODULE__/user/delete" method="get">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+            <tr>
+                <th>用户编号</th>
+                <th>用户名</th>
+                <th>手机号</th>
+                <th>邀请函页</th>
+                <th>邀请人数</th>
+                <th>邀请单数</th>
+                <th>邀请人</th>
+                <th>生成时间</th>
+                <th>用户来源</th>
+            </tr>
+            <empty name="users">
+                <tr>
+                    <td class="no-records" colspan="9" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr>
+                <else />
+                <foreach name="users" item="user" key="k">
+                    <tr class="tr{$k%2}">
+                        <td>{$user.id}</td>
+                        <td>{$user.nickname}</td>
+                        <td>{$user.phone}</td>
+                        <td style="text-align: left;"><if condition="$user['invitatiom'] eq '0'">未生成<else/><a href="__APP__/Home/App/yqh&app_id={$user.id}">已生成</a></if></td>
+                        <td><a href="__APP__/Home/App/yqrs&app_id={$user.id}">{$user.number}</a></td>
+                        <td><a href="__APP__/Home/App/yqds&app_id={$user.id}">{$user.orders_no}</a></td>
+                        <td><a href="__APP__/Home/App/yqr&invi_people={$user.invi_people}">{$user.referees}</a></td>
+                        <td>{$user.create_time}</td>
+                        <td>{$user.project_name}</td>
+                        </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="9">{$page}</td>
+                </tr>
+            </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

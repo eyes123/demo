@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<import type="js" file="Js.Jquery" />
+	
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+	alert('上传成功');
+	var obj = $('.shouji_displayphoto', parent.document);
+	obj.append('<div id="uploadImg5" style="position:relative" class="upload_img_item" ><img width="100px" height="100px" src="http://192.168.3.101/123_th/Public/Upload/Img/20141220/54953a6ae30de.jpg" alt="产品图片5" /><a class="delete_btn" target="uploadframe" style="position:absolute;top:0px;right:0px;display:none;" href="/123_th/index.php/Home/Advertisement/deleteImg?id=5" title="删除"><img src="/123_th/Public/images/icon_del.gif" alt="删除"/></a></div>');
+	obj.find('.upload_img_item').mouseover(function()
+	{
+	$(this).find('.delete_btn').css('display','block');
+	});
+	obj.find('.upload_img_item').mouseout(function()
+	{
+	$(this).find('.delete_btn').css('display','none');
+	});
+	});
+	</script>
+
+<title>Insert title here</title>
+</head>
+
+<body>
+</body>
+</html>

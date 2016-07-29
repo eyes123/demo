@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>收入排行</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="收入排行" />
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/Statistics/appIncomeRank/p/1.html">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />  
+              用户名：
+        <input type="text" name="userName" value="{$usernameWhere}" />                                   
+     
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochuappIncomeRank" name="form_daochu">
+	<input type='hidden' name="userName" value="{$usernameWhere}">
+	<input type='hidden' name="start_time" value="{$startWhere}">
+	<input type='hidden' name="end_time" value="{$endWhere}">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>用户名</th>     
+		      <th>
+		                        总收入(元)
+		          <a class="sort" href="__MODULE__/statistics/appIncomeRank?sort=totalIncome desc">降序</a> 
+		          <a class="sort" href="__MODULE__/statistics/appIncomeRank?sort=totalIncome asc">升序</a>
+		      </th>
+		      <th>
+		              未结算收入(元)
+		      <a class="sort" href="__MODULE__/statistics/appIncomeRank?sort=balance desc">降序</a> 
+		      <a class="sort" href="__MODULE__/statistics/appIncomeRank?sort=balance asc">升序</a>        
+		      </th>		     
+		    <tr>
+		    <empty name="rows">		    
+			    <tr>
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+             <foreach name="rows" item="row" key="k">
+			    <tr class="tr{$k%2}">
+				  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+			      <td style="text-align: left;"><a href="__MODULE__/statistics/userDetail?app_id={$row.app_id}">{$row.user_name}</a></td>    
+			      <td>{$row.totalIncome}</td>
+			      <td>{$row.balance}</td>
+			    </tr>
+		    </foreach>
+			    <tr>
+			        <td colspan="4">{$page}</td>
+			    </tr>
+             </empty>
+         </tbody>
+     </table>
+ </div>
+<p class="input_remark">注：收入为0的用户，未计入到本排行榜。</p>
+</body>
+</html>

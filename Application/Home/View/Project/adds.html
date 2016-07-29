@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>品牌表操作</title>
+    <include file="./Application/Home/View/include/head.html" />
+    <import type="js" file="Js.Jquery" />
+    <import type="js" file="Js.common" />
+    <import type="css" file="Css.common" />
+    <import type="css" file="Css.category" />
+    <import type="css" file="Js.diashow.skins.css.diashow" />
+    <import type="js" file="Js.jquery-1#8#2#min"/>
+    <import type="js" file="Js.diashow.diashow"/>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            var message = '{$message}';
+            if(message!='')
+            {
+                showMessage('{$message}','{$url}','{$time}');
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="form_div">
+    <form action=""  enctype="multipart/form-data" method="post" name="form1">
+            <div class="line">
+                <div class="input_left">手机图片：</div>
+                <div class="input_right file_field">
+                    <div class="fileInputContainer">
+                        <input class="fileInput" type="file" name="shouji_url_file" id="shouji_url" onchange="newImgUploadShouji(this.form,this)"/>
+                        <input type="hidden" name="shouji_url" value="{$ad.shouji_url}"/>
+                    </div>
+                    <div class="shouji_url_displayphoto">
+                        <notempty name="shouji_url_pics">
+                            <foreach name="shouji_url_pics" item="pic" key="k">
+                                <div id="shouji_url_Img{$k+1}" style="position:relative" class="upload_img_item" >
+                                    <img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="缩略图片" />
+                                </div>
+                            </foreach>
+                        </notempty>
+                    </div>
+                </div>
+            </div>
+            <div class="line">
+                <div class="input_left">图片：</div>
+
+                <div class="input_right file_field">
+                    <div class="fileInputContainer">
+                        <input class="fileInput" type="file" name="picture_url_file" id="picture_url" onchange="newImgUpload(this.form,this)"/>
+                        <input type="hidden" name="picture_url" value="{$ad.picture_url}"/>
+                    </div>
+                    <div class="picture_url_displayphoto">
+                        <notempty name="picture_url_pics">
+                            <foreach name="picture_url_pics" item="pic" key="k">
+                                <div id="picture_url_Img{$k+1}" style="position:relative" class="upload_img_item" >
+                                    <img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="图片" />
+                                    <a class="delete_btn" title="删除" onclick="newDeleteImg('picture_url','{$k+1}')" style="position: absolute; top: 0px; right: 0px; display: none;" target="uploadframe">
+                                        <img alt="删除" src="__PUBLIC__/images/icon_del.gif">
+                                     </a>
+                                </div>
+
+                            </foreach>
+                        </notempty>
+                    </div>
+                </div>
+            </div>
+        <div class="line">
+            <input type="submit"  value="提交" class="button" onclick="return submit2(this.form)"/>
+            <input type="reset" name="reset" value="重置" class="button"/>
+        </div>
+    </form>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;" ></iframe>
+<script type="text/javascript">
+
+    function newDeleteImg(pre,id)
+    {
+        form1.target  = "uploadframe";
+        form1.action = "__ROOT__/Home/Project/newDeleteImg?id="+id+"&pre="+pre;
+        form1.submit();
+
+    }
+    function newImgUpload(form,btn)
+    {
+        form.target  = "uploadframe";
+        form.action = "__ROOT__/Home/Project/newUploadImgAjax?one=n&pre="+btn.id;
+        form.submit();
+    }
+    function newImgUploadShouji(form,btn)
+    {
+        form.target  = "uploadframe";
+        form.action = "__ROOT__/Home/Project/newUploadImgAjax?one=y&pre="+btn.id;
+        form.submit();
+    }
+    function submit2(form) {
+        form.target = "";
+        form.action = "";
+        form.submit();
+    }
+</script>
+</body>
+</html>

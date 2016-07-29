@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理 -- 功能权限列表</title>
+<import type="css" file="Css.partner.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.cat" />
+<script>
+	var module = "__MODULE__";
+</script>  
+</head>
+
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="商品列表" url="__MODULE__/advertisement/add" url_name="添加产品"/>
+
+<!-- 列表样式 -->
+<form action="__MODULE__/advertisement/delete">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th>
+                    <th>广告标题</th>
+                    <th>                           浏览量
+                    <a class="sort" href="__MODULE__/advertisement/index?sort=clickcount desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/advertisement/index?sort=clickcount asc&where={$where}">升序</a>
+                    </th>
+                    <th>                         发布时间
+                    <a class="sort" href="__MODULE__/advertisement/index?sort=create_time desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/advertisement/index?sort=create_time asc&where={$where}">升序</a>
+                    </th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="ads">		    
+			    <tr>
+                    <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	             <else />
+                <foreach name="ads" item="ad" key="k">
+                <tr class="tr{$k%2}">
+			      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$ad.id}" />{$pageCount*($currentPage-1)+$k+1}</td>
+			      <td style="text-align: left;"><a href="__APP__/Mobile/index/index?ad_id={$ad.id}">{$ad.title}</a></td>    
+			      <td>{$ad.clickcount}</td>
+			      <td>{$ad.create_time}</td>
+				  <td>
+				      <a onclick="delConfirm('__MODULE__/advertisement/delete?ad_id={$ad.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>
+				      <a href="__MODULE__/advertisement/edit?ad_id={$ad.id}" ><img src="__PUBLIC__/images/icon_edit.gif" /></a>
+				  </td>
+			    </tr>     
+                </foreach>
+                <tr><td><input class="button" type="submit" value="删除" /></td><td colspan="4">{$page}</td></tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

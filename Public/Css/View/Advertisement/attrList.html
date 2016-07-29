@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>商品属性</title>
+
+<import type="css" file="Css.common" />
+<script type="text/javascript">
+function delConfirm(url)
+{
+	msg = "确定要删除？"
+	if(confirm(msg))
+	{
+		location.href=url;
+	}
+}
+</script>
+</head>
+<body>
+
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="商品属性" url="__MODULE__/advertisement/addAttr" url_name="添加商品属性"/>
+
+<!-- 列表样式 -->
+<form action="__MODULE__/advertisement/delAttr">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>
+                <tr>
+                    <th><input type="checkbox" id="checkall" name="checkbox" onClick="allSelect()" value="全选" />编号</th>
+                    <th>属性名称</th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="attrs">		    
+			    <tr>
+                    <td class="no-records" colspan="3" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	            <else />
+                <foreach name="attrs" item="attr" key="k">
+	                <tr class="tr{$k%2}">
+				      <td><input type="checkbox" id="Checkbox{$k}" name="checkname[]" value="{$attr.id}" />{$k}</td>
+				      <td style="text-align: left;"><a href="__APP__/Mobile/index/index?ad_id={$attr_name.id}">{$attr.attr_name}</a></td>    
+					  <td>
+					      <a onclick="delConfirm('__MODULE__/advertisement/delAttr?attr_id={$attr.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a>
+					      <a href="__MODULE__/advertisement/editAttr?attr_id={$attr.id}" ><img src="__PUBLIC__/images/icon_edit.gif" /></a>
+					  </td>
+				    </tr>     
+                </foreach>
+                <tr><td><input class="button" type="submit" name="submit" value="删除" /></td><td colspan="3">{$page}</td></tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+    <div><input name="" value="添加" type="button" onclick="location.href='__MODULE__/advertisement/addAttr?cate_id={$cateId}'"/></div>
+</form>
+
+</body>
+</html>

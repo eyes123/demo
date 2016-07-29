@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>广告系统后台管理</title>
+<import type="css" file="Css.common" />
+<import type="css" file="Css.page" />
+<import type="js" file="Js.Jquery" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+
+<script type="text/javascript">
+	var replayUrl = '{$webRoot}/replyAjax';
+	function tishi(msg)
+	{
+		//alert(1);
+		var time=2000;
+		if(msg=='0')
+		{
+			msg = '发送中';
+			time = -1;
+		}
+		else if(msg=='1')
+		{
+			msg = '发送成功';
+		}
+		else if(msg=='-1')
+		{
+			msg = '发送失败';
+		}
+		showMessage(msg,'',time);
+	}
+	
+	//刷新回复列表
+	function shaxinhuifu(msgBox)
+	{
+		error=1;
+		if(msgBox)
+		{
+	    	var replyList = msgBox.find(".reply_list");
+	    	var id = msgBox.find('.msg_id2').text();
+	        $.post(replayUrl,{act_type:'get_reply',id:id},function(data)
+	        {
+	        	replyList.html(data);
+	        });	
+		}
+	}
+    $(document).ready(function()
+    {
+    	$(".reply_btn").click(function()
+    	{
+        	var input = $(this).parents(".msg_box").find(".input_message");
+        	if(input.css("display") == "none")
+        	{
+            	input.css("display","block");
+        	}
+        	else
+        	{
+            	input.css("display","none");
+        	}
+        	
+    	});
+		
+    	$('.reply_submit').click(function()
+    	{
+   		 	var msgBox = $(this).parents(".msg_box");
+    		var form = $(this).parents(".input_message");;
+        	var pushId  =  form.find(".push_id").val();
+        	var msgId    = form.find(".msg_id").val();
+        	var userName = form.find(".user_name").val();
+        	//var msg = form.find(".msg_content")[0].innerHTML;
+        	var msg = form.find(".msg_content")[0].value;
+        	//alert(msg);
+        	if(!msg && msg!='0')
+        	{
+        		showMessage('回复内容不能为空');
+        		return;
+        	}
+        	tishi('0');
+        	$.post(replayUrl,{push_id:pushId,act_type:"add_reply",user_name:userName,msg_content:msg,msg_id:msgId},function(data)
+        	{
+        		//alert(data);
+        		if(data == "1")
+        		{
+        			tishi('1');
+        			form.find(".msg_content").val('');
+        		}
+        		else
+        		{
+        			tishi('-1');
+        		}
+                form.find(".input_message").css("display","none");
+    			//刷新回复列表
+            	shaxinhuifu(msgBox);
+            });
+    	});
+
+    	$(".show_reply_list").click(function()
+    	{       	
+        	var msgBox = $(this).parents(".msg_box");
+        	var replyList = $(this).parents(".msg_box").find(".reply_list");
+
+        	if(replyList.css("display") == "none")
+        	{
+        		replyList.css("display","block");
+        		var id = msgBox.find('.msg_id2').text();
+                $.post(replayUrl,{act_type:"get_reply",id:id},function(data)
+                {
+                    if(data == '0')
+                    {
+                        alert('该留言没有回复！');
+                    }
+                    else
+                    {
+                        replyList.html(data);
+                    }  
+                });	    
+        	}
+        	else if(replyList.css("display") == "block")
+        	{
+        		replyList.css("display","none");	
+        	}
+    	});
+    });
+
+    /**
+     * ARM音频播放器
+     */
+    function pv_q(u, w, h)
+    {
+    	var pv='';
+    	pv += '<object width="'+w+'" height="'+h+'" classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab">';
+    	pv += '<param name="src" value="'+u+'">';
+    	pv += '<param name="controller" value="true">';
+    	pv += '<param name="type" value="video/quicktime">';
+    	pv += '<param name="autoplay" value="true">';
+    	pv += '<param name="target" value="myself">';
+    	pv += '<param name="bgcolor" value="black">';
+    	pv += '<param name="pluginspage" value="http://www.apple.com/quicktime/download/index.html">';
+    	pv += '<embed src="'+u+'" width="'+w+'" height="'+h+'" controller="true" align="middle" bgcolor="black" target="myself" type="video/quicktime" pluginspage="http://www.apple.com/quicktime/download/index.html"></embed>';
+    	pv += '</object>';
+    	//document.write(pv);
+    	return pv;
+    }
+
+    function playAmr(url,obj)
+    {
+    	var player = pv_q(url, 500, 32);
+    	obj.innerHTML = player;
+    }
+    
+	function delConfirm(url)
+	{		
+		msg = "确定要删除？"
+		if(confirm(msg))
+		{
+			location.href=url;
+		}
+	}
+
+</script>
+<style>
+.message {
+	
+}
+.msg_name {
+	color:#26709A;
+}
+
+.msg_time {
+	color:#9B9B9B;
+}
+
+.reply {
+	border-top:1px solid #E0E0E0;
+	margin-left:50px;
+}
+
+.msg_box {
+	border-top:1px solid #E0E0E0;
+	border-bottom:1px solid #E0E0E0;
+}
+#sepPage {
+	margin-top:5px;
+	text-align:right;
+}
+
+.submit_btn {
+	cursor:pointer;
+	height:19px;
+	text-align:center;
+	background-color:#7B8C9E;
+}
+.reply_btn,.show_reply_list {
+	cursor:pointer;
+	color:#26709A;
+	margin-left:12px;
+}
+
+.input_message {
+	display:none;
+}
+.reply_list {
+	display:none;
+}
+.user_msg {
+	cursor:pointer;
+	
+}
+</style>
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="用户留言" url="__MODULE__/advertisement/index" url_name="用户留言"/>
+
+<?php
+function isAmr($str)
+{
+	$pos = strrpos($str, '.');
+	
+	if($pos === false)
+	{
+		return false;
+	}
+	
+    $type = substr($str, $pos);
+    if(strtolower($type) == '.3gp')
+    {
+    	return true;
+    }
+
+    return false;
+
+}
+?>
+<empty name="msgs">
+暂时没有留言信息
+<else/>
+<foreach name="{msgs}" item="{msg}">
+    <div class="msg_box">
+        <div class="message">
+            <p>
+                <span class="msg_name"><?php echo empty($msg['user_name'])?'匿名':$msg['user_name'];?></span>
+                <span class="msg_time"><?php echo $msg['create_time'];?></span>
+                <span class="reply_btn">回复</span>
+                <span class="msg_id2" style="display: none;"><?php echo $msg['id'];?></span>
+                <span class="show_reply_list" >查看回复</span>
+                <span><a onclick="delConfirm('__MODULE__/message/delete?id={$msg.id}')"><img src="__PUBLIC__/images/icon_del.gif" /></a></span>
+            </p>
+            <p class="user_msg"><?php echo isAmr($msg['info'])?('<span onClick="playAmr(\'http://update.disrank.com/Public/uploadfile/123/file/'.$msg['info'].'\',this)">该文件为音频文件，点击播放。</span>'):$msg['info']; ?> </p>
+        </div>  
+        <div class="reply_list"></div>
+             
+        <div class="reply">           
+            <div class="input_message">
+                <form action="" method="post" >
+                    <input class="user_name" name="user_name" type="hidden" value="<?php echo $_SESSION['userInfo']['name'];?>"/>
+                    <input class="msg_id" name="msg_id" type="hidden" value="<?php echo $msg['id'];?>" />
+                    <input class="push_id" name="push_id" type="hidden" value="<?php echo $msg['push_id'];?>" />
+                    <p><textarea class="msg_content" name="message" rows="2" cols="50"></textarea></p>
+                    <p><input class="reply_submit"  type="button" value="确定"/></p>
+                </form>
+            </div>    
+        </div>
+          
+    </div>
+</foreach>
+    <div style="text-align:center;" id="sepPage">
+        {$page}
+    </div>
+</empty>
+   
+</body>
+</html>

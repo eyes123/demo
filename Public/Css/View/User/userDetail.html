@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统计查询</title>
+<import type="css" file="Css.page" />
+
+<style type="text/css">
+#product_pics {
+	text-align:center;
+	margin:5px auto;
+}
+#product_intro {
+	width:1000px;
+	margin:5px auto;
+}
+</style>
+</head>
+<body>
+
+<table class="data_list" >
+    <tr>
+	  <th>编号</th>
+      <th>广告标题</th>     
+      <th>单击次数</th>	  
+    <tr>
+	<foreach name="userClicks" item="click" key="i">
+    <tr class="tr{$i%2}"> 
+	   <td>{$pageCount*($currentPage-1)+$i+1}</td>
+	   <assign name="adId" value="$click.ad_id" />
+       <td>{$idTitle.$adId}</td>    
+       <td>{$click.click_count}</td>	  
+    </tr>
+    </foreach>    
+    <tr><td colspan="3">{$page}</td></tr>
+</table>
+
+</body>
+</html>

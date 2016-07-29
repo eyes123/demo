@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加商家订单</title>
+<import type="js" file="Js.Jquery" />
+<import type="js" charset="utf-8" file="Js.editor.kindeditor" />
+<import type="js" charset="utf-8" file="Js.editor.lang.zh_CN" />
+<import type="js" charset="utf-8" file="Js.addAdvertisement" />
+<import type="js" charset="utf-8" file="Js.common" />
+<import type="js" file="Js.utils" />
+<import type="js" file="Js.artDialog.artDialog"/>
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<import type="js" file="Js.normal.city?20141222" />
+<import type="js" file="Js.common"/>
+<import type="css" file="Js.artDialog.skins.blue" />
+<import type="css" file="Css.tab" />
+<import type="css" file="Css.addAdvertisement" />
+<import type="css" file="Css.common" />
+<script type="text/javascript">
+    var APP = "__APP__";
+    var MODULE = "__MODULE__";
+    var CONTROLLER = "__CONTROLLER__";
+    var ACTION = "__ACTION__";
+    $(document).ready(function()
+    {
+    	var message = '{$message}';
+    	if(message!='')
+    	{
+    		showMessage('{$message}','{$url}','{$time}');
+    	}
+		var s1,s2,s3;
+		if($("#province2").val())
+		{
+		    s1 = $("#province2").val();
+			s2 = $("#city2").val();
+			s3 = $("#area2").val(); 
+		    //var s1 = '{$one.province}';
+			//var s2 = '{$one.city}';
+		   // var s3 = '{$one.area}';
+			if(s1)
+			{
+				//alert(s1);
+				addressInit(s1,s2,s3);
+			}
+		}
+
+    });
+	function merchantChange(btn)
+	{
+		var id=btn.value;
+		var html = '<option value="-1">请选择...</option>';
+		$("select[name='ad_id']").html(html);
+		//$("select[name='ad_id'] option:first-child").next().remove();
+		$.post("__MODULE__/Advertisement/getProductListByPartnerId", { partner_id: id},
+	   		function(data){
+				if(data)
+				{	
+					$("select[name='ad_id']").html(data);
+					
+				}
+	   });
+		
+	}
+	function titleChange(btn)
+	{
+		var id=btn.value;
+		
+		var title=$("select[name='ad_id'] option:selected").html();
+		
+		$("input[name='title']").val(title);
+	/* 	$.post("__MODULE__/Advertisement/getProductListByTitleId", { title_id: id},
+	   		function(data){
+				if(data)
+				{
+					$("#product_price1").html(data);
+					$("input[name='product_price']").val(data);
+				}
+		 	
+	   }); */
+	}
+	
+	//返回json数组
+	function getArrayByJson(json) {
+		var obj = new Function("return " + json)();
+		return obj;
+	}
+ </script>
+
+</head>
+
+<body>
+<!-- 顶部页面导航 -->
+<include file="./Application/Home/View/topNav.html" title="添加商家订单" url="__MODULE__/advertisement/addStore" url_name="产品列表"/>
+<div class="tab-div">
+<div id="tabbody_div">
+<form  enctype="multipart/form-data" method="post" action="" >
+<div class="line" id="merchant_id" >
+     <div class="input_left">商家：</div>
+     <div class="input_right">
+         <select name="merchant_id" onChange="merchantChange(this)">
+         <option value="0">请选择...</option>
+            <foreach name="merchants" item="merchant">
+            <option value="{$merchant.id}" {$merchant['id']==$one['merchant_id']?'selected="selected"':''}>{$merchant.company_name}</option>
+            </foreach> 
+         </select>
+     </div>
+</div>
+
+
+<!-- cps字段3 --> 
+<div class="line">
+    <div class="input_left">商品名称：</div>
+    <div class="input_right">
+    	 <select name="ad_id" onChange="titleChange(this)">
+         	<option value="-1">请选择...</option>
+         	  <foreach name="twos" item="two">
+         	  <option value="{$two.id}" {$two['id']==$one['ad_id']?'selected="selected"':''}>{$two.title}</option>
+         	</foreach>
+         </select>
+           <input type="hidden" name="title" value="{$one.title}" maxlength="10"/> 
+    </div>
+</div>
+
+<!-- <!--  <div class="line"  id="product_price">
+    <div class="input_left">价格：</div>
+    <div class="input_right">
+    <span id="product_price1">{$one.product_price}
+    </span>    
+       <input type="hidden" name="product_price" value="{$one.product_price}" maxlength="10"/> 
+    </div>
+</div> -->
+<!--  <div class="line"  id="product_price">
+    <div class="input_left">价格：</div>
+    <div class="input_right">
+       <input type="hidden" name="product_price" value="{$one.product_price}" maxlength="10"/> 
+</div> --> 
+
+ <div class="line"  id="quantity">
+    <div class="input_left">数量：</div>
+    <div class="input_right">    
+       <input type="text" name="quantity" value="{$one.quantity}" maxlength="10"/>
+    </div>
+</div>
+
+<div class="line"  id="user_name">
+    <div class="input_left">用户名：</div>
+    <div class="input_right">    
+       <input type="text" name="user_name" value="{$one.user_name}" maxlength="10"/>
+    </div>
+</div>
+  
+<div class="line"  id="phone">
+    <div class="input_left">电话：</div>
+    <div class="input_right">
+        <input type="text" name="phone" value="{$one.phone}" maxlength="15"/>
+    </div>
+</div>
+<div class="line">
+    <div class="input_left">所在地区:</div>
+    <div class="input_right">
+       	<select name="province2" id="s1">
+       	<option value="{$one.province}">请选择省份</option>
+       	</select> - 
+       	<select name="city2" id="s2">
+       	<option value="{$one.city}">请选择城市</option>
+       	</select> - 
+       	<select name="area2" id="s3">
+       	<option value="{$one.area}">请选择县区</option>
+       	</select>
+	</div>
+	<script type="text/javascript">
+	setupcity();
+	//addressInit('','','');
+	</script>
+    </div>
+<div class="line"  id="address">
+    <div class="input_left">详细地址：</div>
+    <div class="input_right">
+        <input type="text" name="address" value="{$one.address}" maxlength="10"/>
+    </div>
+</div>
+
+<div class="line"  id="remark">
+    <div class="input_left">备注：</div>
+    <div class="input_right">
+        <textarea class="long_text" style="text-align:left;" name="remark"/>{$one.remark}</textarea>
+    </div>
+</div>
+
+<div class="line">
+   <div class="input_left">手机图片：</div>
+   <div class="input_right file_field">
+       <div class="fileInputContainer">    
+	    <input class="fileInput" id="shouji_url" type="file" name="shouji_url_file"  onchange="newImgUpload(this.form,this)"/>   
+        <input type="hidden" name="shouji_url" value="{$one.shouji_url}"/>          
+	</div>
+    <div class="shouji_url_displayphoto">
+	    <notempty name="shouji_pics">
+		    <foreach name="shouji_pics" item="pic" key="k">
+				<div id="picture_url_Img{$k+1}" style="position:relative" class="upload_img_item" >
+				<img width="100px" height="100px" src="{$pic_dir}/{$pic}"  alt="手机图片" />
+				
+				</div>
+		     </foreach>
+	     </notempty>
+     </div>                     
+    </div>       
+</div>
+<div class="clear"></div>
+</div>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;" ></iframe>
+<script>
+$(document).ready(function()
+{			
+	$('.upload_img_item').mouseover(function()
+	{	
+		$(this).find('.delete_btn').css('display','block');
+	});	
+
+	$('.upload_img_item').mouseout(function()
+	{
+		$(this).find('.delete_btn').css('display','none');
+	});	
+});
+
+function newImgUpload(form,btn)
+{
+	//alert(111);
+	form.target  = "uploadframe";
+	form.action = "__ROOT__/index.php/Home/Advertisement/newUploadImgAjax?one=y&pre="+btn.id;
+	//alert(form.action);return false;
+	form.submit();
+}
+
+//手机传完图片后,action返回Advertisement/addStore
+function submit2(form)
+{
+	// var result = CheckForm(form);
+	//var result = true;
+	//if(result===true)
+	//{
+		form.target  = "";
+    	form.action = "";
+    	form.submit();
+	//}
+	//return result;
+}
+</script>
+
+<div class="line"> 
+    <input type="button"  value="提交" class="button" onclick="submit2(this.form)"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+<div class="clear">
+</div>
+</form>
+</div>
+</div>
+</body>
+</html>

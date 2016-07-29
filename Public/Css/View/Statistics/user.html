@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户推广统计表</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="用户推广收入" url="__MODULE__/advertisement/add" url_name="添加产品"/>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/Statistics/user">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />
+              用户名：
+        <input type="text" name="userName" value="{$usernameWhere}" />   
+              
+              注册时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochuuser" name="form_daochu">
+	<input type='hidden' name="userName" value="{$usernameWhere}">
+	<input type='hidden' name="start_time" value="{$startWhere}">
+	<input type='hidden' name="end_time" value="{$endWhere}">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>用户名</th>     
+		      <th>推广量
+		       <a class="sort" href="__MODULE__/Statistics/user?sort=click_count desc&where={$where}">降序</a> 
+	           <a class="sort" href="__MODULE__/Statistics/user?sort=click_count asc&where={$where}">升序</a>
+		      </th>
+			  <th>未结算收入
+			  <a class="sort" href="__MODULE__/Statistics/user?sort=balance desc&where={$where}">降序</a> 
+	          <a class="sort" href="__MODULE__/Statistics/user?sort=balance asc&where={$where}">升序</a>
+			  </th>
+			  <th>总收入
+			  <a class="sort" href="__MODULE__/Statistics/user?sort=total_fee desc&where={$where}">降序</a> 
+	          <a class="sort" href="__MODULE__/Statistics/user?sort=total_fee asc&where={$where}">升序</a>
+			  </th>
+		    <tr>
+		    
+		    <empty name="data">		    
+			    <tr>
+                 <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+            <foreach name="data" item="app" key="k">
+		    <tr class="tr{$k%2}">
+			  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+		      <td style="text-align: left;"><a href="__MODULE__/statistics/userDetail?app_id={$app.id}">{$app.user_name}</a></td>    
+			  <td>{$app.clickcount}</td>
+			  <td>{$app.balance}</td>
+			  <td>{$app.totalFee}</td>
+		    </tr>
+		    </foreach>
+		    <tr>
+		        <td colspan="5">{$page}</td>
+		    </tr>
+              
+             </empty>
+         </tbody>
+     </table>
+ </div>
+</body>
+</html>

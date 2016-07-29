@@ -1,0 +1,23 @@
+[ 2016-06-07T14:42:40+08:00 ] ::1 /demo/index.php?s=/Mobile/Bespoke/index
+INFO: [ app_init ] --START--
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+INFO: [ path_info ] --START--
+INFO: [ path_info ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\www\demo\ThinkPHP\Library\Think\Dispatcher.class.php 第 175 行.
+INFO: [ app_begin ] --START--
+INFO: Run Behavior_ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\www\demo\ThinkPHP\Common\functions.php 第 326 行.
+INFO: [ action_begin ] --START--
+INFO: [ action_begin ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\www\demo\ThinkPHP\Library\Think\Db\Driver\Mysql.class.php 第 50 行.
+SQL: SHOW COLUMNS FROM `yes_school` [ RunTime:0.027001s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\www\demo\ThinkPHP\Library\Think\Db.class.php 第 401 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\www\demo\ThinkPHP\Library\Think\Db.class.php 第 597 行.
+SQL: SELECT yes_school.* FROM `yes_school` left join yes_class on yes_class.school_id=yes_school.id WHERE ( yes_school.id in (select school_id from yes_class group by yes_class.school_id) and yes_class.times>='2016-06-08' and yes_class.times<='2016-06-14' ) GROUP BY yes_school.id  [ RunTime:0.031002s ]
+SQL: SHOW COLUMNS FROM `yes_project` [ RunTime:0.022001s ]
+NOTIC: [8] Undefined index: project_id E:\www\demo\Application\Mobile\Controller\BespokeController.class.php 第 136 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\www\demo\ThinkPHP\Library\Think\Db.class.php 第 401 行.
+SQL: SELECT id,project_name FROM `yes_project` WHERE ( id='' )  [ RunTime:0.000000s ]
+NOTIC: [8] Undefined index: HTTPS E:\www\demo\Application\Mobile\Controller\BespokeController.class.php 第 20 行.
+

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>员工列表</title>
+<import type="css" file="Css.partner.common" />
+<import type="css" file="Css.partner.style" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.cat" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+<script>
+var module = "__MODULE__";
+function paixu(s)
+{
+	//alert(1);
+	location.href="__MODULE__/partnerhome/app_list?order="+s+'&{$where1}';
+}
+function delConfirm(url)
+{		
+	msg = "确定撤销关注么？"
+	if(confirm(msg))
+	{
+		location.href=url;
+	}
+}
+</script>  
+</head>
+
+<body> <div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">员工管理</a></li>
+    <li><a href="#">员工列表</a></li>
+    </ul>
+    </div>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/partnerhome/app_list">
+          
+        <select name="merchant_id">
+            <option value="0">企业</option>
+            <foreach name="merchants" item="merchant">
+            <option value="{$merchant.id}" {$merchant['id']==$merchantWhere?'selected="selected"':''}>{$merchant.login_name}</option>
+            </foreach>
+        </select> 
+        <select name="title">
+            <option value="">姓名</option>
+            
+            <foreach name="appname" item="ad">
+            <option value="{$ad.id}" {$ad['id']==$titleWhere?'selected="selected"':''}>&nbsp;{$ad.user_name}</option>
+            </foreach>
+        </select> 
+        <input type="text" size="15" name="start_time" value="{$startWhere}" placeholder="&nbsp;结算时间" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+       <select name="order" onChange="paixu(this.options[this.options.selectedIndex].value)">
+        <option value="-1" >&nbsp;筛选排序：</option>
+        <option value="share_count desc" {$order=='share_count desc'?'selected="selected"':''}>按分享量降序</option>
+        <option value="share_count asc" {$order=='share_count asc'?'selected="selected"':''}>按分享量升序</option>
+        <option value="view_count desc" {$order=='view_count desc'?'selected="selected"':''}>按浏览量降序</option>
+        <option value="view_count asc" {$order=='view_count asc'?'selected="selected"':''}>按浏览量升序</option>
+        <option value="click_count desc" {$order=='click_count desc'?'selected="selected"':''}>按成交量降序</option>
+        <option value="click_count asc" {$order=='click_count asc'?'selected="selected"':''}>按成交量升序</option>
+        <option value="weifukuan desc" {$order=='weifukuan desc'?'selected="selected"':''}>按未付款数降序</option>
+        <option value="weifukuan asc" {$order=='weifukuan asc'?'selected="selected"':''}>按未付款数升序</option>
+        <option value="fukuan desc" {$order=='fukuan desc'?'selected="selected"':''}>按已付款数降序</option>
+        <option value="fukuan asc" {$order=='fukuan asc'?'selected="selected"':''}>按已付款数升序</option>
+        <option value="total_fee desc" {$order=='total_fee desc'?'selected="selected"':''}>按收入降序</option>
+        <option value="total_fee asc" {$order=='total_fee asc'?'selected="selected"':''}>按收入升序</option>
+        <option value="last_login desc" {$order=='last_login desc'?'selected="selected"':''}>按最近登录时间降序</option>
+        <option value="last_login asc" {$order=='last_login asc'?'selected="selected"':''}>按最近登录时间升序</option>
+        <option value="settlement_time desc" {$order=='settlement_time desc'?'selected="selected"':''}>按结算时间降序</option>
+        <option value="settlement_time asc" {$order=='settlement_time asc'?'selected="selected"':''}>按结算时间升序</option>
+        </select>
+        <input class="button" type="submit" name="submit" value="&nbsp;" />
+     
+        
+    </form>
+</div>
+<!-- 列表样式 -->
+<form action="">
+    <div class="data-list" >
+        <table cellspacing="1" cellpadding="3">
+            <tbody>     
+                <tr>
+                    <th>姓名</th> 
+                    <th>分享量
+                    <!-- <a class="sort" href="__MODULE__/account/app_list?sort=fenxiang desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=fenxiang asc&where={$where}">升序</a> -->
+                    </th>
+                  
+                    <th>浏览量
+                   <!--  <a class="sort" href="__MODULE__/account/app_list?sort=view_count desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=view_count asc&where={$where}">升序</a> -->
+                    </th>         
+                    <th>成交量
+                   <!--  <a class="sort" href="__MODULE__/account/app_list?sort=click_count desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=click_count asc&where={$where}">升序</a> -->
+                    </th>
+                    
+                    <th>未付款数
+                    <!-- <a class="sort" href="__MODULE__/account/app_list?sort=weifukuan desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=weifukuan asc&where={$where}">升序</a> -->
+                    </th>
+                    
+                    <th>已付款数
+                    <!-- <a class="sort" href="__MODULE__/account/app_list?sort=fukuan desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=fukuan asc&where={$where}">升序</a> -->
+                    </th>
+                    
+                    <th>收入(元)
+                    <!-- <a class="sort" href="__MODULE__/account/app_list?sort=total_fee desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=total_fee asc&where={$where}">升序</a> -->
+                    </th>
+                     
+                    <th>最近登录时间
+                    <!-- <a class="sort" href="__MODULE__/account/app_list?sort=last_login desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=last_login asc&where={$where}">升序</a> -->
+                    </th>
+                    
+                    <th>结算时间
+                 <!--    <a class="sort" href="__MODULE__/account/app_list?sort=settlement_time desc&where={$where}">降序</a> 
+                    <a class="sort" href="__MODULE__/account/app_list?sort=settlement_time asc&where={$where}">升序</a> -->
+                    </th>
+                    <th>操作</th>
+                </tr> 
+                <empty name="app">		    
+			    <tr>
+                    <td class="no-records" colspan="10" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	             <else />
+                <foreach name="app" item="ad" key="k">
+                <tr class="tr{$k%2}">
+			      <td><a href="__MODULE__/partnerhome/click_list?app_id={$ad.id}">{$ad.user_name}</a></td>    
+			      <td>{$ad.share_count}</td>
+			      <td>{$ad.view_count}</td>
+			      <td>{$ad.click_count}</td>
+			      <td>{$ad.weifukuan}</td>
+			      <td>{$ad.fukuan}</td>
+			      <td>{$ad.total_fee}</td>
+			      <td>{$ad.last_login}</td>
+			      <td>{$ad.settlement_time}</td>
+			      <td><a  onclick="delConfirm('__MODULE__/partnerhome/revoke?app_id={$ad.id}')"><img width="14px" height="14px" src="__PUBLIC__/images/icon_repeal.jpg" /></a></td>
+			    </tr>     
+                </foreach>
+                <tr><td colspan="10">{$page}</td></tr>
+                </empty>
+            </tbody>
+        </table>
+    </div>
+</form>
+</body>
+</html>

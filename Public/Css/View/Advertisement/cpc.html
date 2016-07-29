@@ -1,0 +1,205 @@
+<form enctype="multipart/form-data" method="post">
+<input type="hidden" name="ad_type" value="CPC">
+
+<empty name="ad['merchant_id']">
+<div class="line" id="merchant_id" >
+    <div class="input_left">商家名称：</div>
+    <div class="input_right">
+        <select name="merchant_id">
+        <option value="-1">请选择...</option>
+        <foreach name="merchants" item="user">            
+            <option value="{$user.id}">{$user.name}</option>            
+        </foreach>      
+        </select>
+        <a class="special" href="__MODULE__/user/add">添加商家</a>
+    </div>        
+</div>
+<else/>
+<div class="line" id="merchant_id" >
+     <div class="input_left">商家名称：</div>
+     <div class="input_right">
+         <select name="merchant_id">
+         <option value="-1">请选择...</option>
+         <foreach name="merchants" item="user"> 
+             <assign name="merchant_id" value="$ad.merchant_id" />
+             <assign name="user_id" value="$user.id" />             
+             <option value="{$user.id}" {$user_id == $merchant_id ?'selected="selected"':''} >{$user.name}</option>        
+         </foreach>     
+         </select>
+     </div>
+</div>
+</empty>
+
+
+<!-- 分类Start --> 
+<if condition="$ad['cat_id'] eq null OR $ad['cat_id'] eq '0'">
+<div class="line" id="category_id">
+     <div class="input_left">商品分类：</div>
+     <div class="input_right cat">
+         <select name="parent_cat[]" onchange="changeListener(this)">
+         <option value="0">请选择...</option>
+         <foreach name="cats" item="cat">                
+            <option value="{$cat.id}">{$cat.cat_name}</option>
+        </foreach>      
+         </select>
+         <a class="special" href="__MODULE__/advertisement/addCat">添加商品类别</a>
+
+    </div>        
+</div>
+<else/>
+<div class="line" id="category_id">
+     <div class="input_left">商品分类：</div>
+     <div class="input_right cat">         
+      <foreach name="directCats" item="directCat" key="k">
+          <select name="parent_cat[]" onchange="changeListener(this)" class="cat_select">
+              <foreach name="directCat" item="item">
+                  <option value="{$item.id}" {$k == $item['id'] ?'selected="selected"':''}>
+                  {$item.cat_name}
+                  </option>
+              </foreach>
+          </select>
+     </foreach>
+      
+      <a class="special" href="__MODULE__/advertisement/addCat">添加商品类别</a>
+     </div>        
+</div>
+</if>
+<!-- 分类End --> 
+
+<foreach name="attrs" item="attr">
+<div class="line category_attr" >
+    <div class="input_left">{$attr.attr_name}：</div>
+    <div class="input_right"><input type="text" name="attr[{$attr.id}]" value="{$attr.attr_value}"/><span class="require-field">*</span></div>
+</div>
+</foreach>
+  
+<div class="line">
+    <div class="input_left">广告标题：</div>
+    <div class="input_right">
+        <empty name="ad['title']">
+            <input type="text" name="title" />
+        <else/>
+            <input type="text" name="title" value="{$ad.title}"/>
+        </empty>        
+        
+    </div>
+</div>
+<div class="line">
+    <div class="input_left">短标题：</div>
+    <div class="input_right">
+        <empty name="ad['short_title']">
+            <input type="text" name="short_title" />
+        <else/>
+            <input type="text" name="short_title" value="{$ad.short_title}"/>
+        </empty>        
+        
+    </div>
+</div>
+
+<div class="line">
+    <div class="input_left">简单描述：</div>
+    <div class="input_right">
+        <empty name="ad['product_desc']">
+            <textarea type="text" name="product_desc"/></textarea>
+        <else/>
+            <textarea type="text" style="text-align:left;" name="product_desc"/>{$ad.product_desc}</textarea>
+        </empty>        
+        
+    </div>
+</div>
+  
+<div class="line"  id="ad_fee">
+    <div class="input_left">广告费：</div>
+    <div class="input_right">    
+    <empty name="ad['ad_fee']">
+       <input type="text" name="ad_fee"/>
+   <else/>
+       <input type="text" name="ad_fee" value="{$ad.ad_fee}"/>
+   </empty> 
+    </div>
+</div>
+  
+<div class="line"  id="click_price">
+    <div class="input_left">单击费：</div>
+    <div class="input_right">
+    
+        <empty name="ad['click_price']">
+            <input type="text" name="click_price" />
+        <else/>
+            <input type="text" name="click_price" value="{$ad.click_price}"/>
+        </empty> 
+    </div>
+</div>
+
+
+<div id="button_info"  class="line">
+    <div class="input_left">按钮文字：</div>
+    <div class="input_right">
+        <empty name="ad['button_name']">
+            <input type="text" name="button_name" />
+        <else/>
+            <input type="text" name="button_name" value="{$ad.button_name}"/>
+        </empty>
+    </div>  
+    <div class="input_left">按钮链接地址：</div>
+    <div class="input_right">
+        <empty name="ad['button_link_url']">
+            <input type="text" name="button_link_url" value="http://"/>
+        <else/>
+            <input type="text" name="button_link_url" value="{$ad.button_link_url}"/>
+        </empty>
+    </div>
+</div>
+<div class="line">
+    <div class="input_left">图片：</div>
+    <div class="input_right file_field">
+        <div class="fileInputContainer">    
+		    <input class="fileInput" type="file" name="file"  onchange="startUpload(this.form)"/>           
+		</div>    
+        <iframe  name="uploadframe" style="display:none;width:0px;height:0px;">            
+        </iframe>
+       <div class="displayphoto">
+       <notempty name="pics">
+       <foreach name="pics" item="pic" key="k">
+           <div id="uploadImg{$k+1}" style="position:relative" class="upload_img_item" >
+           <img width="100px" height="100px" src="{$pic_dir}/{$pic}"  alt="上传头像" />
+           <a class="delete_btn" target="uploadframe" style="position:absolute;top:0px;right:0px;display:none;" href="__MODULE__/Advertisement/deleteImg?id={$k+1}" title="删除">
+           <img src="__PUBLIC__/images/icon_del.gif" alt="删除"/>
+           </a>
+           </div>
+       </foreach>
+       </notempty>
+       </div>                     
+    </div>       
+</div>
+<script>
+$(document).ready(function()
+{			
+	$('.upload_img_item').mouseover(function()
+	{	
+		
+		$(this).find('.delete_btn').css('display','block');
+	});	
+
+	$('.upload_img_item').mouseout(function()
+	{
+		$(this).find('.delete_btn').css('display','none');
+	});	
+});
+</script>
+<div class="line">
+     <div class="input_left">产品介绍：</div>
+     <div class="input_right">
+     <empty name="ad['introduction']">
+          <textarea id="product_intro1" name="introduction" cols="90" rows="20"></textarea>
+      <else/>
+          <textarea id="product_intro1" name="introduction" cols="90" rows="20">{$ad.introduction}</textarea>
+      </empty>
+         
+     </div>
+</div>  
+<div class="line">       
+    <input type="submit"  value="提交" class="button"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+</form>

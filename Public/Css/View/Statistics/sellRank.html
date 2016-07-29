@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>销售排行</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="销售排行" />
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="__MODULE__/Statistics/sellRank">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" /> 
+                  商家：
+       <select name="merchant">
+       <option value="0">请选择...</option>
+       <foreach name="merchants" item="merchant">
+           <option value="{$merchant.id}" {$merchant['id']==$merchantWhere?'selected="selected"':''}>{$merchant.company_name}</option>
+       </foreach>
+       </select>
+                 关键字：
+       <input type="text" name="title" value="{$titleWhere}"/>                                  
+                   上线时间：
+        <input type="text" size="15" name="start_time" value="{$startWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /><bold>~</bold>
+        <input type="text" size="15" name="end_time" value="{$endWhere}" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+        <input class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochusellRank" name="form_daochu">
+   <input type='hidden' name="merchant" value="{$merchantWhere}">
+	<input type='hidden' name="title" value="{$titleWhere}">
+	<input type='hidden' name="start_time" value="{$startWhere}">
+	<input type='hidden' name="end_time" value="{$endWhere}">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+		      <th>产品</th>     
+		      <th>销售总量(个)
+		          <a class="sort" href="__MODULE__/statistics/sellRank?sort=quantity desc&where={$where}">降序</a> 
+		          <a class="sort" href="__MODULE__/statistics/sellRank?sort=quantity asc&where={$where}">升序</a>
+		      </th>
+		      <th>所属商家 </th>	
+		      <th>上线时间 
+		      <a class="sort" href="__MODULE__/statistics/sellRank?sort=create_time desc&where={$where}">降序</a> 
+		      <a class="sort" href="__MODULE__/statistics/sellRank?sort=create_time asc&where={$where}">升序</a>
+		      </th>	     
+		    <tr>
+		    <empty name="rows">		    
+			    <tr>
+                 <td class="no-records" colspan="5" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+             <foreach name="rows" item="row" key="k">
+		    <tr class="tr{$k%2}">
+			  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+		      <td style="text-align: left;"><a href="__APP__/Mobile/index/index?ad_id={$row.ad_id}">{$row.short_title}</a></td>    
+		      
+		      <td><a href="__MODULE__/statistics/orderList?submit=sellRank&ad_id={$row.ad_id}">{$row.quantity}</a></td>
+		      <td><a href="__MODULE__/statistics/orderList?submit=sellRank&merchant={$row.merchant_id}">{$row.company_name}</a></td>
+		      <td>{$row.create_time}</td>
+		    </tr>
+		    </foreach>
+		    <tr>
+		        <td colspan="5">{$page}</td>
+		    </tr>
+             </empty>
+         </tbody>
+     </table>
+ </div>
+<p class="input_remark">注：销售量为0的产品，未计入到本排行榜。</p>
+</body>

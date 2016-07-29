@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>结算驳回</title>
+<import type="css" file="Css.partner.style" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<import type="js" charset="utf-8" file="Js.editor.kindeditor" />
+<import type="js" charset="utf-8" file="Js.editor.lang.zh_CN" />
+
+<script type="text/javascript">
+    /*** 富文本编辑器 Start **/
+    var editor;
+    KindEditor.ready(function(K)
+    {	
+    	//editor = K.create("#product_intro1");
+    	editor = K.create('textarea[name="content"]', {
+    		width:"800px",
+    		height:"400px"
+    	});
+    });
+    /*** 富文本编辑器 End **/
+ </script>
+</head>
+<body>
+<form name="form"  method="post" action ="__MODULE__/account/bhmess">
+	<div class="place">
+	    <span>位置：</span>
+	    <ul class="placeul">
+	    <li><a href="__MODULE__/index/right">首页</a></li>
+	    <li><a href="#">我的产品</a></li>
+	    <li><a href="#">发布产品</a></li>
+	    </ul>
+	   </div>
+	    <div class="formbody">
+		    <ul class="forminfo">
+		    <li>
+		    <label>驳回理由:</label><textarea name="content" cols="" rows="" class="textinput"></textarea></li>
+		    </li>
+		      <li>
+			      <label>&nbsp;</label>
+			      <input type="hidden" value="{$id}"  name="id"/>
+			      <input  type="submit" class="btn" value="确认提交"  />
+		      </li>
+		    </ul>
+		</div>
+</form>
+<script>
+	function submit2(form)
+    { //onclick="return submit2(this.form)"
+   		form.target  = "";
+       	form.action = "__MODULE__/account/bhmess";
+       	form.submit();
+    }
+		</script>
+</body>
+</html>

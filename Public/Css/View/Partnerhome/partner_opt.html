@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>管理用户信息维护</title>
+<include file="./Application/Partner/View/Include/head.html" />
+<import type="css" file="Css.partner.style" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.common" />
+<import type="css" file="Css.partner.common" />
+<import type="css" file="Css.partner.category" />
+<import type="css" file="Js.diashow.skins.css.diashow" />
+<import type="js" file="Js.jquery-1#8#2#min"/>
+<import type="js" file="Js.diashow.diashow"/>
+<script type="text/javascript">
+    $(document).ready(function()
+	{
+		var message = '{$message}';
+		if(message!='')
+		{
+			showMessage('{$message}','{$url}','{$time}');
+		}
+	});
+    
+	function submit2()
+	{
+		var txt=$("#user_type").find("option:selected").text();
+		
+
+		//alert(11);
+   	   	var reg = /^\d{11}$/g;
+   		var reg1 = /^\d{19}$/g;
+		if(!reg.test($("input[name='phone']").val()) )
+		{ 
+	    	alert("手机位数不正确！"); 
+		}
+		else if(!reg1.test($("input[name='card_num']").val()) && txt!='推广员' && txt!='管理员')
+		{ 
+		
+		    alert("银行卡号位数不正确！"); 
+		} 
+		else
+		{
+			myonclick();
+		}
+	}
+	
+	//根据类型不同显示不同的
+    function Gettext(obj){
+		
+   	 var txt=$(obj).find("option:selected").text();
+	
+   	     if(txt=='推广员')
+   	     {
+   	    	 $("#company_name").addClass('no');
+   	    	 $("#partner_code").addClass('no');
+   	    	 $("#cjg_code").addClass('no');
+ 	          $("#address").addClass('no');
+ 	          $("#reg_capital").addClass('no');
+ 	          $("#business_sco").addClass('no');
+ 	          $("#business_no").addClass('no');
+ 	          $("#picture").addClass('no');
+ 	     	  $("#card_owner").removeClass('no');
+	          $("#card_num").removeClass('no');
+	          $("#bank_name").removeClass('no'); 
+  
+   	     }
+   	     else
+   	    	 
+   	    {
+   	    	  if(txt=='商家')
+   	    	  {
+   	    	   $("#partner_code").removeClass('no');
+   	    	   $("#cjg_code").removeClass('no');
+   	    	  }
+   	    	  else
+   	    	 {
+   	    		 $("#partner_code").addClass('no');
+   	    		 $("#cjg_code").addClass('no');
+   	    		  
+   	    	}
+   	          $("#company_name").removeClass('no');
+   	          $("#address").removeClass('no');
+   	          $("#reg_capital").removeClass('no');
+   	          $("#business_sco").removeClass('no');
+   	          $("#business_no").removeClass('no');
+   	          $("#picture").removeClass('no');
+   	          $("#card_owner").removeClass('no');
+   	          $("#card_num").removeClass('no');
+   	          $("#bank_name").removeClass('no');
+   	      
+   	    }
+   	 }
+	
+ 
+</script>
+</head>
+<body>
+<div class="form_div">
+<form name="form1" action="" enctype="multipart/form-data" method="post">
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">用户管理</a></li>
+    <li><a href="#">添加用户</a></li>
+    </ul>
+    </div>
+	<table>
+	    <tr>
+        <td class="label">用户权限：</td>
+        <td class="value">
+        <select name="pow_id" id="pow_id">               
+                <option value="0">请选择</option>
+                <foreach name="pow" item="pw">
+                 <option value="{$pw.id}" {$pw['id']===$actionId?'selected="selected"':''}>{$pw.pow_name}</option>
+            </foreach>
+            </select>
+        </td>
+        </tr>
+		<tr>
+			<td class="label">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</td>
+	        <td class="value">
+	        <select name="user_type" id="user_type" onchange="Gettext(this)" > 
+	              
+	              <!-- <option value="administrator" value="{$one.user_type}" $one["user_type"]=='administrator'?'selected="selected"':''>管理员</option> -->
+	              <option value="merchant" value="{$one.user_type}" {$one["user_type"]=='merchant'?'selected="selected"':''}>企业</option>
+	          
+	              <option value="promotion" value="{$one.user_type}" {$one["user_type"]=='promotion'?'selected="selected"':''}>团队</option>
+	        </select>
+	        </td>
+	    </tr>
+	      <tr id="partner_code" class="<if condition="$one['user_type'] == 'promotion' || $one['user_type'] == 'factory'">no</if>">
+	        <td class="label">编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</td>
+	        <td class="value" id="partner_code">
+	        	<input type="text" name="partner_code" value="{$one.partner_code}"/>
+	        </td>
+	    </tr>
+	       <tr id="partner_code" class="<if condition="$one['user_type'] == 'promotion' || $one['user_type'] == 'factory'">no</if>">
+	        <td class="label">店铺代码：</td>
+	        <td class="value" id="cjg_code">
+	        	<input type="text" name="cjg_code" value="{$one.cjg_code}"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="label">登&nbsp;&nbsp;录&nbsp;&nbsp;名：</td>
+	        <td class="value" id="login_name">
+	        	<input type="text" name="login_name" value="{$one.login_name}"/>
+	        </td>
+	    </tr>
+	   
+	    <tr id="company_name" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	        <td class="label">公&nbsp;&nbsp;司&nbsp;&nbsp;名：</td>
+	        <td class="value" id="company_name">
+	        <input type="text" name="company_name" value="{$one.company_name}"/> </td>
+	    </tr>
+	
+	    <tr>
+	        <td class="label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+	        <td class="value"><input type="password" name="passwd" /></td>
+	    </tr>
+	    <tr>
+	        <td class="label">确认密码：</td>
+	        <td class="value"><input type="password" name="confirmpwd"/></td>
+	    </tr>
+	  
+	     <tr id="address" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	        <td class="label">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</td>
+	        <td class="value" id="cat">
+	        <input type="text" name="address" value="{$one.address}"/> </td>
+	    </tr>
+	    <tr id="reg_capital" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	        <td class="label">注册资本：</td>
+	        <td class="value" id="cat">
+	        <input type="text" name="reg_capital" value="{$one.reg_capital}"/> </td>
+	    </tr>
+	    <tr id="business_sco" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	        <td class="label">经营范围：</td>
+	        <td class="value" id="cat">
+	        <input type="text" name="business_sco" value="{$one.business_sco}"/> </td>
+	    </tr>
+	    <tr id="business_no" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	        <td class="label">营业执照：</td>
+	        <td class="value" id="cat">
+	        <input type="text" name="business_no" value="{$one.business_no}"/> </td>
+	    </tr>
+	    <tr id="picture" class="<if condition="$one['user_type'] == 'promotion'">no</if>">
+	     	<td class="label">营业执照图片：</td>
+	    	<td>
+			<div class="input_right file_field">
+	      	<div class="fileInputContainer">    
+		   		<input class="fileInput" type="file" name="picture_url_file" id="picture_url" onchange="newImgUpload(this.form,this)"/>
+		   		<input type="hidden" name="picture_url" value="{$one.picture_url}"/>    
+			</div>
+	    	<div class="picture_url_displayphoto">
+			    <notempty name="picture_url_pics">
+				    <foreach name="picture_url_pics" item="pic" key="k">
+						<div id="picture_urlImg{$k+1}" style="position:relative" class="upload_img_item" >
+							<img width="100px" height="100px" src="{$pic_dir}{$pic}"  alt="营业执照图片" />
+						</div>
+				     </foreach>
+			    </notempty>
+	     	</div>                     
+	    	</div>  
+			</td>
+	   </tr>
+	   </if>
+	    <tr>
+	        <td class="label">联&nbsp;&nbsp;系&nbsp;&nbsp;人：</td>
+	        <td class="value" id="link_man">
+	        <input type="text" name="link_man" value="{$one.link_man}"/> </td>
+	    </tr>
+	    <tr>
+	        <td class="label">手&nbsp;&nbsp;机&nbsp;&nbsp;号：</td>
+	        <td class="value" id="phone">
+	        <input type="text" name="phone" value="{$one.phone}" onblur="chk()"/> </td>
+	    </tr>
+	    
+		    <tr id="card_owner" >
+		        <td class="label">银行用户名：</td>
+		        <td class="value" id="card_owner">
+		        <input type="text" name="card_owner" value="{$one.card_owner}"/>
+		        <span class="input_remark">&nbsp;商家用户必须填写</span>
+		          </td>
+		    </tr>
+		    <tr id="card_num" >
+		        <td class="label">银行卡号：</td>
+		        <td class="value" id="card_num">
+		        <input type="text" name="card_num" value="{$one.card_num}" onblur="yz()"/>
+		         <span class="input_remark">&nbsp;商家用户必须填写</span>
+		        </td>
+		    </tr>
+		    <tr id="bank_name">
+		        <td class="label">开&nbsp;&nbsp;户&nbsp;&nbsp;行：</td>
+		        <td class="value" id="bank_name">
+		       <select name="bank_name">
+		        <option value="-1" >请选择开户行</option>
+		        <option value="" {$one['bank_name']=== "" ?'selected="selected"':''}>中国建设银行</option>
+		        <option value="102100099996" {$one['bank_name']== "102100099996" ?'selected="selected"':''}>中国工商银行</option>
+		        <option value="103100000026" {$one['bank_name']== "103100000026" ?'selected="selected"':''}>中国农业银行</option>
+		        <option value="104100000004" {$one['bank_name']== "104100000004" ?'selected="selected"':''}>中国银行</option>
+		        <option value="301290000007" {$one['bank_name']== "301290000007" ?'selected="selected"':''}>交通银行</option>
+		        <option value="308584000013" {$one['bank_name']== "308584000013" ?'selected="selected"':''}>招商银行</option>
+		        <option value="403100000004" {$one['bank_name']== "403100000004" ?'selected="selected"':''}>中国邮政储蓄银行</option>
+		        </select>
+		        <span class="input_remark">&nbsp;商家用户必须填写</span>
+		        </td>
+		    </tr>
+	  
+	    <tr id="submit1">
+	        <td></td>
+	        <td style="text-align:left;">
+	            <input class="button" type="button" value="保存" onclick="submit2()"/>
+	            <input class="button" type="reset" value="重置"/>
+	        </td>
+	    </tr>
+	</table>
+</form>
+<iframe name="uploadframe" style="display:none;width:0px;height:0px;" ></iframe>
+</div>
+<script type="text/javascript">
+
+	function newImgUpload(form,btn)
+	{
+		//alert(111);
+		form.target  = "uploadframe";
+		form.action = "__ROOT__/Home/Advertisement/newUploadImgAjax?one=y&pre="+btn.id;
+		//alert(form.action);return false;
+		
+		form.submit();
+	}
+	function myonclick()
+	{        
+		//alert(11);
+		form1.target  = "";
+		form1.action = "";
+		form1.submit();
+	}
+</script>
+
+</body>
+</html>

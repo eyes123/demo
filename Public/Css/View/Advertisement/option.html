@@ -1,0 +1,18 @@
+<div class="option">
+	<?php
+		$optionsNum = 0;
+		//$attrIds = '';
+	?>
+	<div class="input_left">商品属性：</div>
+	
+	<div class="select_change">
+		{$content}
+	</div>
+	<script type="text/javascript">
+		function mydel(mythis)
+		{
+			var tr = mythis.parentNode.parentNode;
+			$(".option table")[0].deleteRow(tr.rowIndex);
+		}
+	</script>
+</div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>审核申请信息表</title>
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.addUser" />
+<import type="css" file="Css.common" />
+<import type="css" file="Css.category" />
+</head>
+<body>
+<div class="form_div">
+<form action="" method="post">
+<input type="hidden" value="{$exp.id}" name="exp_id"/>
+	<table>
+		   <tr>审核申请信息</tr>
+			<tr>
+				<td class="labels">姓名：{$exp.name}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">联系方式：{$exp.phone}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">地址：{$exp.province}{$exp.city}{$exp.area}{$exp.address}</td>
+		    </tr>
+		    <tr>
+		        <td class="labels">特长：{$exp.info}</td> 
+		    </tr>
+		     <tr>
+		        <td class="labels">审批结果：	
+		        <if condition="$exp['flow_state'] eq '-1' ">
+				  	申请失败
+				 </if>
+				 <if condition="$exp['flow_state'] eq '0' ">
+				  	申请中
+				 </if>
+				   <if condition="$exp['flow_state'] eq '1' ">
+				  	申请成功
+				 </if>
+				</td> 
+		    </tr>
+		   
+		   
+	</table>
+</form>
+
+</div>     
+</body>
+</html>

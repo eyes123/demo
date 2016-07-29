@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户详情</title>
+<import type="css" file="Css.partner.style" />
+</head>
+<body>
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="__MODULE__/index/right">首页</a></li>
+    <li><a href="#">用户管理</a></li>
+    <li><a href="#">用户列表</a></li>
+    <li><a href="#">用户详情</a></li>
+    </ul>
+    </div>
+<div class="info" >
+	  
+	<p>登录名:<span>{$partner.login_name}</span></p>
+	<if condition="$partner['user_type'] != 'promotion' "><p>公司名:<span>{$partner.login_name}</span></p></if>
+	<p>类型:<span><if condition="$partner['user_type'] eq 'merchant' ">企业</if>
+
+		<if condition="$partner['user_type'] eq 'promotion' ">团队</if>
+		<if condition="$partner['user_type'] eq 'administrator' ">管理员</if></span>
+	</p>
+	<p>联系人:<span>{$partner.link_man}</span></p>
+	<p>电话:<span>{$partner.phone}</span></p>
+	<if condition="$partner['user_type'] != 'promotion' "><p>地址:<span>{$partner.address}</span></p></if>
+	<p>余额:<span>{$partner.balance}</span></p>
+	<p>正在结算余额:<span>{$partner.balancing}</span></p>
+	<p>结算状态:
+		<span><if condition="$partner['pay_state'] eq '0' ">正常
+		<else/>结算中
+		</if></span>
+	</p>
+	<p>最后结算时间:<span>{$partner.settlement_time}</span></p>
+	<if condition="$partner['user_type'] != 'promotion' ">
+	<p>银行用户名:<span>{$partner.card_owner}</span></p>
+	<p>银行卡号:<span>{$partner.card_num}</span></p>
+	<p>开户行:<span>
+		<if condition="$partner['bank_name'] eq 'null' ">中国建设银行</if>
+		<if condition="$partner['bank_name'] eq '102100099996' ">中国工商银行</if>
+		<if condition="$partner['bank_name'] eq '103100000026' ">中国农业银行</if>
+		<if condition="$partner['bank_name'] eq '104100000004' ">中国银行</if>
+		<if condition="$partner['bank_name'] eq '301290000007' ">交通银行</if>
+		<if condition="$partner['bank_name'] eq '308584000013' ">招商银行</if>
+		<if condition="$partner['bank_name'] eq '403100000004' ">中国邮政储蓄银行</if></span>
+	</p>
+	<p>注册资本:<span>{$partner.reg_capital }</span></p>
+	<p>经营范围:<span>{$partner.business_sco}</span></p>
+	<p>营业执照号码:<span>{$partner.business_no}</span></p>
+	<p>营业执照图片:</p>
+	<p><span><img width="100px" height="100px" src="{$pic_dir}{$partner['picture_url']}"  alt="营业执照图片" /></span></p>
+	<p><span><img width="250px" alt="" src="__MODULE__/account/getQrcode"></span></p>
+	<p class="yuangong">关联了<span>{$count}</span>名员工</p> 
+	</if>
+ </div>
+</body>
+</html>

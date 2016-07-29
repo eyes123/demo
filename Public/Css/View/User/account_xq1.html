@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>注册详情页</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+
+<include file="./Application/Home/View/topNav.html" title="注册详情页" />
+<div class="data-list" >
+<table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+		      <th>用户名</th>      
+		      <th>手机号</th>
+		      <th>注册时间</th>
+		     </tr>
+		     <empty name="rows">
+		    <tr> 
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+             </tr> 
+             <else />
+		    <foreach name="rows" item="row" key="k">
+		    <tr class="tr{$k%2}">
+		      <td>{$row.login_name}</td> 
+		      <td>{$row.phone}</td> 
+		      <td>{$row.create_time}</td>     
+		    </tr>
+		    </foreach>  
+		    <tr>
+		    <td colspan="3">{$page}</td> 
+		    </tr>
+             </empty> 
+           
+         </tbody>
+     </table>
+</div>
+</body>
+</html>

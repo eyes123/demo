@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+html{height: 100%;}
+body{line-height:23px; margin:0 auto; font-family:"Microsoft YaHei","Hiragino Sans GB","寰蒋闆呴粦","瀹嬩綋",Arial,Verdana,sans-serif;font-size: 12px; width:100%;
+     overflow-x: hidden; }
+ul,li,img,span,p,font,strong,em,ol,h1,h2,h3,h4,h5,h6,dl,dt,dd,input,tboby,form{margin:0; padding:0; border:0; list-style:none;}
+h1,h2,h3,h4,h5,h6{font-weight: normal;}
+table{border-collapse:collapse;border-spacing:0;}
+input,button, select, textarea{outline: none;border: none;background: none;}
+li{list-style:none;}
+a{text-decoration:none;color:#555555;}
+img{ vertical-align:middle;}
+a img{border:none;}
+.clearfix:after {content:"\200B"; display:block; height:0; clear:both;}
+.clearfix {*zoom:1;}
+
+.fl{float: left;}
+.fr{float: right;}
+/*.wrap{ width: 1200px; display: block;position: relative;margin: auto;}*/

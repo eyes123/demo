@@ -1,0 +1,71 @@
+@CHARSET "UTF-8";
+body {
+	font-size:14px;
+	color:#666;
+	font-family:Microsoft Yahei;
+}
+.account_info {
+	background: none repeat scroll 0 0 #EEF8F9;
+	border: 1px solid #BBDDE5;
+    width: 100%;
+	margin-bottom:10px;
+}
+
+.title_bar {
+	background: url("../images/th_bg.gif") repeat-x scroll 0 0 #BBDDE5;
+    line-height: 30px;
+    white-space: nowrap;
+	color:#192E32;
+	padding-left:5px;
+}
+
+.account_info_detail {
+	padding-left:10px;
+}
+.info_lable {
+	display:block;
+	float:left;
+	text-align:right;
+	width:90px;
+}
+
+.item {
+	padding-left:10px;
+	
+}
+.zhengshu {
+	font-size: 24px;
+    font-weight: 400;
+    color: #666;
+}
+
+.xiaoshu {
+	font-size:18px;
+}
+ .button {
+	color:#fff;
+	font-size:16px;
+	dispaly:block;
+	margin-left:10px;
+	padding:3px 10px;
+	border: 1px solid #fb8318;
+    background-color: #fb8318;
+}
+#supplier_btn {
+	color:#fff;
+	font-size:16px;
+	dispaly:block;
+	margin-left:10px;
+	padding:3px 10px;
+	border: 1px solid #fb8318;
+    background-color: #fb8318;
+    
+}
+}
+.notice {
+	margin-left:10px;
+	color:#B2B2B2;
+}
+.order_kuaidi,.fahuo { width:300px;}
+.order_kuaidi input { width:155px; }
+.fahuo input { margin-left:92px;}

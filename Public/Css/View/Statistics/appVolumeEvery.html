@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>统计查询</title>
+<import type="css" file="Css.common" />
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.DatePicker.WdatePicker" />
+</head>
+<body>
+<include file="./Application/Home/View/topNav.html" title="用户App统计量"/>
+<div>
+   <form method="post" action="__MODULE__/statistics/daochuappVolumeEvery" name="form_daochu">
+	<input type="button" name="btn_output" value="导出" class="submit" onclick="document.form_daochu.submit();"/>
+</form>
+</div>
+<!-- 搜索模块 -->
+<div class="search_div">
+    <form action="">
+        <img width="26" height="22" border="0" alt="search" src="__PUBLIC__/images/icon_search.gif" />        
+                    标题关键字：
+        <input type="text" name="title" value="{$titleWhere}" />
+          类型:
+        <select name="type">
+        <option value="-1">全部</option>
+        <option value="liulan" {$type=='liulan'?'selected="selected"':''}>浏览</option>
+        <option value="xiazai" {$type=='xiazai'?'selected="selected"':''}>下载</option>
+        </select>
+        <input style="margin-left:35px;" class="button" type="submit" name="submit" value="搜索" />
+    </form>
+</div>
+<div class="data-list" >
+     <table cellspacing="1" cellpadding="3">
+         <tbody>
+             <tr>
+			  <th>编号</th>
+			  <th>用户名</th>
+		      <th>统计类型</th>     
+		      <th>数量</th>
+		    <tr>
+		    <empty name="appVolume">		    
+			    <tr>
+                 <td class="no-records" colspan="4" style="background-color: rgb(244, 250, 251);">没有找到任何记录</td>
+                </tr> 
+	         <else />
+            <foreach name="appVolume" item="app" key="k">
+		    <tr class="tr{$k%2}">
+			  <td>{$pageCount*($currentPage-1)+$k+1}</td>
+			  <td>{$app.user_name}</td>
+			  <if condition="$app['type'] eq 'liulan'">
+			  <td>浏览</td>  
+			  </if>  
+			  <if condition="$app['type'] eq 'xiazai'">
+			  <td>下载</td>    
+			  </if>
+			  <td>{$app.number}</td>
+		    </tr>
+		    </foreach>
+		    <tr>
+		        <td colspan="4">{$page}</td>
+		    </tr>
+             </empty>
+         </tbody>
+     </table>
+ </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.common" />
+</head>
+<body>
+<form method="post" action="">
+<input type="hidden" name="ad_type" value="CPS">
+ <div class="line"  id="order_no">
+    <div class="input_left">商品排序：</div>
+    <div class="input_right">    
+       <input type="text" name="order_no" value="{$jc.order_no}" maxlength="10" />
+    </div>
+</div>
+
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" name="submit"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+
+</form>
+</body>

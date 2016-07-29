@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<import type="js" file="Js.Jquery" />
+<import type="js" file="Js.common" />
+</head>
+<body>
+<form method="post" action="">
+<!-- cps字段3 --> 
+ <div class="line"  id="ad_fee">
+    <div class="input_left">商品供货价：</div>
+    <div class="input_right">    
+       <input type="text" name="supply_price" value="{$ad.supply_price}" maxlength="10" onblur="valueFormatCurrency(this)"/>
+    </div>
+</div>
+<div class="line"> 
+    <input type="submit"  value="提交" class="button" name="submit"/>
+    <input type="reset" name="reset" value="重置" class="button"/>
+</div>
+
+</form>
+</body>
