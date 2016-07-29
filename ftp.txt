@@ -1,0 +1,31 @@
+======微信活动===================================
+
+wx.miaobihantang.com
+
+ip:115.28.2.138
+
+ftp 
+用户名：wxftpmbht
+密码：wxmbht2016
+网页文件请上传到 public_html 目录下。
+
+
+
+mysql
+访问地址：localhost
+数据库名：db_wxmbht
+用户名：user_wx
+密码：dbwxmbht2016
+
+数据库地址
+http://115.28.2.138:8989/phpmyadmin/index.php
+
+用户名：user_wx
+密码：dbwxmbht2016
+
+php5.2
+
+
+微信公众号
+appid: wxe9d066f359655a67
+secret:b3506fc8abeae67cc8d9ad6da4121247
